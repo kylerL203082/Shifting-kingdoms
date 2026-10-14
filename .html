@@ -1,0 +1,3169 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#161a18">
+<title>Shifting Kingdoms — Founders Edition</title>
+<style>
+:root{--ink:#f3e5c4;--muted:#b8aa90;--gold:#e2bb73;--gold2:#aa793b;--bg:#111715;--panel:#252c27;--edge:#67553b;--red:#ad5147;--green:#8cb58b}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:radial-gradient(ellipse at 50% 0,#344037 0,#18221e 46%,#101615 100%)}
+button,select,input{font:inherit}
+button{cursor:pointer;color:var(--ink)}
+button:disabled{cursor:not-allowed;opacity:.45}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.hidden{display:none!important}
+.small{font-size:.82rem}
+.muted{color:var(--muted)}
+.gold{color:var(--gold)}
+.label{font-size:.73rem;letter-spacing:.13em;text-transform:uppercase;color:var(--gold)}
+h1,h2,h3,p{margin:0 0 12px}
+h1{font-weight:normal;font-size:clamp(2.4rem,7vw,5.5rem);letter-spacing:.055em;line-height:1}
+h2{font-size:1.45rem;font-weight:normal;color:#f8dfab}
+h3{font-size:1.06rem;color:var(--gold)}
+.btn{border:1px solid #a38356;border-radius:5px;padding:11px 15px;background:linear-gradient(#665038,#3a2d22);box-shadow:inset 0 1px #c7a67a44,0 3px 9px #0006;transition:filter .15s,transform .12s;min-height:42px}
+.btn:hover:not(:disabled){filter:brightness(1.2)}
+.btn:active:not(:disabled){transform:translateY(1px)}
+.btn.primary{background:linear-gradient(#bc914f,#76522c);color:#161713;font-weight:bold}
+.btn.blue{background:linear-gradient(#587787,#324854)}
+.btn.danger{background:linear-gradient(#90554b,#562c28)}
+.btn.selected{outline:2px solid #efda9c}
+.btn.tiny{padding:5px 9px;min-height:28px;font-size:.84rem}
+.btn.wide{width:100%}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap}
+.panel{border:1px solid var(--edge);background:linear-gradient(155deg,#2c352f,#202722);border-radius:9px;box-shadow:0 8px 30px #0005,inset 0 1px #ffffff12;padding:15px}
+.panel+.panel{margin-top:13px}
+.scroll{max-height:210px;overflow:auto}
+.divider{border:0;border-top:1px solid #83705475;margin:13px 0}
+.screen{min-height:100vh}
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:25px;overflow:hidden;position:relative}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 38%,#dfab4730,transparent 35%),repeating-linear-gradient(65deg,transparent 0 130px,#b48c2610 132px 134px);pointer-events:none}
+.hero>div{position:relative}
+.hero-mark{font-size:clamp(5rem,14vw,9rem);color:#d9b577;text-shadow:0 8px #22190d,0 0 42px #ebac4650}
+.hero-sub{letter-spacing:.24em;font-size:clamp(.73rem,1.6vw,1.05rem);color:#dfc28f;text-transform:uppercase;margin:12px 0 33px}
+.hero-card{padding:25px;max-width:700px;background:#121915bd;border:1px solid #a38752a6;border-radius:11px;backdrop-filter:blur(5px)}
+.hero-card p{line-height:1.6;color:#cbbd9e}
+.hero-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin:22px 0}
+.flourish{color:#ac8f57;letter-spacing:.8em}
+.setup{max-width:950px;margin:auto;padding:30px 14px 70px}
+.topbar{padding:13px 20px;border-bottom:1px solid #88704a;background:#131b18ed;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.brand{color:#f4deaa;letter-spacing:.14em;font-weight:bold;font-size:1.2rem}
+.layout{display:grid;grid-template-columns:minmax(220px,280px) minmax(450px,1fr) minmax(250px,305px);gap:15px;max-width:1550px;margin:auto;padding:14px;align-items:start}
+.side h2{font-size:1.25rem;margin-bottom:9px}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.stat{background:#111c17a8;border:1px solid #6c664e;padding:9px 7px;text-align:center;border-radius:5px}
+.stat strong{display:block;font-size:1.35rem;color:#f0d190}
+.roster{display:flex;align-items:center;gap:7px;border:1px solid #635640;padding:8px;margin:6px 0;border-radius:5px;background:#10181496}
+.sigil{width:28px;height:28px;border:2px solid #dac392;border-radius:50%;display:grid;place-items:center;flex-shrink:0;font-size:1rem}
+.roster .score{margin-left:auto;font-size:1.2rem;color:var(--gold);font-weight:bold}
+.seat{display:flex;align-items:center;gap:12px;border:1px solid #73654f;padding:12px;border-radius:6px;background:#151e1aaa;margin:9px 0}
+.seat select{background:#e8d9b8;color:#191b18;border:0;border-radius:4px;padding:8px;max-width:100%;width:100%}
+.seat-main{flex:1;min-width:0}
+.seat-main label{display:block;color:#d8bd8e;margin:3px 0 7px}
+.select{color:#162019;background:#e9dbbd;border:1px solid #ab8d5d;border-radius:4px;padding:8px;width:100%}
+.board-wrap{padding:15px;background:radial-gradient(ellipse,#8d7a5632,transparent 75%),linear-gradient(135deg,#353a2e,#1c251f);border:1px solid #89724c;border-radius:12px;box-shadow:inset 0 0 30px #0007,0 15px 30px #0005;overflow:hidden}
+.board-header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.board-header h2{margin:0}
+.board-outer{margin:auto;width:min(100%,650px)}
+.realm-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;position:relative}
+.realm{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:2px;padding:3px;border:2px solid #9c8864;border-radius:5px;background:#191d16;position:relative;aspect-ratio:1;min-width:0;transition:filter .2s,transform .25s}
+.realm:before{content:attr(data-realm);position:absolute;z-index:3;top:1px;left:50%;transform:translateX(-50%);font-family:Arial,sans-serif;color:#fff4d0;text-shadow:0 1px 3px #000,0 0 4px #000;font-size:clamp(6px,.7vw,10px);letter-spacing:.08em;pointer-events:none;white-space:nowrap;background:#111a1599;padding:1px 3px;border-radius:2px}
+.realm.realm-choice{outline:3px solid #d6b55c;z-index:4}
+.realm.realm-adjacent{outline:3px dashed #b8df80;z-index:4}
+.realm.forecast{box-shadow:0 0 0 3px #edae6f,0 0 18px #ea9b51}
+.realm-grid.shifting .realm{animation:quake .42s ease-in-out}
+@keyframes quake{0%{transform:translate(0)}25%{transform:translate(-3px,1px) rotate(-1deg)}50%{transform:translate(3px,-2px) rotate(1deg)}75%{transform:translate(-2px,1px)}100%{transform:none}}
+.tile{position:relative;width:100%;height:100%;min-width:0;min-height:0;border:1px solid #0008;border-radius:3px;padding:0;background:#73815b;overflow:hidden;display:flex;align-items:center;justify-content:center;isolation:isolate;transition:filter .1s}
+.tile:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 14px #0005}
+.tile.plains{background:linear-gradient(135deg,#849467,#687a50)}
+.tile.forest{background:repeating-linear-gradient(140deg,#314e36,#314e36 9px,#426746 9px,#426746 19px)}
+.tile.hills{background:repeating-linear-gradient(145deg,#998563,#998563 14px,#746248 15px,#746248 25px)}
+.tile.owned{box-shadow:inset 0 0 0 5px var(--owner);border-color:var(--owner)}
+.tile.legal{filter:brightness(1.25);outline:3px solid #c4e889;outline-offset:-4px;z-index:1}
+.tile.selected-tile{outline:4px solid #f7da8d;outline-offset:-4px;z-index:2}
+.tile:hover{filter:brightness(1.18)}
+.tile.castle-tile{border-width:2px}
+.tile .symbol{position:absolute;font-size:clamp(13px,2.3vw,28px);text-shadow:0 2px 3px #000d;top:10%;left:7%;line-height:1}
+.tile .units{position:absolute;right:2px;bottom:2px;border-radius:4px;background:#121914df;border:1px solid #efe0bb99;padding:1px 4px;font:700 clamp(9px,1.05vw,14px) Arial,sans-serif;display:flex;align-items:center;gap:3px;z-index:2}
+.tile .units b{font-size:clamp(10px,1.2vw,15px)}
+.tile .owner-flag{position:absolute;right:2px;top:2px;font-size:clamp(8px,1.1vw,13px);text-shadow:0 1px 4px #000;font-weight:bold}
+.tile .structure{position:absolute;left:3px;bottom:2px;font-size:clamp(11px,1.45vw,17px);filter:drop-shadow(0 1px 2px #000)}
+.tile .terrain-symbol{position:absolute;font-size:clamp(18px,2.9vw,37px);opacity:.25;right:8%;bottom:12%;filter:grayscale(.3)}
+.tile .objective{position:absolute;top:0;left:48%;font-size:clamp(13px,2vw,24px);filter:drop-shadow(0 1px 2px #000);z-index:1}
+.board-footer{font-size:.78rem;color:#cbbc9d;text-align:center;padding-top:9px}
+.action-stack{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.action-stack button{font-size:.88rem;padding:9px 5px}
+.action-stack button:last-child:nth-child(odd){grid-column:1/-1}
+.mini-list{font-size:.89rem;line-height:1.55}
+.mini-list div{padding:4px 0;border-bottom:1px solid #71634a44}
+.unit-row,.count-row{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:6px 0;border-bottom:1px solid #ffffff12}
+.stepper{display:flex;align-items:center;gap:9px}
+.stepper span{min-width:12px;text-align:center}
+.hint{border:1px solid #98814e81;border-radius:5px;padding:9px;background:#c7994220;color:#efd6a4;font-size:.86rem;line-height:1.45}
+.notice{background:#211d16;border:1px solid #977546;padding:9px;border-radius:5px;line-height:1.45;font-size:.9rem}
+.logitem{font-size:.81rem;color:#d2c5a9;padding:6px 0;border-bottom:1px solid #ffffff15}
+.logitem:first-child{color:#f3db9c}
+.modal-overlay{position:fixed;inset:0;background:#060b09db;z-index:100;display:flex;align-items:center;justify-content:center;padding:12px;overflow-y:auto}
+.modal{background:linear-gradient(145deg,#35382e,#1b231f);border:2px solid #ab8a52;border-radius:11px;box-shadow:0 25px 80px #000;max-width:560px;width:100%;max-height:95vh;overflow:auto;padding:22px}
+.modal h2{font-size:1.7rem}
+.modal p{line-height:1.6}
+.result{padding:14px;text-align:center;border:1px solid #a3824f;border-radius:6px;margin:12px 0;background:#1a241c}
+.result strong{font-size:1.5rem;color:var(--gold)}
+.rules{line-height:1.5}
+.rules h3{margin-top:16px}
+.rules ul{padding-left:20px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#17271b;border:1px solid #d4a65b;padding:12px 16px;box-shadow:0 6px 24px #000;z-index:150;border-radius:6px;max-width:min(92vw,700px);pointer-events:none;text-align:center}
+.mobile-only{display:none}
+@media(max-width:1150px){
+.layout{grid-template-columns:220px minmax(400px,1fr)}
+.right-side{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.right-side .panel+.panel{margin:0}
+}
+@media(max-width:800px){
+.layout{grid-template-columns:1fr;padding:8px}
+.left-side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.left-side .panel+.panel{margin:0}
+.board-wrap{padding:8px}
+.board-outer{max-width:610px}
+.realm:before{font-size:clamp(6px,1.5vw,10px)}
+.tile .symbol{font-size:clamp(13px,4vw,28px)}
+.tile .units{font-size:clamp(9px,2.2vw,14px)}
+.tile .structure{font-size:clamp(10px,3vw,17px)}
+.tile .objective{font-size:clamp(11px,3.2vw,23px)}
+.tile .terrain-symbol{font-size:clamp(17px,5vw,34px)}
+.tile .owner-flag{font-size:clamp(8px,2.4vw,13px)}
+}
+@media(max-width:490px){
+.left-side,.right-side{grid-template-columns:1fr}
+.realm-grid{gap:3px}
+.realm{gap:1px;padding:2px;border-width:1px}
+.panel{padding:11px}
+.topbar{padding:10px}
+.brand{font-size:.97rem}
+.board-header h2{font-size:1rem}
+.tile.owned{box-shadow:inset 0 0 0 3px var(--owner)}
+.tile .units{gap:1px;padding:0 2px}
+.realm:before{letter-spacing:0}
+.hero-card{padding:15px}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="overlay" class="modal-overlay hidden" role="dialog" aria-modal="true">
+  <div id="modal" class="modal"></div>
+</div>
+<div id="toast" class="toast hidden" role="status"></div>
+<script>
+"use strict";
+/* SHIFTING KINGDOMS v0.1 — Complete game engine */
+
+const VERSION = 1;
+const SAVE_KEY = "shifting-kingdoms-v01";
+
+const REALM_NAMES = [
+  "Northkeep","Wildwood","Sunspire",
+  "Stonefall","Riftheart","Ashlands",
+  "Moonfen","Ironreach","Stormhold"
+];
+
+const FACTIONS = [
+  {name:"Iron Lions",color:"#bd4c45",accent:"#f4cf88",mark:"♌"},
+  {name:"Silver Stags",color:"#477eb1",accent:"#dae2ea",mark:"♞"},
+  {name:"Golden Griffins",color:"#c8a044",accent:"#25221c",mark:"♛"},
+  {name:"Verdant Wolves",color:"#4f986e",accent:"#e4eddb",mark:"♜"}
+];
+
+const UNIT = {
+  levy:{label:"Levy",icon:"♟",cost:1,atk:1,def:1},
+  sword:{label:"Swordsman",icon:"⚔",cost:3,atk:2,def:2},
+  archer:{label:"Archer",icon:"➹",cost:2,atk:1,def:2},
+  knight:{label:"Knight",icon:"♞",cost:5,atk:3,def:2}
+};
+
+const BLD = {
+  farm:{label:"Farm",icon:"🌾",cost:3},
+  fort:{label:"Fort",icon:"▣",cost:4},
+  barracks:{label:"Barracks",icon:"⚒",cost:4}
+};
+
+const KINDS = Object.keys(UNIT);
+const BUILDINGS = Object.keys(BLD);
+const APP = document.getElementById("app");
+const OVERLAY = document.getElementById("overlay");
+const MODAL = document.getElementById("modal");
+const TOAST = document.getElementById("toast");
+
+let S = null;
+let view = "menu";
+let selected = null;
+let mode = "inspect";
+let moveCounts = {};
+let recruitCounts = {};
+let shiftFrom = null;
+let legal = new Map();
+let modalType = "";
+let sound = true;
+let busy = false;
+let toastTimer = null;
+let aiTimer = null;
+
+let setup = {
+  count:2,
+  controllers:["human","ai","human","human"],
+  factions:[0,1,2,3]
+};
+
+const esc = s => String(s).replace(
+  /[&<>"']/g,
+  c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])
+);
+
+const elem = id => document.getElementById(id);
+
+const count = u => KINDS.reduce((n,k)=>n+(u?.[k]||0),0);
+
+const strength = (u,stat) =>
+  KINDS.reduce((n,k)=>n+(u?.[k]||0)*UNIT[k][stat],0);
+
+const clone = u =>
+  Object.fromEntries(KINDS.map(k=>[k,u?.[k]||0]));
+
+const blank = () => clone({});
+
+const dot = (a,b) =>
+  Math.abs(a.r-b.r)+Math.abs(a.c-b.c);
+
+function ping(freq=460){
+  if(!sound)return;
+  try{
+    const A=window.AudioContext||window.webkitAudioContext;
+    if(!A)return;
+    ping.ctx=ping.ctx||new A();
+    const o=ping.ctx.createOscillator();
+    const g=ping.ctx.createGain();
+    o.type="triangle";
+    o.frequency.value=freq;
+    g.gain.setValueAtTime(.035,ping.ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(
+      .0001,ping.ctx.currentTime+.13
+    );
+    o.connect(g);
+    g.connect(ping.ctx.destination);
+    o.start();
+    o.stop(ping.ctx.currentTime+.14);
+  }catch(e){}
+}
+
+function notify(msg){
+  TOAST.textContent=msg;
+  TOAST.classList.remove("hidden");
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(
+    ()=>TOAST.classList.add("hidden"),2900
+  );
+}
+
+function save(){
+  if(!S)return;
+  try{
+    localStorage.setItem(SAVE_KEY,JSON.stringify(S));
+  }catch(e){
+    notify("Unable to save: browser storage is full or unavailable.");
+  }
+}
+
+function hasSave(){
+  try{return !!localStorage.getItem(SAVE_KEY)}
+  catch(e){return false}
+}
+
+function current(){
+  return S?.players[S.active];
+}
+
+function tileRealm(id){
+  return S.tiles[id].realm;
+}
+
+function realmPosition(realm){
+  return S.positions.indexOf(realm);
+}
+
+function realmAt(r,c){
+  return S.positions[Math.floor(r/2)*3+Math.floor(c/2)];
+}
+
+function idAt(r,c){
+  if(r<0||r>5||c<0||c>5)return null;
+  const realm=realmAt(r,c);
+  return `${realm}-${(r%2)*2+c%2}`;
+}
+
+function coordOf(id){
+  const [realmStr,iStr]=id.split("-");
+  const p=realmPosition(+realmStr);
+  const i=+iStr;
+  return {
+    r:Math.floor(p/3)*2+Math.floor(i/2),
+    c:(p%3)*2+(i%2)
+  };
+}
+
+function neighbors(id){
+  const p=coordOf(id);
+  return [[1,0],[-1,0],[0,1],[0,-1]]
+    .map(([r,c])=>idAt(p.r+r,p.c+c))
+    .filter(Boolean);
+}
+
+function isCastle(t){
+  return t.landmark==="castle";
+}
+
+function canEnter(id,owner,moving){
+  const t=S.tiles[id];
+  return !(isCastle(t)&&t.owner!==null&&t.owner!==owner);
+}
+
+function capGold(p){
+  p.gold=Math.min(20,Math.max(0,p.gold));
+}
+
+function capSeals(p){
+  p.seals=Math.min(4,Math.max(0,p.seals));
+}
+
+function rng(){
+  let x=S.seed|0;
+  x^=x<<13;
+  x^=x>>>17;
+  x^=x<<5;
+  S.seed=x|0;
+  return (x>>>0)/4294967296;
+}
+
+function log(message){
+  S.history.unshift(`R${S.round}: ${message}`);
+  S.history=S.history.slice(0,90);
+}
+
+function initTile(realm,idx){
+  const terrains=["plains","forest","hills","plains"];
+  const t={
+    id:`${realm}-${idx}`,
+    realm,
+    terrain:terrains[(idx+realm*3)%4],
+    landmark:null,
+    owner:null,
+    building:null,
+    units:blank()
+  };
+
+  if([0,2,6,8].includes(realm)){
+    const hi={0:3,2:2,6:1,8:0};
+    if(idx===hi[realm]){
+      t.landmark="castle";
+      t.terrain="plains";
+    }
+  }
+
+  if([1,3,5,7].includes(realm)){
+    const standard={1:2,3:1,5:0,7:1};
+    const village={1:1,3:2,5:3,7:2};
+
+    if(idx===standard[realm]){
+      t.landmark="standard";
+      t.terrain="plains";
+    }
+    if(idx===village[realm]){
+      t.landmark="village";
+      t.terrain="plains";
+    }
+  }
+
+  if(realm===4){
+    t.terrain=["hills","plains","forest","hills"][idx];
+    t.landmark="citadel";
+  }
+
+  return t;
+}
+
+function startGame(){
+  const corners=setup.count===2
+    ?[0,8]
+    :setup.count===3
+      ?[0,2,6]
+      :[0,2,6,8];
+
+  S={
+    version:VERSION,
+    seed:(Date.now()^0x56cf37)|0,
+    round:1,
+    active:0,
+    actions:2,
+    shifted:false,
+    players:[],
+    positions:[0,1,2,3,4,5,6,7,8],
+    tiles:{},
+    history:[],
+    forecast:null,
+    finished:false,
+    winners:[],
+    pending:null
+  };
+
+  for(let r=0;r<9;r++){
+    for(let k=0;k<4;k++){
+      const t=initTile(r,k);
+      S.tiles[t.id]=t;
+    }
+  }
+
+  // Remove unused home Castles in 2/3-player matches.
+  for(const r of [0,2,6,8]){
+    if(!corners.includes(r)){
+      const unused=Object.values(S.tiles)
+        .find(t=>t.realm===r&&t.landmark==="castle");
+      unused.landmark=null;
+    }
+  }
+
+  for(let i=0;i<setup.count;i++){
+    const home=corners[i];
+    const p={
+      id:i,
+      faction:setup.factions[i],
+      controller:setup.controllers[i],
+      home,
+      gold:7,
+      seals:2,
+      points:0
+    };
+    S.players.push(p);
+
+    for(let k=0;k<4;k++){
+      S.tiles[`${home}-${k}`].owner=i;
+    }
+
+    const castle=Object.values(S.tiles)
+      .find(t=>t.realm===home&&isCastle(t));
+
+    castle.units={
+      levy:2,
+      sword:1,
+      archer:0,
+      knight:0
+    };
+  }
+
+  log("The kingdoms rise. The struggle for the Crown begins.");
+  resetSelection();
+  view="game";
+  save();
+  render();
+  maybeAI();
+}
+
+function validateSave(x){
+  try{
+    if(
+      !x||x.version!==VERSION||
+      !Array.isArray(x.positions)||
+      x.positions.length!==9||
+      new Set(x.positions).size!==9||
+      x.positions.some(n=>!Number.isInteger(n)||n<0||n>8)||
+      !Array.isArray(x.players)||
+      x.players.length<2||x.players.length>4||
+      !x.tiles||Object.keys(x.tiles).length!==36||
+      !Number.isInteger(x.active)||
+      x.active<0||x.active>=x.players.length||
+      !Number.isInteger(x.round)||x.round<1||x.round>8||
+      !Number.isInteger(x.actions)||x.actions<0||x.actions>2||
+      !Array.isArray(x.history)||
+      typeof x.seed!=="number"||
+      typeof x.finished!=="boolean"||
+      typeof x.shifted!=="boolean"||
+      !Array.isArray(x.winners)||
+      x.winners.some(i=>
+        !Number.isInteger(i)||i<0||i>=x.players.length
+      )||
+      !(x.forecast===null||
+        Array.isArray(x.forecast)&&
+        x.forecast.length===2&&
+        shiftAllowed(x.forecast[0],x.forecast[1]))||
+      !(x.pending===null||
+        x.pending&&
+        ["confirm","casualty","handoff"].includes(x.pending.stage)&&
+        typeof x.pending.from==="string"&&
+        typeof x.pending.to==="string"&&
+        Array.isArray(x.pending.path)&&
+        x.pending.path.every(id=>
+          typeof id==="string"&&x.tiles[id]
+        )&&
+        x.tiles[x.pending.from]&&
+        x.tiles[x.pending.to]&&
+        x.pending.units&&
+        KINDS.every(k=>
+          Number.isInteger(x.pending.units[k])&&
+          x.pending.units[k]>=0&&
+          x.pending.units[k]<=4
+        ))
+    )return false;
+
+    let n=0;
+    for(const p of x.players){
+      if(
+        !Number.isInteger(p.id)||p.id!==n++||
+        p.faction<0||p.faction>3||
+        !["human","ai"].includes(p.controller)||
+        ![0,2,6,8].includes(p.home)||
+        !Number.isInteger(p.gold)||p.gold<0||p.gold>20||
+        !Number.isInteger(p.seals)||p.seals<0||p.seals>4||
+        !Number.isInteger(p.points)||p.points<0||p.points>50
+      )return false;
+    }
+
+    for(let r=0;r<9;r++){
+      for(let j=0;j<4;j++){
+        const t=x.tiles[`${r}-${j}`];
+
+        if(
+          !t||t.id!==`${r}-${j}`||t.realm!==r||
+          !["plains","forest","hills"].includes(t.terrain)||
+          ![null,"castle","standard","village","citadel"]
+            .includes(t.landmark)||
+          ![null,...x.players.map(p=>p.id)].includes(t.owner)||
+          ![null,...BUILDINGS].includes(t.building)||
+          !t.units
+        )return false;
+
+        for(const k of KINDS){
+          if(
+            !Number.isInteger(t.units[k])||
+            t.units[k]<0||t.units[k]>4
+          )return false;
+        }
+
+        if(
+          count(t.units)>4||
+          count(t.units)>0&&t.owner===null
+        )return false;
+      }
+    }
+
+    for(const p of x.players){
+      const home=Object.values(x.tiles).find(t=>
+        t.realm===p.home&&
+        t.landmark==="castle"&&
+        t.owner===p.id
+      );
+      if(!home)return false;
+
+      const total=Object.values(x.tiles)
+        .filter(t=>t.owner===p.id)
+        .reduce((n,t)=>n+count(t.units),0);
+      if(total>12)return false;
+    }
+
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+
+function continueGame(){
+  try{
+    const x=JSON.parse(localStorage.getItem(SAVE_KEY));
+    if(!validateSave(x))throw Error("invalid save");
+
+    S=x;
+    resetSelection();
+    view="game";
+    render();
+
+    if(S.pending)renderModal();
+    else maybeAI();
+  }catch(e){
+    notify("Saved match is invalid or from another version.");
+  }
+}
+
+function resetSelection(){
+  selected=null;
+  mode="inspect";
+  moveCounts=blank();
+  recruitCounts=blank();
+  shiftFrom=null;
+  legal.clear();
+}
+
+function consumeAction(){
+  S.actions--;
+  selected=null;
+  moveCounts=blank();
+  recruitCounts=blank();
+  mode="inspect";
+  shiftFrom=null;
+  legal.clear();
+
+  save();
+  render();
+
+  if(!S.pending&&!S.finished&&current().controller==="ai"){
+    maybeAI();
+  }
+}
+
+function income(){
+  for(const p of S.players){
+    const held=Object.values(S.tiles)
+      .filter(t=>t.owner===p.id);
+    const villages=held.filter(t=>t.landmark==="village").length;
+    const farms=Math.min(
+      2,
+      held.filter(t=>t.building==="farm").length
+    );
+
+    p.gold+=4+villages+farms*2;
+    p.seals+=1;
+    capGold(p);
+    capSeals(p);
+  }
+}
+
+function generateForecast(){
+  const adj=[];
+
+  for(let a=0;a<9;a++){
+    if(a%3<2)adj.push([a,a+1]);
+    if(a<6)adj.push([a,a+3]);
+  }
+
+  return adj[Math.floor(rng()*adj.length)];
+}
+
+// Round turns rotate the first player each round.
+function nextTurn(){
+  if(!S||S.finished||busy||S.pending)return;
+
+  const start=(S.round-1)%S.players.length;
+  const place=(S.active-start+S.players.length)%S.players.length;
+
+  if(place===S.players.length-1){
+    finishRound();
+
+    if(S.finished){
+      resetSelection();
+      save();
+      render();
+      return;
+    }
+
+    S.round++;
+    income();
+
+    S.forecast=[2,4,6].includes(S.round)
+      ?generateForecast()
+      :null;
+
+    S.active=(S.round-1)%S.players.length;
+
+    log(
+      `Round ${S.round} begins.`+
+      (S.forecast?" The realms are forecast to tremble.":"")
+    );
+  }else{
+    S.active=(S.active+1)%S.players.length;
+  }
+
+  S.actions=2;
+  S.shifted=false;
+  resetSelection();
+  save();
+  render();
+  maybeAI();
+}
+
+function finishRound(){
+  // The automatic Tremor executes before Crown scoring.
+  if(S.forecast){
+    const [a,b]=S.forecast;
+    const n1=REALM_NAMES[S.positions[a]];
+    const n2=REALM_NAMES[S.positions[b]];
+
+    [S.positions[a],S.positions[b]]=[
+      S.positions[b],S.positions[a]
+    ];
+
+    log(`TREMOR: ${n1} and ${n2} exchange positions!`);
+    ping(260);
+  }
+
+  for(const t of Object.values(S.tiles)){
+    if(t.landmark==="standard"&&t.owner!==null){
+      S.players[t.owner].points++;
+    }
+  }
+
+  const center=Object.values(S.tiles)
+    .filter(t=>t.realm===4);
+
+  const counts=S.players.map(p=>
+    center.filter(t=>t.owner===p.id).length
+  );
+
+  const max=Math.max(...counts);
+
+  if(max>=2&&counts.filter(c=>c===max).length===1){
+    const w=counts.indexOf(max);
+    S.players[w].points+=2;
+
+    log(
+      `${FACTIONS[S.players[w].faction].name} `+
+      "holds the Grand Citadel (+2 Crown Points)."
+    );
+  }
+
+  log("Crown Points awarded to the controlling kingdoms.");
+
+  if(S.round===8||S.players.some(p=>p.points>=12)){
+    const high=Math.max(...S.players.map(p=>p.points));
+    let ws=S.players.filter(p=>p.points===high);
+
+    if(ws.length>1){
+      const standings=ws.map(p=>({
+        p,
+        n:Object.values(S.tiles)
+          .filter(t=>
+            t.owner===p.id&&
+            t.landmark==="standard"
+          ).length
+      }));
+
+      const best=Math.max(...standings.map(s=>s.n));
+      ws=standings.filter(s=>s.n===best).map(s=>s.p);
+    }
+
+    if(ws.length>1){
+      const gold=Math.max(...ws.map(p=>p.gold));
+      ws=ws.filter(p=>p.gold===gold);
+    }
+
+    S.finished=true;
+    S.winners=ws.map(p=>p.id);
+
+    log(
+      ws.length===1
+        ?`${FACTIONS[ws[0].faction].name} wins the Crown!`
+        :"The throne is shared in a draw!"
+    );
+
+    ping(740);
+  }
+}
+
+function tileTotal(owner){
+  return Object.values(S.tiles).reduce(
+    (n,t)=>n+(t.owner===owner?count(t.units):0),
+    0
+  );
+}
+
+function availableRecruit(id,owner){
+  const t=S.tiles[id];
+
+  return t&&
+    t.owner===owner&&
+    (t.landmark==="castle"||t.building==="barracks");
+}
+
+function doRecruit(id,units){
+  if(S.finished||S.pending||S.actions<=0)return false;
+
+  const p=current();
+  const t=S.tiles[id];
+  const number=count(units);
+  const price=KINDS.reduce(
+    (n,k)=>n+units[k]*UNIT[k].cost,0
+  );
+
+  if(
+    !availableRecruit(id,p.id)||
+    number<1||number>2||
+    price>p.gold||
+    count(t.units)+number>4||
+    tileTotal(p.id)+number>12
+  )return false;
+
+  for(const k of KINDS){
+    t.units[k]+=units[k];
+  }
+
+  p.gold-=price;
+  log(
+    `${FACTIONS[p.faction].name} recruits ${number} `+
+    `troops at ${REALM_NAMES[t.realm]}.`
+  );
+
+  ping(480);
+  consumeAction();
+  return true;
+}
+
+function doBuild(id,kind){
+  if(
+    !BLD[kind]||
+    S.finished||
+    S.pending||
+    S.actions<=0
+  )return false;
+
+  const p=current();
+  const t=S.tiles[id];
+
+  if(
+    t.owner!==p.id||
+    t.building||
+    t.landmark==="castle"||
+    t.landmark==="standard"||
+    t.landmark==="citadel"||
+    t.realm===4||
+    p.gold<BLD[kind].cost
+  )return false;
+
+  if(
+    kind==="barracks"&&
+    Object.values(S.tiles).some(
+      x=>x.owner===p.id&&x.building==="barracks"
+    )
+  )return false;
+
+  t.building=kind;
+  p.gold-=BLD[kind].cost;
+
+  log(
+    `${FACTIONS[p.faction].name} builds `+
+    `${BLD[kind].label} in ${REALM_NAMES[t.realm]}.`
+  );
+
+  ping(540);
+  consumeAction();
+  return true;
+}
+
+// Breadth-first movement validation, rebuilt after every realm shift.
+function movementPaths(from,moving,owner){
+  const result=new Map();
+
+  if(
+    !S.tiles[from]||
+    S.tiles[from].owner!==owner||
+    count(moving)===0||
+    KINDS.some(k=>
+      moving[k]<0||
+      moving[k]>S.tiles[from].units[k]
+    )
+  )return result;
+
+  const onlyKnights=moving.knight===count(moving);
+  const range=onlyKnights?3:2;
+
+  const queue=[{id:from,path:[],distance:0}];
+  const visited=new Map([[from,0]]);
+
+  while(queue.length){
+    const curr=queue.shift();
+    if(curr.distance>=range)continue;
+
+    for(const to of neighbors(curr.id)){
+      if(to===from||!canEnter(to,owner,moving))continue;
+
+      const t=S.tiles[to];
+      const path=curr.path.concat(to);
+      const dist=curr.distance+1;
+      const prev=visited.get(to);
+
+      if(prev!==undefined&&prev<=dist)continue;
+
+      visited.set(to,dist);
+
+      // A friendly full tile may be crossed, but not finished on.
+      if(
+        t.owner!==owner||
+        count(t.units)+count(moving)<=4
+      ){
+        result.set(to,path);
+      }
+
+      const canContinue=
+        (t.owner===null||
+         t.owner===owner||
+         count(t.units)===0)&&
+        t.terrain!=="forest"&&
+        !(isCastle(t)&&t.owner!==null&&t.owner!==owner);
+
+      if(canContinue){
+        queue.push({id:to,path,distance:dist});
+      }
+    }
+  }
+
+  return result;
+}
+
+function bonuses(t){
+  const terrain=
+    t.terrain==="forest"||t.terrain==="hills"?1:0;
+  const fort=t.building==="fort"?2:0;
+  const archer=
+    t.terrain==="forest"&&t.units.archer>0?1:0;
+
+  return Math.min(3,terrain+fort+archer);
+}
+
+function battleEstimate(to,moving){
+  const defender=S.tiles[to];
+  const attack=strength(moving,"atk");
+  const defense=
+    strength(defender.units,"def")+bonuses(defender);
+
+  return {
+    attack,
+    defense,
+    attackerWins:attack>defense,
+    attackerUnits:count(moving),
+    defenderUnits:count(defender.units)
+  };
+}
+
+function preferredLoss(units){
+  return KINDS
+    .filter(k=>units[k]>0)
+    .sort((a,b)=>UNIT[a].cost-UNIT[b].cost)[0];
+}
+
+function removeLoss(units,k){
+  if(!k||units[k]<1){
+    throw Error("Invalid casualty");
+  }
+  units[k]--;
+}
+
+// All movement and combat uses the same authoritative rule function.
+function executeMove(from,to,moving,path,casualty=null){
+  if(
+    S.finished||
+    S.pending||
+    S.actions<=0||
+    !path
+  )return false;
+
+  const owner=S.active;
+  const source=S.tiles[from];
+  const target=S.tiles[to];
+
+  if(
+    source.owner!==owner||
+    count(moving)<1||
+    KINDS.some(k=>
+      moving[k]>source.units[k]||
+      moving[k]<0
+    )
+  )return false;
+
+  const real=movementPaths(from,moving,owner).get(to);
+
+  if(!real||real.join()!==path.join()){
+    return false;
+  }
+
+  const defenders=
+    target.owner!==null&&
+    target.owner!==owner&&
+    count(target.units)>0;
+
+  let winner=true;
+
+  if(defenders){
+    const b=battleEstimate(to,moving);
+    winner=b.attackerWins;
+
+    const losses=winner?moving:target.units;
+    const otherSize=winner
+      ?b.defenderUnits
+      :b.attackerUnits;
+
+    const shouldLose=
+      otherSize>=2&&count(losses)>=2;
+
+    if(shouldLose&&!casualty)return false;
+
+    if(
+      shouldLose&&
+      (!KINDS.includes(casualty)||losses[casualty]<1)
+    )return false;
+  }
+
+  for(const k of KINDS){
+    source.units[k]-=moving[k];
+  }
+
+  if(defenders){
+    const b=battleEstimate(to,moving);
+
+    if(winner){
+      target.units=clone(moving);
+
+      if(b.defenderUnits>=2&&count(target.units)>=2){
+        removeLoss(target.units,casualty);
+      }
+
+      target.owner=owner;
+
+      log(
+        `${FACTIONS[current().faction].name} conquers `+
+        `${REALM_NAMES[target.realm]} `+
+        `(${b.attack} vs ${b.defense}).`
+      );
+
+      ping(650);
+    }else{
+      if(b.attackerUnits>=2&&count(target.units)>=2){
+        removeLoss(target.units,casualty);
+      }
+
+      log(
+        `${FACTIONS[current().faction].name}'s attack fails `+
+        `at ${REALM_NAMES[target.realm]} `+
+        `(${b.attack} vs ${b.defense}).`
+      );
+
+      ping(190);
+    }
+  }else{
+    for(const k of KINDS){
+      target.units[k]+=moving[k];
+    }
+
+    target.owner=owner;
+
+    log(
+      `${FACTIONS[current().faction].name} marches `+
+      `into ${REALM_NAMES[target.realm]}.`
+    );
+
+    ping(420);
+  }
+
+  // Capture each empty territory crossed, not merely the destination.
+  for(const step of path){
+    if(defenders&&step===to&&!winner)break;
+
+    const t=S.tiles[step];
+
+    if(t.landmark==="castle"&&t.owner!==owner){
+      continue;
+    }
+
+    if(step!==to){
+      t.owner=owner;
+    }
+  }
+
+  consumeAction();
+  return true;
+}
+
+function swapRealmPositions(a,b){
+  [S.positions[a],S.positions[b]]=[
+    S.positions[b],S.positions[a]
+  ];
+}
+
+function shiftAllowed(a,b){
+  return Number.isInteger(a)&&
+    Number.isInteger(b)&&
+    a>=0&&a<9&&
+    b>=0&&b<9&&
+    Math.abs(Math.floor(a/3)-Math.floor(b/3))+
+    Math.abs(a%3-b%3)===1;
+}
+
+function doShift(a,b,auto=false){
+  if(
+    !shiftAllowed(a,b)||
+    S.finished||
+    S.pending
+  )return false;
+
+  const p=current();
+
+  if(!auto){
+    if(
+      S.actions<1||
+      S.shifted||
+      p.seals<2
+    )return false;
+
+    p.seals-=2;
+    S.shifted=true;
+  }
+
+  const one=REALM_NAMES[S.positions[a]];
+  const two=REALM_NAMES[S.positions[b]];
+
+  swapRealmPositions(a,b);
+
+  log(
+    `${auto?"A Tremor":FACTIONS[p.faction].name} `+
+    `shifts ${one} and ${two}!`
+  );
+
+  ping(340);
+
+  if(!auto){
+    consumeAction();
+  }else{
+    save();
+    render();
+  }
+
+  return true;
+}
+
+  
+/* ============================================================
+   SHIFTING KINGDOMS — PART 2 OF 2
+   Strategic AI, interface, combat dialogs and event controls
+   ============================================================ */
+
+// Strategic computer players share the human player's rule engine.
+
+function targetWorth(t,owner){
+  if(t.owner===owner)return 0;
+
+  let val=2;
+
+  if(t.landmark==="standard")val+=44;
+  if(t.landmark==="village")val+=15;
+  if(t.landmark==="citadel")val+=12;
+  if(t.building==="fort")val+=5;
+  if(t.building==="farm")val+=8;
+  if(t.building==="barracks")val+=10;
+  if(t.owner!==null)val+=4;
+
+  return val;
+}
+
+function objectiveDistance(id,owner){
+  const a=coordOf(id);
+  let best=99;
+
+  for(const t of Object.values(S.tiles)){
+    if(
+      t.owner===owner||
+      !["standard","citadel","village"].includes(t.landmark)
+    )continue;
+
+    best=Math.min(
+      best,
+      dot(a,coordOf(t.id))+
+      (t.landmark==="standard"?-1:0)
+    );
+  }
+
+  return best===99?0:best;
+}
+
+function tacticalPotential(owner){
+  let total=0;
+
+  for(const t of Object.values(S.tiles)){
+    if(t.owner!==owner||!count(t.units))continue;
+
+    const dist=objectiveDistance(t.id,owner);
+
+    total+=Math.min(4,count(t.units))*
+      (6-Math.min(6,dist))*1.3;
+  }
+
+  return total;
+}
+
+function chooseAIMove(){
+  const p=current();
+  const candidates=[];
+
+  for(const t of Object.values(S.tiles)){
+    if(t.owner!==p.id||!count(t.units))continue;
+
+    const groups=[clone(t.units)];
+
+    for(const k of KINDS){
+      if(t.units[k]>0){
+        const u=blank();
+        u[k]=t.units[k];
+        groups.push(u);
+
+        if(t.units[k]>1){
+          const single=blank();
+          single[k]=1;
+          groups.push(single);
+        }
+      }
+    }
+
+    const seen=new Set();
+
+    for(const u of groups){
+      const key=JSON.stringify(u);
+
+      if(seen.has(key))continue;
+      seen.add(key);
+
+      for(const [id,path] of movementPaths(t.id,u,p.id)){
+        const dst=S.tiles[id];
+
+        const enemy=
+          dst.owner!==p.id&&
+          dst.owner!==null&&
+          count(dst.units)>0;
+
+        const estimate=enemy
+          ?battleEstimate(id,u)
+          :null;
+
+        if(enemy&&!estimate.attackerWins)continue;
+
+        const capture=targetWorth(dst,p.id);
+        const before=objectiveDistance(t.id,p.id);
+        const after=objectiveDistance(id,p.id);
+
+        let value=
+          capture+
+          (before-after)*4+
+          count(u)*.7;
+
+        if(dst.owner===p.id){
+          value=-6+(before-after)*3;
+        }
+
+        if(enemy){
+          value+=8+
+            count(dst.units)*3-
+            count(u)*1.3;
+        }
+
+        if(
+          t.landmark==="standard"&&
+          count(t.units)===count(u)
+        ){
+          value-=9;
+        }
+
+        if(
+          t.landmark==="citadel"&&
+          count(t.units)===count(u)
+        ){
+          value-=5;
+        }
+
+        value-=path.length*.16;
+
+        if(
+          dst.landmark==="standard"&&
+          dst.owner!==p.id
+        ){
+          value+=30;
+        }
+
+        if(
+          dst.landmark==="citadel"&&
+          dst.owner!==p.id
+        ){
+          value+=10;
+        }
+
+        candidates.push({
+          type:"move",
+          from:t.id,
+          to:id,
+          units:u,
+          path,
+          value
+        });
+      }
+    }
+  }
+
+  candidates.sort((a,b)=>b.value-a.value);
+  return candidates[0];
+}
+
+function chooseAIAction(){
+  const p=current();
+  const best=chooseAIMove();
+  const candidates=[];
+
+  if(best)candidates.push(best);
+
+  // Recruit troops if army capacity remains.
+  if(tileTotal(p.id)<12){
+    for(const t of Object.values(S.tiles)){
+      if(
+        !availableRecruit(t.id,p.id)||
+        count(t.units)>=4
+      )continue;
+
+      const space=Math.min(
+        2,
+        4-count(t.units),
+        12-tileTotal(p.id)
+      );
+
+      const types=["knight","sword","archer","levy"];
+
+      for(const k of types){
+        const n=Math.min(
+          space,
+          Math.floor(p.gold/UNIT[k].cost)
+        );
+
+        if(n<=0)continue;
+
+        const u=blank();
+        u[k]=n;
+
+        const dist=objectiveDistance(t.id,p.id);
+
+        const value=
+          9+n*4+
+          (k==="knight"?7:k==="sword"?5:0)+
+          (dist<=3?5:0)+
+          (tileTotal(p.id)<5?15:0);
+
+        candidates.push({
+          type:"recruit",
+          id:t.id,
+          units:u,
+          value
+        });
+      }
+    }
+  }
+
+  // Evaluate useful building locations.
+  for(const t of Object.values(S.tiles)){
+    if(
+      t.owner!==p.id||
+      t.building||
+      t.realm===4||
+      ["castle","standard","citadel"].includes(t.landmark)
+    )continue;
+
+    if(p.gold>=3){
+      const farms=Object.values(S.tiles)
+        .filter(x=>
+          x.owner===p.id&&
+          x.building==="farm"
+        ).length;
+
+      if(farms<2&&S.round<=5){
+        candidates.push({
+          type:"build",
+          id:t.id,
+          kind:"farm",
+          value:22+(5-S.round)*3
+        });
+      }
+    }
+
+    if(p.gold>=4&&t.landmark!=="castle"){
+      if(
+        !Object.values(S.tiles).some(x=>
+          x.owner===p.id&&
+          x.building==="barracks"
+        )&&
+        objectiveDistance(t.id,p.id)<=2
+      ){
+        candidates.push({
+          type:"build",
+          id:t.id,
+          kind:"barracks",
+          value:18
+        });
+      }
+
+      if(
+        t.landmark==="village"&&
+        count(t.units)>=1&&
+        S.round<=6
+      ){
+        candidates.push({
+          type:"build",
+          id:t.id,
+          kind:"fort",
+          value:9
+        });
+      }
+    }
+  }
+
+  // Consider shifting neighboring realms toward objectives.
+  if(p.seals>=2&&!S.shifted){
+    const initial=tacticalPotential(p.id);
+    const list=[];
+
+    for(let a=0;a<9;a++){
+      for(let b=a+1;b<9;b++){
+        if(!shiftAllowed(a,b))continue;
+
+        swapRealmPositions(a,b);
+        const delta=tacticalPotential(p.id)-initial;
+        swapRealmPositions(a,b);
+
+        if(delta>2){
+          list.push({
+            type:"shift",
+            a,
+            b,
+            value:18+delta*4
+          });
+        }
+      }
+    }
+
+    list.sort((a,b)=>b.value-a.value);
+
+    if(list.length)candidates.push(list[0]);
+  }
+
+  candidates.sort((a,b)=>b.value-a.value);
+  return candidates[0];
+}
+
+function maybeAI(){
+  if(
+    !S||
+    view!=="game"||
+    S.finished||
+    S.pending||
+    busy||
+    current().controller!=="ai"
+  )return;
+
+  clearTimeout(aiTimer);
+  aiTimer=setTimeout(runAI,530);
+}
+
+function runAI(){
+  if(
+    !S||
+    S.finished||
+    S.pending||
+    busy||
+    view!=="game"||
+    current().controller!=="ai"
+  )return;
+
+  if(S.actions===0){
+    nextTurn();
+    return;
+  }
+
+  const decision=chooseAIAction();
+  let ok=false;
+
+  if(decision){
+    if(decision.type==="move"){
+      const target=S.tiles[decision.to];
+
+      const enemy=
+        target.owner!==null&&
+        target.owner!==S.active&&
+        count(target.units)>0;
+
+      const b=enemy
+        ?battleEstimate(decision.to,decision.units)
+        :null;
+
+      const losing=
+        b&&(
+          b.attackerWins
+            ?b.defenderUnits>=2&&b.attackerUnits>=2
+            :b.attackerUnits>=2&&b.defenderUnits>=2
+        );
+
+      const source=
+        b&&b.attackerWins
+          ?decision.units
+          :target.units;
+
+      ok=executeMove(
+        decision.from,
+        decision.to,
+        decision.units,
+        decision.path,
+        losing?preferredLoss(source):null
+      );
+    }
+
+    if(decision.type==="recruit"){
+      ok=doRecruit(decision.id,decision.units);
+    }
+
+    if(decision.type==="build"){
+      ok=doBuild(decision.id,decision.kind);
+    }
+
+    if(decision.type==="shift"){
+      ok=doShift(decision.a,decision.b);
+    }
+  }
+
+  if(!ok){
+    log(`${FACTIONS[current().faction].name} holds position.`);
+    S.actions=0;
+    save();
+    render();
+  }
+
+  if(
+    S&&
+    view==="game"&&
+    !S.finished&&
+    current().controller==="ai"&&
+    !S.pending
+  ){
+    clearTimeout(aiTimer);
+
+    aiTimer=setTimeout(()=>{
+      if(S.actions===0){
+        nextTurn();
+      }else{
+        runAI();
+      }
+    },650);
+  }
+}
+
+/* ============================================================
+   HTML INTERFACE
+   ============================================================ */
+
+function menu(){
+  APP.innerHTML=`
+    <main class="hero">
+      <div class="hero-card">
+        <div class="hero-mark">♜</div>
+        <div class="label">Founders Edition · v0.1</div>
+
+        <h1>SHIFTING<br>KINGDOMS</h1>
+
+        <div class="hero-sub">
+          Build your kingdom · Reshape the battlefield
+        </div>
+
+        <p>
+          Nine shifting realms. Four rival kingdoms. One throne.
+          Raise your banners, marshal your armies and rewrite
+          the borders of war.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn primary" data-act="setup">
+            ⚔ New Campaign
+          </button>
+
+          <button class="btn" data-act="continue"
+            ${hasSave()?"":"disabled"}>
+            ↻ Continue Match
+          </button>
+
+          <button class="btn" data-act="rules">
+            📜 How to Play
+          </button>
+        </div>
+
+        <div class="flourish">✦ ◆ ✦</div>
+
+        <p class="small muted" style="margin-top:18px">
+          Playable offline · Local multiplayer · Solo against AI
+        </p>
+
+        <button class="btn tiny" data-act="sound">
+          Sound: ${sound?"On":"Off"}
+        </button>
+      </div>
+    </main>
+  `;
+}
+
+function setupPage(){
+  APP.innerHTML=`
+    <div class="topbar">
+      <span class="brand">♜ SHIFTING KINGDOMS</span>
+      <button class="btn tiny" data-act="menu">
+        ← Main Menu
+      </button>
+    </div>
+
+    <main class="setup">
+      <div class="panel">
+        <div class="label">Raise your banners</div>
+        <h2>Prepare for Conquest</h2>
+
+        <p class="muted">
+          Choose two to four kingdoms. A player may be
+          controlled locally or by the computer.
+          Each kingdom has identical starting strength.
+        </p>
+
+        <div class="unit-row">
+          <label for="seat-count">Number of kingdoms</label>
+
+          <select id="seat-count" class="select"
+            style="width:140px">
+            <option value="2"
+              ${setup.count===2?"selected":""}>2 Kingdoms</option>
+            <option value="3"
+              ${setup.count===3?"selected":""}>3 Kingdoms</option>
+            <option value="4"
+              ${setup.count===4?"selected":""}>4 Kingdoms</option>
+          </select>
+        </div>
+
+        <div id="seats">
+          ${setup.controllers.slice(0,setup.count)
+            .map((type,i)=>`
+              <div class="seat">
+                <div class="sigil"
+                  style="background:${FACTIONS[setup.factions[i]].color}">
+                  ${FACTIONS[setup.factions[i]].mark}
+                </div>
+
+                <div class="seat-main">
+                  <div class="label">Player ${i+1}</div>
+
+                  <label>Kingdom</label>
+
+                  <select data-seat="${i}" data-field="faction">
+                    ${FACTIONS.map((f,index)=>`
+                      <option value="${index}"
+                        ${setup.factions[i]===index?"selected":""}
+                        ${setup.factions.some((n,j)=>
+                          j!==i&&j<setup.count&&n===index
+                        )?"disabled":""}>
+                        ${esc(f.name)}
+                      </option>
+                    `).join("")}
+                  </select>
+
+                  <label>Controller</label>
+
+                  <select data-seat="${i}" data-field="controller">
+                    <option value="human"
+                      ${type==="human"?"selected":""}>
+                      Human — local
+                    </option>
+
+                    <option value="ai"
+                      ${type==="ai"?"selected":""}>
+                      Computer — strategic AI
+                    </option>
+                  </select>
+                </div>
+              </div>
+            `).join("")}
+        </div>
+
+        <div class="hint">
+          For your first match, try 1 Human + 1 Computer.
+          In local multiplayer, each player uses the same
+          screen when their turn begins.
+        </div>
+
+        <div class="btn-row" style="margin-top:15px">
+          <button class="btn primary" data-act="start">
+            ⚔ Begin Conquest
+          </button>
+
+          <button class="btn" data-act="rules">
+            📜 Read Rules
+          </button>
+        </div>
+      </div>
+    </main>
+  `;
+}
+
+function realmTitle(realm){
+  return REALM_NAMES[realm];
+}
+
+function tileMarkup(id){
+  const t=S.tiles[id];
+
+  const owner=t.owner===null
+    ?null
+    :S.players[t.owner];
+
+  const f=owner
+    ?FACTIONS[owner.faction]
+    :null;
+
+  const choose=selected===id;
+  const possible=legal.has(id);
+
+  const symbol=isCastle(t)
+    ?"🏰"
+    :t.landmark==="village"
+      ?"🏘"
+      :"";
+
+  const terrainIcon=
+    t.terrain==="forest"
+      ?"♣"
+      :t.terrain==="hills"
+        ?"▲"
+        :"✣";
+
+  const icon=
+    t.landmark==="standard"
+      ?"⚑"
+      :t.landmark==="citadel"
+        ?"♛"
+        :"";
+
+  const bIcon=t.building
+    ?BLD[t.building].icon
+    :"";
+
+  const unitNum=count(t.units);
+
+  return `
+    <button
+      class="tile ${t.terrain}
+        ${f?"owned":""}
+        ${choose?"selected-tile":""}
+        ${possible?"legal":""}
+        ${isCastle(t)?"castle-tile":""}"
+      style="${f?`--owner:${f.color}`:""}"
+      data-tile="${id}"
+
+      title="${esc(realmTitle(t.realm))}:
+        ${t.terrain} ${t.landmark||""}
+        ${f?f.name:"Neutral"}"
+
+      aria-label="${esc(realmTitle(t.realm))}
+        ${t.terrain}
+        ${t.landmark||""}
+        ${f?f.name:"Neutral"}"
+    >
+      ${symbol
+        ?`<span class="symbol">${symbol}</span>`
+        :""}
+
+      <span class="terrain-symbol">${terrainIcon}</span>
+
+      ${icon
+        ?`<span class="objective">${icon}</span>`
+        :""}
+
+      ${f
+        ?`<span class="owner-flag"
+            style="color:${f.accent}">${f.mark}</span>`
+        :""}
+
+      ${bIcon
+        ?`<span class="structure">${bIcon}</span>`
+        :""}
+
+      ${unitNum
+        ?`<span class="units">
+            <b>${
+              t.units.knight?"♞":
+              t.units.sword?"⚔":
+              t.units.archer?"➹":"♟"
+            }</b>${unitNum}
+          </span>`
+        :""}
+    </button>
+  `;
+}
+
+function boardPage(){
+  const now=current();
+  const fac=FACTIONS[now.faction];
+  const forecast=S.forecast;
+
+  const forecastNames=forecast
+    ?forecast.map(p=>REALM_NAMES[S.positions[p]])
+    :[];
+
+  return `
+    <div class="topbar">
+      <span class="brand">
+        ♜ SHIFTING KINGDOMS
+        <span class="small muted">v0.1</span>
+      </span>
+
+      <div class="btn-row">
+        <button class="btn tiny" data-act="rules">
+          📜 Rules
+        </button>
+
+        <button class="btn tiny" data-act="sound">
+          ♪ ${sound?"On":"Off"}
+        </button>
+
+        <button class="btn tiny" data-act="menu">
+          ⌂ Menu
+        </button>
+      </div>
+    </div>
+
+    <main class="layout">
+
+      <aside class="side left-side">
+        <section class="panel">
+
+          <div class="label">
+            Round ${S.round} of 8
+          </div>
+
+          <h2 style="color:${fac.accent}">
+            ${fac.mark} ${esc(fac.name)}
+          </h2>
+
+          <p class="small muted">
+            ${now.controller==="ai"
+              ?"Computer is commanding this kingdom"
+              :"Your turn to command"}
+            · ${S.actions} action${S.actions===1?"":"s"} left
+          </p>
+
+          <div class="stat-grid">
+            <div class="stat">
+              <span class="small muted">Gold</span>
+              <strong>◈ ${now.gold}</strong>
+            </div>
+
+            <div class="stat">
+              <span class="small muted">Crown Seals</span>
+              <strong>✦ ${now.seals}</strong>
+            </div>
+
+            <div class="stat">
+              <span class="small muted">Troops</span>
+              <strong>${tileTotal(now.id)}/12</strong>
+            </div>
+
+            <div class="stat">
+              <span class="small muted">Crown</span>
+              <strong>♛ ${now.points}</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>The Thrones</h2>
+
+          ${S.players.map(p=>{
+            const f=FACTIONS[p.faction];
+
+            const stand=Object.values(S.tiles)
+              .filter(t=>
+                t.landmark==="standard"&&
+                t.owner===p.id
+              ).length;
+
+            return `
+              <div class="roster"
+                ${p.id===S.active
+                  ?"style='border-color:#d4b77a'"
+                  :""}>
+
+                <span class="sigil"
+                  style="background:${f.color}">
+                  ${f.mark}
+                </span>
+
+                <div>
+                  <div class="small">${esc(f.name)}</div>
+
+                  <div class="muted"
+                    style="font-size:.72rem">
+                    ${p.controller==="ai"?"AI":"Human"}
+                    · ${stand} standard${stand===1?"":"s"}
+                  </div>
+                </div>
+
+                <span class="score">${p.points}</span>
+              </div>
+            `;
+          }).join("")}
+        </section>
+
+        <section class="panel">
+          <h2>Command</h2>
+
+          <p class="small muted">
+            ${mode==="shift"
+              ?"Select a realm, then one of its neighboring realms."
+              :mode==="move"
+                ?"Choose troops, then a highlighted destination."
+                :"Select an owned territory to command it."}
+          </p>
+
+          <div class="action-stack">
+            <button class="btn
+              ${mode==="inspect"?"selected":""}"
+              data-act="inspect">
+              Inspect
+            </button>
+
+            <button class="btn
+              ${mode==="shift"?"selected":""}"
+              data-act="shiftmode"
+              ${now.seals<2||S.shifted||!S.actions
+                ?"disabled"
+                :""}>
+              ✦ Shift (2)
+            </button>
+
+            <button class="btn blue"
+              data-act="end"
+              ${now.controller==="ai"||
+                S.finished||
+                busy
+                ?"disabled"
+                :""}>
+              End Turn ↠
+            </button>
+          </div>
+
+          ${forecast
+            ?`<div class="hint" style="margin-top:10px">
+                ⚠ Forecast:
+                ${esc(forecastNames.join(" ↔ "))}
+                will swap after all turns.
+              </div>`
+            :""}
+        </section>
+      </aside>
+
+      <section>
+        <div class="board-wrap">
+          <div class="board-header">
+            <h2>⚔ The Nine Realms</h2>
+
+            <div class="small muted">
+              ${mode==="shift"
+                ?"✦ SHIFT MODE"
+                :"▦ 36 Territories"}
+            </div>
+          </div>
+
+          <div class="board-outer">
+            <div class="realm-grid" id="realm-grid">
+              ${S.positions.map((realm,pos)=>`
+                <div
+                  class="realm
+                    ${shiftFrom===pos
+                      ?"realm-choice"
+                      :""}
+                    ${shiftFrom!==null&&
+                      shiftAllowed(shiftFrom,pos)
+                        ?"realm-adjacent"
+                        :""}
+                    ${forecast&&forecast.includes(pos)
+                      ?"forecast"
+                      :""}"
+                  data-pos="${pos}"
+                  data-realm="${REALM_NAMES[realm]}"
+                >
+                  ${[0,1,2,3]
+                    .map(idx=>tileMarkup(`${realm}-${idx}`))
+                    .join("")}
+                </div>
+              `).join("")}
+            </div>
+          </div>
+
+          <div class="board-footer">
+            Select a territory to inspect or command it
+            · Each realm contains 4 territories
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:12px">
+          <div class="label">Battlefield Intelligence</div>
+
+          <p class="small muted" style="margin:6px 0">
+            ⚑ Crown Standards: +1 point each
+            · ♛ Riftheart Citadel: +2 points for
+            majority control (at least two tiles)
+            · First to 12 or highest after 8 rounds wins.
+          </p>
+
+          <p class="small muted" style="margin:0">
+            Forests halt movement. Hills, forests and
+            Forts aid defense. Enemy Castles are protected.
+          </p>
+        </div>
+      </section>
+
+      <aside class="side right-side">
+        <section class="panel" id="detail">
+          ${detailMarkup()}
+        </section>
+
+        <section class="panel">
+          <h2>Royal Chronicle</h2>
+
+          <div class="scroll">
+            ${S.history.slice(0,14).map(s=>`
+              <div class="logitem">${esc(s)}</div>
+            `).join("")}
+          </div>
+        </section>
+      </aside>
+
+    </main>
+  `;
+}
+
+function detailMarkup(){
+  if(!selected){
+    return `
+      <h2>Royal Orders</h2>
+
+      <p class="muted small">
+        Select a territory on the map to see its
+        terrain, garrison and available orders.
+      </p>
+
+      <div class="hint">
+        Each turn permits two actions. You can move
+        and capture territory, recruit troops,
+        build a structure, or shift adjacent realms.
+      </div>
+
+      ${current().controller==="ai"
+        ?`<p style="margin-top:12px"
+            class="muted small">
+            The computer is choosing its next order…
+          </p>`
+        :""}
+    `;
+  }
+
+  const t=S.tiles[selected];
+
+  const fac=t.owner!==null
+    ?FACTIONS[S.players[t.owner].faction]
+    :null;
+
+  const mine=t.owner===S.active;
+  const p=current();
+  const army=count(t.units);
+  const r=REALM_NAMES[t.realm];
+
+  const disabled=
+    S.actions===0||
+    p.controller==="ai";
+
+  let content=`
+    <div class="label">${esc(r)}</div>
+
+    <h2>
+      ${t.landmark==="castle"
+        ?"🏰 Castle"
+        :t.landmark==="standard"
+          ?"⚑ Crown Standard"
+          :t.landmark==="citadel"
+            ?"♛ Grand Citadel"
+            :t.landmark==="village"
+              ?"🏘 Village"
+              :"Territory"}
+    </h2>
+
+    <div class="mini-list">
+      <div>Terrain: ${t.terrain}</div>
+      <div>Controlled by: ${fac?esc(fac.name):"Neutral"}</div>
+      <div>Building: ${t.building
+        ?BLD[t.building].label
+        :"None"}</div>
+      <div>Defense modifier: +${bonuses(t)}</div>
+      <div>Garrison: ${army} / 4</div>
+    </div>
+  `;
+
+  for(const k of KINDS){
+    if(t.units[k]){
+      content+=`
+        <div class="unit-row">
+          <span>${UNIT[k].icon} ${UNIT[k].label}</span>
+          <strong>×${t.units[k]}</strong>
+        </div>
+      `;
+    }
+  }
+
+  if(mode==="shift"){
+    return content+`
+      <hr class="divider">
+
+      <p class="hint">
+        ${shiftFrom===null
+          ?"Select any realm on the board."
+          :`Choose a highlighted realm adjacent to
+            ${REALM_NAMES[S.positions[shiftFrom]]}.`}
+      </p>
+
+      <button class="btn wide" data-act="inspect">
+        Cancel Shift
+      </button>
+    `;
+  }
+
+  if(mine&&!disabled){
+    content+=`
+      <hr class="divider">
+
+      <div class="btn-row">
+        <button class="btn tiny
+          ${mode==="move"?"selected":""}"
+          data-act="move-mode"
+          ${!army?"disabled":""}>
+          ⚔ Move Army
+        </button>
+
+        <button class="btn tiny
+          ${mode==="recruit"?"selected":""}"
+          data-act="recruit-mode"
+          ${!availableRecruit(selected,p.id)
+            ?"disabled":""}>
+          ♟ Recruit
+        </button>
+
+        <button class="btn tiny
+          ${mode==="build"?"selected":""}"
+          data-act="build-mode">
+          ⚒ Build
+        </button>
+      </div>
+    `;
+
+    if(mode==="move"){
+      content+=`
+        <h3 style="margin-top:14px">
+          Choose Marching Troops
+        </h3>
+      `;
+
+      for(const k of KINDS){
+        if(t.units[k]){
+          content+=`
+            <div class="count-row">
+              <span>
+                ${UNIT[k].icon} ${UNIT[k].label}
+              </span>
+
+              <span class="stepper">
+                <button class="btn tiny"
+                  data-act="adjust-move"
+                  data-kind="${k}"
+                  data-delta="-1">−</button>
+
+                <span>${moveCounts[k]||0}</span>
+
+                <button class="btn tiny"
+                  data-act="adjust-move"
+                  data-kind="${k}"
+                  data-delta="1">+</button>
+              </span>
+            </div>
+          `;
+        }
+      }
+
+      content+=`
+        <p class="small muted" style="margin-top:8px">
+          ${count(moveCounts)} selected
+          · ${count(moveCounts)&&
+            moveCounts.knight===count(moveCounts)
+              ?3:2} move range
+        </p>
+
+        <p class="hint">
+          Click a highlighted destination.
+          Attacks show a preview before confirmation.
+        </p>
+      `;
+    }
+
+    if(mode==="recruit"){
+      content+=`
+        <h3 style="margin-top:14px">
+          Recruit up to 2 troops
+        </h3>
+      `;
+
+      for(const k of KINDS){
+        content+=`
+          <div class="count-row">
+            <span>
+              ${UNIT[k].icon}
+              ${UNIT[k].label}
+
+              <small class="muted">
+                (${UNIT[k].cost} Gold)
+              </small>
+            </span>
+
+            <span class="stepper">
+              <button class="btn tiny"
+                data-act="adjust-recruit"
+                data-kind="${k}"
+                data-delta="-1">−</button>
+
+              <span>${recruitCounts[k]||0}</span>
+
+              <button class="btn tiny"
+                data-act="adjust-recruit"
+                data-kind="${k}"
+                data-delta="1">+</button>
+            </span>
+          </div>
+        `;
+      }
+
+      const n=count(recruitCounts);
+      const price=KINDS.reduce(
+        (v,k)=>v+recruitCounts[k]*UNIT[k].cost,0
+      );
+
+      content+=`
+        <p class="small">
+          ${n} troop${n===1?"":"s"}
+          · ${price} Gold
+          · ${Math.max(0,4-army)} available slots
+        </p>
+
+        <button class="btn primary wide"
+          data-act="recruit"
+          ${!n||
+            price>p.gold||
+            n>Math.min(
+              2,
+              4-army,
+              12-tileTotal(p.id)
+            )
+            ?"disabled"
+            :""}>
+          Confirm Recruitment
+        </button>
+      `;
+    }
+
+    if(mode==="build"){
+      content+=`
+        <h3 style="margin-top:14px">
+          Construct Building
+        </h3>
+      `;
+
+      if(
+        t.building||
+        ["castle","standard","citadel"]
+          .includes(t.landmark)||
+        t.realm===4
+      ){
+        content+=`
+          <p class="hint">
+            Construction is not allowed on this territory.
+          </p>
+        `;
+      }else{
+        for(const k of BUILDINGS){
+          const blocked=
+            p.gold<BLD[k].cost||
+            k==="barracks"&&
+            Object.values(S.tiles).some(v=>
+              v.owner===p.id&&
+              v.building==="barracks"
+            );
+
+          content+=`
+            <button class="btn wide"
+              style="margin:4px 0"
+              data-act="build"
+              data-kind="${k}"
+              ${blocked?"disabled":""}>
+              ${BLD[k].icon}
+              ${BLD[k].label}
+              · ${BLD[k].cost} Gold
+            </button>
+          `;
+        }
+      }
+    }
+  }
+
+  return content;
+}
+
+function render(){
+  if(view==="menu"){
+    menu();
+    return;
+  }
+
+  if(view==="setup"){
+    setupPage();
+    return;
+  }
+
+  if(view==="game"&&S){
+    APP.innerHTML=boardPage();
+
+    if(S.pending||S.finished){
+      renderModal();
+    }else if(modalType===""){
+      closeModal();
+    }
+  }
+}
+
+/* ============================================================
+   DIALOGS AND RULEBOOK
+   ============================================================ */
+
+function openModal(markup,type="custom"){
+  modalType=type;
+  MODAL.innerHTML=markup;
+  OVERLAY.classList.remove("hidden");
+}
+
+function closeModal(){
+  modalType="";
+  OVERLAY.classList.add("hidden");
+  MODAL.innerHTML="";
+}
+
+function showRules(){
+  openModal(`
+    <div class="label">
+      Official Rules · Founders Edition
+    </div>
+
+    <h2>How to Play</h2>
+
+    <div class="rules">
+      <p>
+        Capture territory, manage armies, and shift
+        entire realms to win the crown.
+        The first player to 12 Crown Points at the end
+        of a round, or the highest score after
+        eight rounds, wins.
+      </p>
+
+      <h3>Rounds and actions</h3>
+      <ul>
+        <li>
+          Each player receives <b>two actions</b>
+          per turn: Move, Recruit, Build or Shift.
+        </li>
+
+        <li>
+          Gold and Crown Seal income begins at
+          the start of round 2.
+        </li>
+
+        <li>
+          Moves are orthogonal, normally 2 tiles;
+          all-Knight groups move 3.
+          Forest ends movement.
+        </li>
+
+        <li>
+          Moving onto an empty territory claims it,
+          even if another kingdom previously controlled it.
+        </li>
+      </ul>
+
+      <h3>Armies and combat</h3>
+
+      <p>
+        Each tile holds up to 4 units and each kingdom
+        may own up to 12 units.
+        Battles compare the attacker's total attack
+        to the defender's total defense plus bonuses.
+        Attack must be strictly greater.
+        Losers are destroyed; the winner loses one chosen
+        troop if both armies originally held two
+        or more troops.
+      </p>
+
+      <h3>Shifting realms</h3>
+
+      <p>
+        Spend 2 Crown Seals and 1 action to swap
+        any two adjacent realms.
+        Troops, buildings, landmarks and territory
+        ownership move with their realm.
+        You may shift once per turn.
+        Automatic shifts occur after all turns in
+        rounds 2, 4 and 6, with advance warnings.
+      </p>
+
+      <h3>Victory</h3>
+
+      <p>
+        Each controlled ⚑ Crown Standard gives
+        +1 Crown Point per round.
+        Riftheart gives +2 to a player controlling
+        at least 2 of its 4 tiles and more than
+        any rival.
+        Ties are decided by Standards, then Gold,
+        then shared victory.
+      </p>
+
+      <h3>Controls</h3>
+
+      <p>
+        Click a territory to inspect.
+        Select an owned army and choose Move;
+        adjust troop counts then click a highlighted
+        destination.
+        Select Castle or Barracks to Recruit.
+        Select owned eligible land to Build.
+        Select Shift and choose two neighboring realms.
+        Your match autosaves locally.
+      </p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn primary wide"
+        data-act="close-modal">
+        Return to Kingdoms
+      </button>
+    </div>
+  `,"rules");
+}
+
+function combatModal(){
+  if(!S?.pending)return;
+
+  const q=S.pending;
+  const def=S.tiles[q.to];
+  const b=battleEstimate(q.to,q.units);
+
+  const source=b.attackerWins
+    ?q.units
+    :def.units;
+
+  const shouldLose=b.attackerWins
+    ?b.defenderUnits>=2&&b.attackerUnits>=2
+    :b.attackerUnits>=2&&b.defenderUnits>=2;
+
+  let html=`
+    <div class="label">
+      Battle for ${REALM_NAMES[def.realm]}
+    </div>
+
+    <h2>
+      ⚔ ${q.stage==="confirm"
+        ?"Prepare for Battle"
+        :q.stage==="handoff"
+          ?"Defender Chooses Casualty"
+          :"Select a Casualty"}
+    </h2>
+
+    <div class="stat-grid">
+      <div class="stat">
+        Attacking Strength
+        <strong>${b.attack}</strong>
+      </div>
+
+      <div class="stat">
+        Defending Strength
+        <strong>${b.defense}</strong>
+      </div>
+    </div>
+
+    <div class="result">
+      <strong>
+        ${b.attackerWins
+          ?"Victory predicted"
+          :"Attack will fail"}
+      </strong>
+
+      <p class="small muted">
+        ${b.attackerWins
+          ?"Attackers will conquer the territory."
+          :"Defenders will hold their territory."}
+
+        ${shouldLose
+          ?"The winning army must sacrifice one chosen unit."
+          :"The surviving army suffers no attrition."}
+      </p>
+    </div>
+  `;
+
+  if(q.stage==="confirm"){
+    html+=`
+      <div class="btn-row">
+        <button class="btn primary"
+          data-act="confirm-battle">
+          Resolve Battle
+        </button>
+
+        <button class="btn"
+          data-act="cancel-battle">
+          Cancel
+        </button>
+      </div>
+    `;
+  }else if(q.stage==="handoff"){
+    html+=`
+      <p>
+        Pass the device to
+        <strong>
+          ${FACTIONS[S.players[def.owner].faction].name}
+        </strong>.
+        The defender chooses which surviving unit to lose.
+      </p>
+
+      <button class="btn primary"
+        data-act="ready-casualty">
+        Ready to Choose
+      </button>
+    `;
+  }else{
+    html+=`
+      <p>
+        Choose one unit from the
+        ${b.attackerWins?"attacking":"defending"}
+        army to remove:
+      </p>
+
+      <div class="btn-row">
+        ${KINDS.filter(k=>source[k]>0).map(k=>`
+          <button class="btn"
+            data-act="casualty"
+            data-kind="${k}">
+            ${UNIT[k].icon} ${UNIT[k].label}
+          </button>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  openModal(html,"battle");
+}
+
+function renderModal(){
+  if(S?.pending){
+    combatModal();
+    return;
+  }
+
+  if(S?.finished){
+    const winners=S.winners
+      .map(i=>FACTIONS[S.players[i].faction].name)
+      .join(" and ");
+
+    openModal(`
+      <div style="text-align:center">
+        <div class="hero-mark"
+          style="font-size:5rem">
+          ♛
+        </div>
+
+        <div class="label">
+          The Conquest is Complete
+        </div>
+
+        <h2>
+          ${S.winners.length===1
+            ?"A New Sovereign Rises"
+            :"The Throne is Shared"}
+        </h2>
+
+        <p style="font-size:1.35rem;color:#f1d49b">
+          ${esc(winners)}
+        </p>
+
+        <p>
+          Victory after ${S.round}
+          round${S.round===1?"":"s"}
+        </p>
+
+        <div class="result">
+          ${S.players.map(p=>`
+            <div class="unit-row">
+              <span>
+                ${FACTIONS[p.faction].mark}
+                ${FACTIONS[p.faction].name}
+              </span>
+
+              <b>${p.points} Crown Points</b>
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="btn-row"
+          style="justify-content:center">
+          <button class="btn primary"
+            data-act="rematch">
+            New Match
+          </button>
+
+          <button class="btn"
+            data-act="menu">
+            Main Menu
+          </button>
+        </div>
+      </div>
+    `,"victory");
+  }
+}
+
+/* ============================================================
+   PLAYER INTERACTIONS
+   ============================================================ */
+
+function updateMove(){
+  legal=count(moveCounts)
+    ?movementPaths(selected,moveCounts,S.active)
+    :new Map();
+
+  render();
+}
+
+function selectTile(id){
+  if(
+    !S||
+    S.finished||
+    S.pending||
+    busy||
+    current().controller==="ai"
+  )return;
+
+  if(mode==="shift"){
+    const pos=realmPosition(tileRealm(id));
+
+    if(shiftFrom===null){
+      shiftFrom=pos;
+      selected=id;
+      render();
+      return;
+    }
+
+    if(pos===shiftFrom){
+      shiftFrom=null;
+      render();
+      return;
+    }
+
+    if(shiftAllowed(shiftFrom,pos)){
+      const a=shiftFrom;
+      const b=pos;
+
+      busy=true;
+
+      const grid=elem("realm-grid");
+
+      if(grid){
+        grid.classList.add("shifting");
+      }
+
+      setTimeout(()=>{
+        doShift(a,b);
+        busy=false;
+        render();
+
+        if(current().controller==="ai"){
+          maybeAI();
+        }
+      },430);
+
+    }else{
+      shiftFrom=pos;
+      render();
+    }
+
+    return;
+  }
+
+  if(mode==="move"&&selected&&legal.has(id)){
+    const from=selected;
+    const path=legal.get(id);
+    const units=clone(moveCounts);
+    const t=S.tiles[id];
+
+    const enemy=
+      t.owner!==null&&
+      t.owner!==S.active&&
+      count(t.units)>0;
+
+    if(enemy){
+      S.pending={
+        from,
+        to:id,
+        path,
+        units,
+        stage:"confirm"
+      };
+
+      save();
+      renderModal();
+    }else{
+      executeMove(from,id,units,path);
+    }
+
+    return;
+  }
+
+  if(selected!==id){
+    selected=id;
+    mode="inspect";
+    moveCounts=blank();
+    recruitCounts=blank();
+    legal.clear();
+  }
+
+  render();
+}
+
+function promptLeave(){
+  if(view!=="game"){
+    view="menu";
+    closeModal();
+    render();
+    return;
+  }
+
+  openModal(`
+    <h2>Return to the Main Menu?</h2>
+
+    <p>
+      Your current match is automatically saved.
+      You can continue it later.
+    </p>
+
+    <div class="btn-row">
+      <button class="btn primary" data-act="leave">
+        Save & Exit
+      </button>
+
+      <button class="btn" data-act="close-modal">
+        Stay
+      </button>
+    </div>
+  `,"leave");
+}
+
+function handler(action,button){
+  if(busy&&action!=="sound")return;
+
+  if(
+    modalType&&
+    ![
+      "close-modal",
+      "confirm-battle",
+      "cancel-battle",
+      "casualty",
+      "ready-casualty",
+      "leave",
+      "menu",
+      "rematch",
+      "sound",
+      "rules"
+    ].includes(action)
+  )return;
+
+  // Menu and setup commands.
+  if(action==="setup"){
+    view="setup";
+    closeModal();
+    render();
+    return;
+  }
+
+  if(action==="continue"){
+    closeModal();
+    continueGame();
+    return;
+  }
+
+  if(action==="start"){
+    if(
+      new Set(setup.factions.slice(0,setup.count))
+        .size!==setup.count
+    ){
+      notify("Each kingdom must have a unique faction.");
+      return;
+    }
+
+    closeModal();
+    startGame();
+    return;
+  }
+
+  if(action==="rules"){
+    showRules();
+    return;
+  }
+
+  if(action==="sound"){
+    sound=!sound;
+    render();
+    notify(`Sound ${sound?"enabled":"muted"}`);
+    return;
+  }
+
+  if(action==="close-modal"){
+    closeModal();
+    return;
+  }
+
+  if(action==="menu"){
+    if(view==="game"&&!S?.finished){
+      promptLeave();
+      return;
+    }
+
+    view="menu";
+    closeModal();
+    render();
+    return;
+  }
+
+  if(action==="leave"){
+    view="menu";
+    clearTimeout(aiTimer);
+    closeModal();
+    render();
+    return;
+  }
+
+  if(action==="rematch"){
+    view="setup";
+    setup.count=S.players.length;
+
+    setup.controllers=S.players
+      .map(p=>p.controller)
+      .concat(["human","human"])
+      .slice(0,4);
+
+    setup.factions=S.players
+      .map(p=>p.faction)
+      .concat([2,3])
+      .slice(0,4);
+
+    closeModal();
+    render();
+    return;
+  }
+
+  if(!S||view!=="game"||S.finished)return;
+
+  // Combat confirmation.
+  if(action==="cancel-battle"){
+    S.pending=null;
+    save();
+    closeModal();
+    render();
+    return;
+  }
+
+  if(action==="confirm-battle"){
+    if(!S.pending)return;
+
+    const q=S.pending;
+    const b=battleEstimate(q.to,q.units);
+
+    const loss=b.attackerWins
+      ?b.attackerUnits>=2&&b.defenderUnits>=2
+      :b.defenderUnits>=2&&b.attackerUnits>=2;
+
+    if(loss){
+      const winner=b.attackerWins
+        ?current()
+        :S.players[S.tiles[q.to].owner];
+
+      if(winner.controller==="ai"){
+        const casualty=preferredLoss(
+          b.attackerWins
+            ?q.units
+            :S.tiles[q.to].units
+        );
+
+        S.pending=null;
+        closeModal();
+
+        executeMove(
+          q.from,
+          q.to,
+          q.units,
+          q.path,
+          casualty
+        );
+      }else{
+        q.stage=winner.id===S.active
+          ?"casualty"
+          :"handoff";
+
+        save();
+        renderModal();
+      }
+
+    }else{
+      S.pending=null;
+      closeModal();
+
+      executeMove(
+        q.from,
+        q.to,
+        q.units,
+        q.path
+      );
+    }
+
+    return;
+  }
+
+  if(action==="ready-casualty"){
+    if(S.pending&&S.pending.stage==="handoff"){
+      S.pending.stage="casualty";
+      save();
+      renderModal();
+    }
+    return;
+  }
+
+  if(action==="casualty"){
+    if(
+      !S.pending||
+      S.pending.stage!=="casualty"
+    )return;
+
+    const q=S.pending;
+    S.pending=null;
+    closeModal();
+
+    executeMove(
+      q.from,
+      q.to,
+      q.units,
+      q.path,
+      button.dataset.kind
+    );
+
+    return;
+  }
+
+  // Ignore invalid out-of-turn commands.
+  if(
+    S.pending||
+    current().controller==="ai"||
+    S.actions===0
+  )return;
+
+  if(action==="inspect"){
+    mode="inspect";
+    shiftFrom=null;
+    legal.clear();
+    render();
+    return;
+  }
+
+  if(action==="shiftmode"){
+    if(current().seals<2||S.shifted)return;
+
+    mode="shift";
+    selected=null;
+    shiftFrom=null;
+    legal.clear();
+
+    render();
+    return;
+  }
+
+  if(action==="end"){
+    nextTurn();
+    return;
+  }
+
+  if(!selected)return;
+
+  const t=S.tiles[selected];
+
+  if(action==="move-mode"){
+    if(t.owner!==S.active||!count(t.units))return;
+
+    mode="move";
+    moveCounts=clone(t.units);
+    updateMove();
+    return;
+  }
+
+  if(action==="recruit-mode"){
+    if(!availableRecruit(selected,S.active))return;
+
+    mode="recruit";
+    recruitCounts=blank();
+    render();
+    return;
+  }
+
+  if(action==="build-mode"){
+    mode="build";
+    render();
+    return;
+  }
+
+  if(action==="adjust-move"){
+    const k=button.dataset.kind;
+    const delta=+button.dataset.delta;
+
+    if(!KINDS.includes(k))return;
+
+    moveCounts[k]=Math.max(
+      0,
+      Math.min(t.units[k],moveCounts[k]+delta)
+    );
+
+    updateMove();
+    return;
+  }
+
+  if(action==="adjust-recruit"){
+    const k=button.dataset.kind;
+    const delta=+button.dataset.delta;
+
+    if(!KINDS.includes(k))return;
+
+    recruitCounts[k]=Math.max(
+      0,
+      Math.min(2,recruitCounts[k]+delta)
+    );
+
+    render();
+    return;
+  }
+
+  if(action==="recruit"){
+    if(!doRecruit(selected,recruitCounts)){
+      notify(
+        "Not enough Gold, garrison space or troop capacity."
+      );
+    }
+    return;
+  }
+
+  if(action==="build"){
+    if(!doBuild(selected,button.dataset.kind)){
+      notify(
+        "Cannot build here or not enough Gold."
+      );
+    }
+    return;
+  }
+}
+
+/* ============================================================
+   EVENT LISTENERS
+   ============================================================ */
+
+APP.addEventListener("click",e=>{
+  const tile=e.target.closest("[data-tile]");
+
+  if(tile){
+    selectTile(tile.dataset.tile);
+    return;
+  }
+
+  const button=e.target.closest("[data-act]");
+
+  if(button&&!button.disabled){
+    handler(button.dataset.act,button);
+  }
+});
+
+OVERLAY.addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]");
+
+  if(b&&!b.disabled){
+    handler(b.dataset.act,b);
+  }
+});
+
+APP.addEventListener("change",e=>{
+  const target=e.target;
+
+  if(target.id==="seat-count"){
+    setup.count=+target.value;
+
+    const used=new Set();
+
+    for(let i=0;i<setup.count;i++){
+      if(used.has(setup.factions[i])){
+        setup.factions[i]=[0,1,2,3]
+          .find(n=>!used.has(n));
+      }
+
+      used.add(setup.factions[i]);
+    }
+
+    render();
+  }
+
+  if(target.dataset.seat!==undefined){
+    const i=+target.dataset.seat;
+
+    if(target.dataset.field==="controller"){
+      setup.controllers[i]=target.value;
+
+    }else{
+      const f=+target.value;
+
+      if(
+        setup.factions.some(
+          (v,j)=>v===f&&j!==i&&j<setup.count
+        )
+      ){
+        notify(
+          "Each player must choose a different faction."
+        );
+        render();
+        return;
+      }
+
+      setup.factions[i]=f;
+    }
+
+    render();
+  }
+});
+
+window.addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&modalType==="rules"){
+    closeModal();
+  }
+});
+
+// Launch the game.
+render();
+
+</script>
+</body>
+</html>
