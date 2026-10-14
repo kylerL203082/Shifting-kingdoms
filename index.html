@@ -1,2982 +1,369 @@
-
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#241a13">
-<title>Shifting Kingdoms — The Four Kingdoms</title>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#241a13"><title>Shifting Kingdoms — The Four Kingdoms</title>
 <style>
-:root{--dark:#201812;--dark2:#33251a;--wood:#4e3522;--edge:#9a7143;--parch:#eddbb0;--ink:#3a271b;--gold:#e7bf70;--white:#fff2ce}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:#181713;color:var(--white);font:15px Georgia,'Times New Roman',serif}
-button,select{font:inherit}
-button{cursor:pointer}
-button:disabled{opacity:.42;cursor:default}
-button:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #f8db78;outline-offset:2px}
-h1,h2,h3,p{margin:0 0 9px}
-h1{font-size:clamp(2.5rem,6vw,5.3rem);font-weight:normal;line-height:1.07}
-h2{font-size:1.3rem}
-h3{font-size:1.08rem}
-.small{font-size:.82rem}
-.tiny{font-size:.73rem}
-.muted{color:#c3af8b}
-.gold{color:var(--gold)}
-.center{text-align:center}
-.hidden{display:none!important}
-.btn{color:#ffe9be;background:linear-gradient(#735034,#452b1d);border:1px solid #c19a64;border-radius:4px;box-shadow:inset 0 1px #fff3,0 2px 6px #0007;padding:9px 12px;min-height:38px}
-.btn:hover:not(:disabled){filter:brightness(1.15)}
-.btn.primary{background:linear-gradient(#d9ae66,#956830);color:#2b1c11;font-weight:bold}
-.btn.red{background:linear-gradient(#a24d37,#642921)}
-.btn.subtle{background:#271f17}
-.btn.active{box-shadow:0 0 0 2px #f4d37d,inset 0 1px #fff4}
-.btnrow{display:flex;flex-wrap:wrap;gap:7px}
-.btn.wide{width:100%}
-.panel{background:linear-gradient(130deg,#f6e7bf,#d5b987);color:var(--ink);border:5px ridge #8a613c;box-shadow:inset 0 0 20px #ac834c70,0 7px 20px #0008;padding:11px;position:relative}
-.panel h2{border-bottom:2px solid #906842;padding-bottom:5px}
-.panel h3{margin:12px 0 6px}
-.panel+.panel{margin-top:10px}
-.panel .btn{font-size:.87rem}
-.row{display:flex;gap:8px;align-items:center;justify-content:space-between}
-.row+.row{margin-top:6px}
-.rule{height:1px;background:#97724e;margin:10px 0}
-.wood{background:repeating-linear-gradient(0deg,#352419,#352419 23px,#3f2b1d 24px,#332217 26px);border:3px ridge #9f7349}
-.top{height:68px;display:flex;align-items:center;justify-content:space-between;padding:6px 20px;border-bottom:5px ridge #a77d4b;background:linear-gradient(180deg,#543a26,#20150e);gap:12px}
-.logo{font-size:clamp(1.35rem,3vw,2.4rem);font-variant:small-caps;font-weight:bold;letter-spacing:.035em;color:#f5dc9b;text-shadow:0 2px #130c08,0 0 18px #bf8f43aa}
-.tag{color:#c8a576;font-size:.8rem;letter-spacing:.1em}
-.main{display:grid;grid-template-columns:218px minmax(0,1fr) 251px;gap:7px;min-height:calc(100vh - 68px);max-width:1800px;margin:auto;padding:8px}
-.left,.right{min-width:0}
-.mapcol{min-width:0;display:flex;flex-direction:column}
-.map-shell{border:7px ridge #92683e;background:#526548;box-shadow:0 10px 25px #0009,inset 0 0 35px #0005;position:relative;min-width:0}
-.map-scroll{overflow:auto;max-height:calc(100vh - 122px);background:#718a60}
-.map-scroll svg{display:block;width:100%;min-width:725px;min-height:530px;aspect-ratio:1200/790;user-select:none}
-.mapfoot{font-size:.78rem;color:#d9bf8a;text-align:center;padding:8px;background:#1e1c16}
-.phase{display:flex;align-items:center;gap:8px;padding:9px;border:1px solid #a78257;margin:5px 0;color:#6c553c;background:#d1bc96}
-.phase.active{background:linear-gradient(110deg,#f7d993,#ebc176);color:#5a3317;font-weight:bold;box-shadow:0 0 0 2px #ad7e3a inset}
-.phase.done{background:#dbd2af;color:#69804a}
-.num{border:2px solid currentColor;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:bold}
-.resource{display:flex;justify-content:space-between;border-bottom:1px solid #a8906c;padding:5px 1px}
-.resource:last-child{border:0}
-.factiontag{display:flex;align-items:center;gap:9px;background:#372318;color:#f7e4ba;padding:8px;border:1px solid #9c7548}
-.crest{width:40px;height:51px;clip-path:polygon(4% 0,96% 0,93% 75%,50% 100%,7% 75%);display:grid;place-items:center;color:#fff2cc;font-size:1.6rem;border:2px solid #f6d69b;flex-shrink:0}
-.line{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:5px 0;border-bottom:1px solid #aa916b}
-.line strong{white-space:nowrap}
-.notice{border-left:4px solid #94723e;background:#f3e4c0;padding:9px;margin:9px 0;font-size:.87rem;line-height:1.4}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.actions .full{grid-column:1/-1}
-.log{max-height:270px;overflow:auto}
-.log div{border-bottom:1px solid #b29b77;padding:5px 0;font-size:.8rem;line-height:1.4}
-.location{background:#f6ecd2;border:1px solid #aa8c63;padding:9px;margin:8px 0}
-.label{font-variant:small-caps;letter-spacing:.07em;color:#865e32;font-weight:bold}
-.seats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.seat{padding:12px;border:1px solid #a88555;background:#35261a;color:#ffe4b2}
-.seat select{width:100%;padding:8px;margin:6px 0 9px;background:#f4e1b8;color:#3c2b1e;border:1px solid #b4945b}
-.hero{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 20%,#96704435,transparent 50%),repeating-linear-gradient(90deg,#241910,#241910 45px,#2e2014 47px,#25190e 52px)}
-.hero-inner{width:min(850px,100%);border:8px ridge #b78a4a;text-align:center;padding:clamp(25px,5vw,55px);background:linear-gradient(#271e17c9,#141510e0),radial-gradient(circle,#8c714a,transparent);box-shadow:0 30px 80px #000}
-.hero-inner p{line-height:1.6}
-.hero-crest{font-size:6rem;filter:drop-shadow(0 6px 4px #000);color:#e6bb6c}
-.hero .btn{padding:13px 18px}
-.setupbox{max-width:850px;margin:25px auto}
-.screen-pad{padding:12px}
-.svg-node{cursor:pointer}
-.svg-node:hover .node-ring{stroke:#fff2bc;stroke-width:5}
-.svg-node.selected .node-ring{stroke:#ffeb98;stroke-width:6;filter:drop-shadow(0 0 6px #f7db78)}
-.svg-node.available .node-ring{stroke:#b7f29c;stroke-width:5;stroke-dasharray:3 5}
-.routehit{stroke:transparent;stroke-width:21;fill:none;cursor:pointer;pointer-events:stroke}
-.routehit:hover{stroke:#ffeab855;stroke-width:17}
-.node-label{font-size:13px;font-weight:bold;fill:#49321d;stroke:none;pointer-events:none}
-.map-legend{position:absolute;right:10px;bottom:10px;background:#2a211ad9;color:#f6e5be;padding:7px;border:1px solid #a88851;font-size:.75rem;pointer-events:none}
-.choice{font-size:.81rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #b79a75;padding:6px 1px;gap:6px}
-.choice .btn{padding:5px 9px;min-height:30px}
-.choice label{flex:1}
-.modalback{position:fixed;inset:0;background:#080907e6;z-index:20;display:grid;place-items:center;padding:15px}
-.modal{max-width:550px;width:100%;max-height:95vh;overflow-y:auto;border:7px ridge #9c7042;background:linear-gradient(#f5e5bd,#cfb17d);color:#332315;padding:20px;box-shadow:0 20px 65px #000}
-.modal h2{font-size:1.6rem}
-.modal p{line-height:1.5}
-.modal .btnrow{margin-top:14px}
-.pill{padding:3px 6px;background:#72573a;color:#fff2c9;border-radius:12px;font:12px Arial,sans-serif}
-.token{display:inline-block;vertical-align:middle;width:10px;height:10px;border-radius:50%;margin-right:4px;border:1px solid #382718}
-.hint{border:1px solid #b79362;background:#f6e8cb;padding:8px;font-size:.85rem;line-height:1.4;margin:8px 0}
-.score{font-size:1.1rem;color:#9a5a23}
-.toast{position:fixed;bottom:13px;left:50%;transform:translateX(-50%);z-index:40;padding:12px 18px;color:#ffebb9;background:#30251b;border:2px solid #cda667;box-shadow:0 5px 25px #000;text-align:center;max-width:90vw}
-.roster{display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #a98b60}
-.roster b:last-child{margin-left:auto}
-.toolbar{display:flex;flex-wrap:wrap;gap:6px}
-.check{display:flex;align-items:center;gap:6px}
-.banner{font-size:.81rem;color:#e5cda2;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.banner b{color:#fff0c5}
-svg text{font-family:Georgia,'Times New Roman',serif}
-.fade-in{animation:fadeIn .35s ease-out}
-@keyframes fadeIn{from{opacity:.3}to{opacity:1}}
-@media(max-width:1190px){
- .main{grid-template-columns:200px minmax(0,1fr)}
- .right{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
- .right .panel+.panel{margin:0}
-}
-@media(max-width:690px){
- .top{height:auto;min-height:64px}
- .main{display:flex;flex-direction:column}
- .left,.right{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
- .left .panel+.panel,.right .panel+.panel{margin:0}
- .mapcol{order:-1}
- .map-scroll{max-height:none}
- .seats{grid-template-columns:1fr}
- .logo{font-size:1.5rem}
- .map-shell{order:0}
-}
-@media(max-width:430px){
- .left,.right{display:flex;flex-direction:column}
- .top{padding:6px 8px}
- .main{padding:5px}
- .map-legend{display:none}
-}
-</style>
-</head>
-<body>
-<div id="app"></div>
-<div id="modal-root" class="hidden"></div>
-<div id="toast" class="toast hidden" role="status"></div>
-<script>
+:root{--dark:#201812;--dark2:#33251a;--wood:#4e3522;--edge:#9a7143;--parch:#eddbb0;--ink:#3a271b;--gold:#e7bf70;--white:#fff2ce}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#181713;color:var(--white);font:15px Georgia,'Times New Roman',serif}button,select{font:inherit}button{cursor:pointer}button:disabled{opacity:.42;cursor:default}button:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid #f8db78;outline-offset:2px}h1,h2,h3,p{margin:0 0 9px}h1{font-size:clamp(2.5rem,6vw,5.3rem);font-weight:normal;line-height:1.07}h2{font-size:1.3rem}h3{font-size:1.08rem}.small{font-size:.82rem}.tiny{font-size:.73rem}.muted{color:#c3af8b}.gold{color:var(--gold)}.center{text-align:center}.hidden{display:none!important}.btn{color:#ffe9be;background:linear-gradient(#735034,#452b1d);border:1px solid #c19a64;border-radius:4px;box-shadow:inset 0 1px #fff3,0 2px 6px #0007;padding:9px 12px;min-height:38px}.btn:hover:not(:disabled){filter:brightness(1.15)}.btn.primary{background:linear-gradient(#d9ae66,#956830);color:#2b1c11;font-weight:bold}.btn.red{background:linear-gradient(#a24d37,#642921)}.btn.subtle{background:#271f17}.btn.active{box-shadow:0 0 0 2px #f4d37d,inset 0 1px #fff4}.btnrow{display:flex;flex-wrap:wrap;gap:7px}.btn.wide{width:100%}.panel{background:linear-gradient(130deg,#f6e7bf,#d5b987);color:var(--ink);border:5px ridge #8a613c;box-shadow:inset 0 0 20px #ac834c70,0 7px 20px #0008;padding:11px;position:relative}.panel h2{border-bottom:2px solid #906842;padding-bottom:5px}.panel h3{margin:12px 0 6px}.panel+.panel{margin-top:10px}.panel .btn{font-size:.87rem}.row{display:flex;gap:8px;align-items:center;justify-content:space-between}.row+.row{margin-top:6px}.rule{height:1px;background:#97724e;margin:10px 0}.wood{background:repeating-linear-gradient(0deg,#352419,#352419 23px,#3f2b1d 24px,#332217 26px);border:3px ridge #9f7349}.top{height:68px;display:flex;align-items:center;justify-content:space-between;padding:6px 20px;border-bottom:5px ridge #a77d4b;background:linear-gradient(180deg,#543a26,#20150e);gap:12px}.logo{font-size:clamp(1.35rem,3vw,2.4rem);font-variant:small-caps;font-weight:bold;letter-spacing:.035em;color:#f5dc9b;text-shadow:0 2px #130c08,0 0 18px #bf8f43aa}.tag{color:#c8a576;font-size:.8rem;letter-spacing:.1em}.main{display:grid;grid-template-columns:218px minmax(0,1fr) 251px;gap:7px;min-height:calc(100vh - 68px);max-width:1800px;margin:auto;padding:8px}.left,.right{min-width:0}.mapcol{min-width:0;display:flex;flex-direction:column}.map-shell{border:7px ridge #92683e;background:#526548;box-shadow:0 10px 25px #0009,inset 0 0 35px #0005;position:relative;min-width:0}.map-scroll{overflow:auto;max-height:calc(100vh - 122px);background:#718a60}.map-scroll svg{display:block;width:100%;min-width:725px;min-height:530px;aspect-ratio:1200/790;user-select:none}.mapfoot{font-size:.78rem;color:#d9bf8a;text-align:center;padding:8px;background:#1e1c16}.phase{display:flex;align-items:center;gap:8px;padding:9px;border:1px solid #a78257;margin:5px 0;color:#6c553c;background:#d1bc96}.phase.active{background:linear-gradient(110deg,#f7d993,#ebc176);color:#5a3317;font-weight:bold;box-shadow:0 0 0 2px #ad7e3a inset}.phase.done{background:#dbd2af;color:#69804a}.num{border:2px solid currentColor;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:bold}.resource{display:flex;justify-content:space-between;border-bottom:1px solid #a8906c;padding:5px 1px}.resource:last-child{border:0}.factiontag{display:flex;align-items:center;gap:9px;background:#372318;color:#f7e4ba;padding:8px;border:1px solid #9c7548}.crest{width:40px;height:51px;clip-path:polygon(4% 0,96% 0,93% 75%,50% 100%,7% 75%);display:grid;place-items:center;color:#fff2cc;font-size:1.6rem;border:2px solid #f6d69b;flex-shrink:0}.line{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:5px 0;border-bottom:1px solid #aa916b}.line strong{white-space:nowrap}.notice{border-left:4px solid #94723e;background:#f3e4c0;padding:9px;margin:9px 0;font-size:.87rem;line-height:1.4}.actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}.actions .full{grid-column:1/-1}.log{max-height:270px;overflow:auto}.log div{border-bottom:1px solid #b29b77;padding:5px 0;font-size:.8rem;line-height:1.4}.location{background:#f6ecd2;border:1px solid #aa8c63;padding:9px;margin:8px 0}.label{font-variant:small-caps;letter-spacing:.07em;color:#865e32;font-weight:bold}.seats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.seat{padding:12px;border:1px solid #a88555;background:#35261a;color:#ffe4b2}.seat select{width:100%;padding:8px;margin:6px 0 9px;background:#f4e1b8;color:#3c2b1e;border:1px solid #b4945b}.hero{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(circle at 50% 20%,#96704435,transparent 50%),repeating-linear-gradient(90deg,#241910,#241910 45px,#2e2014 47px,#25190e 52px)}.hero-inner{width:min(850px,100%);border:8px ridge #b78a4a;text-align:center;padding:clamp(25px,5vw,55px);background:linear-gradient(#271e17c9,#141510e0),radial-gradient(circle,#8c714a,transparent);box-shadow:0 30px 80px #000}.hero-inner p{line-height:1.6}.hero-crest{font-size:6rem;filter:drop-shadow(0 6px 4px #000);color:#e6bb6c}.hero .btn{padding:13px 18px}.setupbox{max-width:850px;margin:25px auto}.screen-pad{padding:12px}.svg-node{cursor:pointer}.svg-node:hover .node-ring{stroke:#fff2bc;stroke-width:5}.svg-node.selected .node-ring{stroke:#ffeb98;stroke-width:6;filter:drop-shadow(0 0 6px #f7db78)}.svg-node.available .node-ring{stroke:#b7f29c;stroke-width:5;stroke-dasharray:3 5}.routehit{stroke:transparent;stroke-width:21;fill:none;cursor:pointer;pointer-events:stroke}.routehit:hover{stroke:#ffeab855;stroke-width:17}.node-label{font-size:13px;font-weight:bold;fill:#49321d;stroke:none;pointer-events:none}.map-legend{position:absolute;right:10px;bottom:10px;background:#2a211ad9;color:#f6e5be;padding:7px;border:1px solid #a88851;font-size:.75rem;pointer-events:none}.choice{font-size:.81rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #b79a75;padding:6px 1px;gap:6px}.choice .btn{padding:5px 9px;min-height:30px}.choice label{flex:1}.modalback{position:fixed;inset:0;background:#080907e6;z-index:20;display:grid;place-items:center;padding:15px}.modal{max-width:550px;width:100%;max-height:95vh;overflow-y:auto;border:7px ridge #9c7042;background:linear-gradient(#f5e5bd,#cfb17d);color:#332315;padding:20px;box-shadow:0 20px 65px #000}.modal h2{font-size:1.6rem}.modal p{line-height:1.5}.modal .btnrow{margin-top:14px}.pill{padding:3px 6px;background:#72573a;color:#fff2c9;border-radius:12px;font:12px Arial,sans-serif}.token{display:inline-block;vertical-align:middle;width:10px;height:10px;border-radius:50%;margin-right:4px;border:1px solid #382718}.hint{border:1px solid #b79362;background:#f6e8cb;padding:8px;font-size:.85rem;line-height:1.4;margin:8px 0}.score{font-size:1.1rem;color:#9a5a23}.toast{position:fixed;bottom:13px;left:50%;transform:translateX(-50%);z-index:40;padding:12px 18px;color:#ffebb9;background:#30251b;border:2px solid #cda667;box-shadow:0 5px 25px #000;text-align:center;max-width:90vw}.roster{display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #a98b60}.roster b:last-child{margin-left:auto}.toolbar{display:flex;flex-wrap:wrap;gap:6px}.check{display:flex;align-items:center;gap:6px}.banner{font-size:.81rem;color:#e5cda2;display:flex;gap:12px;align-items:center;flex-wrap:wrap}.banner b{color:#fff0c5}svg text{font-family:Georgia,'Times New Roman',serif}.fade-in{animation:fadeIn .35s ease-out}@keyframes fadeIn{from{opacity:.3}to{opacity:1}}@media(max-width:1190px){.main{grid-template-columns:200px minmax(0,1fr)}.right{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.right .panel+.panel{margin:0}}@media(max-width:690px){.top{height:auto;min-height:64px}.main{display:flex;flex-direction:column}.left,.right{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.left .panel+.panel,.right .panel+.panel{margin:0}.mapcol{order:-1}.map-scroll{max-height:none}.seats{grid-template-columns:1fr}.logo{font-size:1.5rem}.map-shell{order:0}}@media(max-width:430px){.left,.right{display:flex;flex-direction:column}.top{padding:6px 8px}.main{padding:5px}.map-legend{display:none}}
+
+/* The road itself is the button: brighter, touch-friendly hit area. */
+.routehit{stroke-width:23;}
+.routehit.ready{cursor:pointer;}
+.buildable-road:hover > path:nth-last-child(2){stroke:#fff096;opacity:1;}
+.svg-node text{user-select:none;pointer-events:none;}
+@media(max-width:690px){.main{gap:9px}.mapfoot{padding:10px}.map-scroll{scrollbar-color:#be9a60 #39291a}}
+</style></head><body><div id="app"></div><div id="modal-root" class="hidden"></div><div id="toast" class="toast hidden" role="status"></div><script>
 'use strict';
-
 /* Shifting Kingdoms — the Living Kingdom. Self-contained, no dependencies. */
-
-const VER=2, SAVE='sk-living-v2', PHASES=['collect','build','attack'];
-
-const FACTIONS=[
- {name:'Crimson Lions',color:'#ba4638',mark:'♌',home:'red'},
- {name:'Azure Stags',color:'#3673bb',mark:'♞',home:'blue'},
- {name:'Golden Griffins',color:'#cc9e35',mark:'♛',home:'gold'},
- {name:'Verdant Wolves',color:'#3d986d',mark:'♜',home:'green'}
-];
-
-const INFO={
- forest:{resource:'timber',yield:4,icon:'🌲'},
- quarry:{resource:'stone',yield:3,icon:'⛏'},
- farm:{resource:'food',yield:4,icon:'🌾'},
- mine:{resource:'iron',yield:2,icon:'⚒'},
- village:{icon:'⌂'},
- home:{icon:'⌂'},
- castle:{icon:'♜'},
- cross:{icon:'✛'},
- city:{icon:'♛'}
-};
-
-const PRICES={timber:2,stone:2,food:2,iron:4};
-
-const BUILD_COST={
- road:{timber:1,stone:1},
- tower:{timber:2,stone:2},
- barracks:{timber:2,stone:2,food:1},
- caravan:{timber:2,stone:1,gold:2},
- town:{timber:3,stone:3,gold:3}
-};
-
-const UNITS={
- levy:{
-  name:'Levy',icon:'♟',a:1,d:1,
-  cost:{food:1,gold:1}
- },
- archer:{
-  name:'Archer',icon:'➶',a:2,d:1,
-  cost:{timber:1,food:1,gold:1}
- },
- knight:{
-  name:'Knight',icon:'♞',a:3,d:2,
-  cost:{iron:1,food:2,gold:2}
- }
-};
-
-const RK=['gold','timber','stone','food','iron'],UI=Object.keys(UNITS);
-
+const VER=3, SAVE='sk-living-v3', OLD_SAVE='sk-living-v2';
+const FACTIONS=[{name:'Crimson Lions',color:'#ba4638',mark:'♌',home:'red'},{name:'Azure Stags',color:'#3673bb',mark:'♞',home:'blue'},{name:'Golden Griffins',color:'#cc9e35',mark:'♛',home:'gold'},{name:'Verdant Wolves',color:'#3d986d',mark:'♜',home:'green'}];
+const INFO={forest:{resource:'timber',yield:4,icon:'🌲'},quarry:{resource:'stone',yield:3,icon:'🪨'},farm:{resource:'food',yield:4,icon:'🌾'},mine:{resource:'iron',yield:2,icon:'⛏️'},village:{icon:'🏘️'},home:{icon:'🏘️'},castle:{icon:'🏰'},cross:{icon:'🛤️'},city:{icon:'🏛️'}};
+const PRICES={timber:2,stone:2,food:2,iron:4},BUILD_COST={road:{timber:1,stone:1},tower:{timber:2,stone:2},barracks:{timber:2,stone:2,food:1},caravan:{timber:2,stone:1,gold:2},town:{timber:3,stone:3,gold:3}},UNITS={levy:{name:'Levy',icon:'♟',a:1,d:1,cost:{food:1,gold:1}},archer:{name:'Archer',icon:'➶',a:2,d:1,cost:{timber:1,food:1,gold:1}},knight:{name:'Knight',icon:'♞',a:3,d:2,cost:{iron:1,food:2,gold:2}}},RK=['gold','timber','stone','food','iron'],UI=Object.keys(UNITS);
 const NODES=[
- ['red','Crimson Castle',105,112,'castle'],
- ['blue','Azure Castle',1095,112,'castle'],
- ['gold','Golden Castle',105,676,'castle'],
- ['green','Verdant Castle',1095,676,'castle'],
-
- ['hr','Crimson Village',234,142,'home'],
- ['hb','Azure Village',963,143,'home'],
- ['hg','Golden Village',229,646,'home'],
- ['hv','Verdant Village',965,648,'home'],
-
- ['fn','North Farm',398,124,'farm'],
- ['fw','Field of Plenty',143,500,'farm'],
- ['fe','Meadow Farm',861,510,'farm'],
- ['fs','South Farm',834,653,'farm'],
-
- ['ww','Western Forest',155,322,'forest'],
- ['wn','Pine Forest',776,123,'forest'],
- ['we','Eastern Forest',1078,510,'forest'],
- ['ws','Southern Woods',415,721,'forest'],
-
- ['qn','Stone Quarry',578,107,'quarry'],
- ['qw','Western Quarry',362,468,'quarry'],
- ['qe','River Quarry',1082,349,'quarry'],
-
- ['in','Iron Mine',816,321,'mine'],
- ['is','Deep Iron Mine',655,674,'mine'],
-
- ['vh','Hill Village',377,310,'village'],
- ['ve','East Village',984,301,'village'],
- ['vs','South Village',389,618,'village'],
- ['vn','North Hamlet',677,242,'village'],
-
- ['jn','Northern Crossroads',572,254,'cross'],
- ['jw','Western Crossroads',481,421,'cross'],
- ['js','Southern Crossroads',589,552,'cross'],
- ['city','Royal City',612,390,'city']
+ ['red','Crimson Castle',105,112,'castle'],['blue','Azure Castle',1095,112,'castle'],['gold','Golden Castle',105,676,'castle'],['green','Verdant Castle',1095,676,'castle'],
+ ['hr','Crimson Village',234,142,'home'],['hb','Azure Village',963,143,'home'],['hg','Golden Village',229,646,'home'],['hv','Verdant Village',965,648,'home'],
+ ['fn','North Farm',398,124,'farm'],['fw','Field of Plenty',143,500,'farm'],['fe','Meadow Farm',861,510,'farm'],['fs','South Farm',834,653,'farm'],
+ ['ww','Western Forest',155,322,'forest'],['wn','Pine Forest',776,123,'forest'],['we','Eastern Forest',1078,510,'forest'],['ws','Southern Woods',415,721,'forest'],
+ ['qn','Stone Quarry',578,107,'quarry'],['qw','Western Quarry',362,468,'quarry'],['qe','River Quarry',1082,349,'quarry'],
+ ['in','Iron Mine',816,321,'mine'],['is','Deep Iron Mine',655,674,'mine'],
+ ['vh','Hill Village',377,310,'village'],['ve','East Village',984,301,'village'],['vs','South Village',389,618,'village'],['vn','North Hamlet',677,242,'village'],
+ ['jn','Northern Crossroads',572,254,'cross'],['jw','Western Crossroads',481,421,'cross'],['js','Southern Crossroads',589,552,'cross'],['city','Royal City',612,390,'city']
 ].map(([id,name,x,y,type])=>({id,name,x,y,type}));
-
 const NODE=Object.fromEntries(NODES.map(n=>[n.id,n]));
-
 const EDGES=[
  ['red','hr'],['blue','hb'],['gold','hg'],['green','hv'],
- ['hr','fn'],['hr','ww'],['hr','vh'],
- ['fn','qn'],['fn','vh'],
- ['qn','jn'],['qn','wn'],
- ['wn','hb'],['wn','vn'],
- ['hb','vn'],['hb','ve'],
-
- ['ww','vh'],['ww','fw'],
- ['vh','jn'],['vh','jw'],['vh','qw'],
- ['vn','jn'],['vn','in'],['jn','city'],['jn','in'],
-
- ['fw','qw'],['fw','hg'],['qw','jw'],['qw','vs'],
- ['jw','city'],['jw','js'],
- ['hg','vs'],['hg','ws'],['vs','ws'],['vs','js'],
-
- ['ve','in'],['ve','qe'],['ve','we'],
- ['qe','in'],['qe','city'],['qe','we'],
- ['we','hv'],['we','fe'],['fe','hv'],
- ['fe','fs'],['fe','city'],
-
- ['city','in'],['city','js'],
- ['js','is'],['js','fs'],['js','vs'],
- ['is','fs'],['is','ws'],['fs','hv']
+ ['hr','fn'],['hr','ww'],['hr','vh'],['fn','qn'],['fn','vh'],['qn','jn'],['qn','wn'],['wn','hb'],['wn','vn'],['hb','vn'],['hb','ve'],
+ ['ww','vh'],['ww','fw'],['vh','jn'],['vh','jw'],['vh','qw'],['vn','jn'],['vn','in'],['jn','city'],['jn','in'],
+ ['fw','qw'],['fw','hg'],['qw','jw'],['qw','vs'],['jw','city'],['jw','js'],['hg','vs'],['hg','ws'],['vs','ws'],['vs','js'],
+ ['ve','in'],['ve','qe'],['ve','we'],['qe','in'],['qe','city'],['qe','we'],['we','hv'],['we','fe'],['fe','hv'],['fe','fs'],['fe','city'],
+ ['city','in'],['city','js'],['js','is'],['js','fs'],['js','vs'],['is','fs'],['is','ws'],['fs','hv']
 ].map(([a,b])=>({a,b,id:[a,b].sort().join('|')}));
-
 const EDGE=Object.fromEntries(EDGES.map(e=>[e.id,e]));
-
-const incident=id=>EDGES.filter(e=>e.a===id||e.b===id);
-const other=(e,id)=>e.a===id?e.b:e.a;
-const ec=(a,b)=>[a,b].sort().join('|');
-const fmt=n=>n[0].toUpperCase()+n.slice(1);
-const byId=id=>NODE[id];
-
-const clone=o=>JSON.parse(JSON.stringify(o));
-
-const escapeHTML=v=>String(v).replace(
- /[&<>"']/g,
- c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])
-);
-
-let S=null,screen='menu',selection=null,roadMode=false;
-let moveSource=null,moveUnits={levy:0,archer:0,knight:0};
-let modal='',busy=false,aiTimer=null,soundOn=true;
-
-let setup={
- count:2,
- controllers:['human','ai','human','ai'],
- factions:[0,1,2,3]
-};
-
-const app=document.getElementById('app');
-const modalRoot=document.getElementById('modal-root');
-const toastEl=document.getElementById('toast');
-
-function tell(s){
- toastEl.textContent=s;
- toastEl.classList.remove('hidden');
- clearTimeout(tell.timer);
- tell.timer=setTimeout(()=>toastEl.classList.add('hidden'),2700);
-}
-
-function snd(f=420){
- if(!soundOn)return;
- try{
-  const C=window.AudioContext||window.webkitAudioContext;
-  snd.ctx=snd.ctx||new C();
-  const o=snd.ctx.createOscillator(),g=snd.ctx.createGain();
-  o.type='triangle';
-  o.frequency.value=f;
-  g.gain.setValueAtTime(.035,snd.ctx.currentTime);
-  g.gain.exponentialRampToValueAtTime(.0001,snd.ctx.currentTime+.14);
-  o.connect(g).connect(snd.ctx.destination);
-  o.start();o.stop(snd.ctx.currentTime+.15);
- }catch(e){}
-}
-
-function log(s){
- S.log.unshift('Round '+S.round+': '+s);
- S.log=S.log.slice(0,65);
-}
-
-function persist(){
- try{
-  if(S)localStorage.setItem(SAVE,JSON.stringify(S));
- }catch(e){
-  tell('Browser storage unavailable. Save could not be written.');
- }
-}
-
-function exists(){
- try{return !!localStorage.getItem(SAVE)}
- catch(e){return false}
-}
-
-const active=()=>S.players[S.active];
-const state=id=>S.places[id];
-const troops=u=>UI.reduce((n,k)=>n+(u?.[k]||0),0);
-
-const armies=p=>NODES.reduce(
- (n,v)=>n+(state(v.id).owner===p?troops(state(v.id).units):0),0
-);
-
-const power=(u,prop)=>UI.reduce(
- (n,k)=>n+(u[k]||0)*UNITS[k][prop],0
-);
-
-const freeUnits=()=>({levy:0,archer:0,knight:0});
-
-const costOK=(p,c)=>Object.entries(c).every(
- ([k,v])=>(p[k]||0)>=v
-);
-
-const charge=(p,c)=>{
- for(const k in c)p[k]-=c[k];
-};
-
-function armiesSave(s,i){
- return NODES.reduce(
-  (a,n)=>a+(s.places[n.id].owner===i?
-   troops(s.places[n.id].units):0),0
- );
-}
-
+const incident=id=>EDGES.filter(e=>e.a===id||e.b===id),other=(e,id)=>e.a===id?e.b:e.a;
+const ec=(a,b)=>[a,b].sort().join('|'),fmt=n=>n[0].toUpperCase()+n.slice(1),byId=id=>NODE[id];
+const clone=o=>JSON.parse(JSON.stringify(o)),escapeHTML=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let S=null,screen='menu',selection=null,moveSource=null,moveUnits={levy:0,archer:0,knight:0},modal='',busy=false,aiTimer=null,soundOn=true,setup={count:2,controllers:['human','ai','human','ai'],factions:[0,1,2,3]};
+const app=document.getElementById('app'),modalRoot=document.getElementById('modal-root'),toastEl=document.getElementById('toast');
+function tell(s){toastEl.textContent=s;toastEl.classList.remove('hidden');clearTimeout(tell.timer);tell.timer=setTimeout(()=>toastEl.classList.add('hidden'),2700)}
+function snd(f=420){if(!soundOn)return;try{const C=window.AudioContext||window.webkitAudioContext;snd.ctx=snd.ctx||new C();const o=snd.ctx.createOscillator(),g=snd.ctx.createGain();o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(.035,snd.ctx.currentTime);g.gain.exponentialRampToValueAtTime(.0001,snd.ctx.currentTime+.14);o.connect(g).connect(snd.ctx.destination);o.start();o.stop(snd.ctx.currentTime+.15)}catch(e){}}
+function log(s){S.log.unshift('Round '+S.round+': '+s);S.log=S.log.slice(0,65)}
+function persist(){try{if(S)localStorage.setItem(SAVE,JSON.stringify(S))}catch(e){tell('Browser storage unavailable. Save could not be written.')}}
+function exists(){try{return !!(localStorage.getItem(SAVE)||localStorage.getItem(OLD_SAVE))}catch(e){return false}}
+const active=()=>S.players[S.active],state=id=>S.places[id],troops=u=>UI.reduce((n,k)=>n+(u?.[k]||0),0),armies=p=>NODES.reduce((n,v)=>n+(state(v.id).owner===p?troops(state(v.id).units):0),0),power=(u,prop)=>UI.reduce((n,k)=>n+(u[k]||0)*UNITS[k][prop],0),freeUnits=()=>({levy:0,archer:0,knight:0}),costOK=(p,c)=>Object.entries(c).every(([k,v])=>(p[k]||0)>=v),charge=(p,c)=>{for(const k in c)p[k]-=c[k]};
 function validSave(s){
  try{
-  if(!s||s.version!==VER||
-     !Array.isArray(s.players)||
-     s.players.length<2||s.players.length>4||
-     !s.places||!s.roads||
-     !Number.isInteger(s.active)||
-     s.active<0||s.active>=s.players.length||
-     !PHASES.includes(s.phase)||
-     s.round<1||s.round>10||
-     !Array.isArray(s.log)||
-     !Array.isArray(s.winners))return false;
-
-  for(const n of NODES){
-   const x=s.places[n.id];
-   if(!x||![null,0,1,2,3].includes(x.owner)||
-      !Number.isInteger(x.stock)||
-      x.stock<0||x.stock>12||
-      ![null,'tower','barracks'].includes(x.building)||
-      !x.units||
-      UI.some(k=>!Number.isInteger(x.units[k])||
-       x.units[k]<0||x.units[k]>4)||
-      troops(x.units)>4)return false;
-  }
-
-  for(const e of EDGES){
-   if(![undefined,0,1,2,3].includes(s.roads[e.id]))
-    return false;
-  }
-
+  if(!s||s.version!==VER||!Array.isArray(s.players)||s.players.length<2||s.players.length>4||!s.places||!s.roads||!Number.isInteger(s.active)||s.active<0||s.active>=s.players.length||s.round<1||s.round>10||!Array.isArray(s.log)||!Array.isArray(s.winners)||!Number.isInteger(s.buildLeft)||s.buildLeft<0||s.buildLeft>2||!Number.isInteger(s.attackLeft)||s.attackLeft<0||s.attackLeft>2)return false;
+  for(const n of NODES){const x=s.places[n.id];if(!x||![null,...s.players.map(p=>p.id)].includes(x.owner)||!Number.isInteger(x.stock)||x.stock<0||x.stock>12||![null,'tower','barracks'].includes(x.building)||!x.units||UI.some(k=>!Number.isInteger(x.units[k])||x.units[k]<0||x.units[k]>4)||troops(x.units)>4)return false;}
+  for(const e of EDGES){if(![undefined,...s.players.map(p=>p.id)].includes(s.roads[e.id]))return false;}
   for(let i=0;i<s.players.length;i++){
-   let p=s.players[i];
-
-   if(p.id!==i||p.faction<0||p.faction>3||
-      !['human','ai'].includes(p.controller)||
-      !['red','blue','gold','green'].includes(p.home)||
-      RK.some(k=>!Number.isInteger(p[k])||
-       p[k]<0||p[k]>100)||
-      p.score<0||
-      !Array.isArray(p.caravans)||
-      p.caravans.length>3||
-      armiesSave(s,i)>14)return false;
-
-   for(const c of p.caravans){
-    if(!NODE[c.at]||
-       c.target&&!NODE[c.target]||
-       !['out','back'].includes(c.dir)||
-       !['timber','stone','food','iron',null]
-        .includes(c.cargoType)||
-       c.cargo<0||c.cargo>4)return false;
-   }
+   let p=s.players[i];if(p.id!==i||p.faction<0||p.faction>3||!['human','ai'].includes(p.controller)||!['red','blue','gold','green'].includes(p.home)||RK.some(k=>!Number.isInteger(p[k])||p[k]<0||p[k]>100)||!Number.isInteger(p.score)||p.score<0||!Array.isArray(p.caravans)||p.caravans.length>3||armiesSave(s,i)>14)return false;
+   if(s.places[p.home].owner!==i)return false;
+   for(const c of p.caravans){if(!NODE[c.at]||(c.target&&!NODE[c.target])||!['out','back'].includes(c.dir)||!['timber','stone','food','iron',null].includes(c.cargoType)||!Number.isInteger(c.cargo)||c.cargo<0||c.cargo>4)return false;}
   }
   return true;
- }catch(e){return false}
+ }catch(e){return false;}
 }
-
+function armiesSave(s,i){return NODES.reduce((a,n)=>a+(s.places[n.id].owner===i?troops(s.places[n.id].units):0),0)}
 function newGame(){
- const used=setup.count===2
-  ?['red','green']
-  :setup.count===3
-   ?['red','blue','gold']
-   :['red','blue','gold','green'];
-
- S={
-  version:VER,round:1,active:0,
-  phase:'collect',collected:false,marketBought:0,
-  buildLeft:2,attackLeft:2,players:[],
-  places:{},roads:{},log:[],
-  finished:false,winners:[]
- };
-
- for(const n of NODES){
-  S.places[n.id]={
-   owner:null,stock:0,building:null,
-   units:freeUnits(),town:false
-  };
- }
-
+ const used=setup.count===2?['red','green']:setup.count===3?['red','blue','gold']:['red','blue','gold','green'];
+ S={version:VER,round:1,active:0,collected:false,marketBought:0,buildLeft:2,attackLeft:2,players:[],places:{},roads:{},log:[],finished:false,winners:[],pending:null};
+ for(const n of NODES)S.places[n.id]={owner:null,stock:0,building:null,units:freeUnits(),town:false};
  for(let i=0;i<setup.count;i++){
-  const home=used[i];
-
-  const homeVillage={
-   red:'hr',blue:'hb',gold:'hg',green:'hv'
-  }[home];
-
-  const p={
-   id:i,home,
-   controller:setup.controllers[i],
-   faction:setup.factions[i],
-   gold:6,timber:2,stone:2,food:2,iron:0,
-   score:0,
-   caravans:[{
-    id:1,at:home,target:null,
-    dir:'out',cargo:0,cargoType:null
-   }]
-  };
-
-  S.players.push(p);
-  state(home).owner=i;
-  state(homeVillage).owner=i;
-  state(home).units={levy:2,archer:1,knight:0};
-  S.roads[ec(home,homeVillage)]=i;
+  const home=used[i],v={red:'hr',blue:'hb',gold:'hg',green:'hv'}[home];
+  const p={id:i,home,controller:setup.controllers[i],faction:setup.factions[i],gold:6,timber:2,stone:2,food:2,iron:0,score:0,caravans:[{id:1,at:home,target:null,dir:'out',cargo:0,cargoType:null}]};
+  S.players.push(p);state(home).owner=i;state(v).owner=i;state(home).units={levy:2,archer:1,knight:0};S.roads[ec(home,v)]=i;
  }
-
- log('The four realms awaken. Establish your roads and send forth caravans.');
- selection=null;roadMode=false;moveSource=null;
- screen='game';
- persist();render();runIfAI();
+ log('The kingdoms awaken. Claim resources, build roads, and command your armies.');
+ selection=null;moveSource=null;screen='game';startTurnIncome();persist();render();runIfAI();
 }
-
 function resume(){
  try{
-  const data=JSON.parse(localStorage.getItem(SAVE));
+  const raw=localStorage.getItem(SAVE)||localStorage.getItem(OLD_SAVE);
+  if(!raw)throw Error('No save');
+  const data=JSON.parse(raw);
+  if(data.version===2){data.version=3;delete data.phase;data.pending=null;}
   if(!validSave(data))throw Error('Invalid saved match');
-
-  S=data;
-  selection=null;roadMode=false;moveSource=null;
-  screen='game';
-
-  // A battle which was not confirmed before closing is canceled.
-  if(S.pending){
-   S.pending=null;
-   persist();
-  }
-
-  render();
-  runIfAI();
- }catch(e){
-  tell('Saved match is invalid or uses a different version.');
- }
+  S=data;selection=null;moveSource=null;screen='game';
+  if(S.pending){S.pending=null;}
+  if(!S.collected&&!S.finished)startTurnIncome();
+  persist();render();runIfAI();
+ }catch(e){tell('Saved match is invalid or incompatible. Start a new game.');}
 }
-
-function connected(p){
- const found=new Set([p.home]),queue=[p.home];
-
- while(queue.length){
-  const u=queue.shift();
-
-  for(const e of incident(u)){
-   const v=other(e,u);
-
-   if(S.roads[e.id]!==p.id||
-      found.has(v)||
-      state(v).owner!==p.id)continue;
-
-   found.add(v);
-   queue.push(v);
-  }
- }
- return found;
-}
-
-function route(p,start,dest){
- if(!NODE[start]||!NODE[dest])return null;
-
- const done=new Set([start]),q=[[start]];
-
- while(q.length){
-  const path=q.shift(),u=path.at(-1);
-
-  if(u===dest)return path;
-
-  for(const e of incident(u)){
-   const v=other(e,u);
-
-   if(S.roads[e.id]!==p.id||
-      state(v).owner!==p.id||
-      done.has(v))continue;
-
-   done.add(v);
-   q.push([...path,v]);
-  }
- }
- return null;
-}
-
+function connected(p){const found=new Set([p.home]),queue=[p.home];while(queue.length){const u=queue.shift();for(const e of incident(u)){const v=other(e,u);if(S.roads[e.id]!==p.id||found.has(v)||state(v).owner!==p.id)continue;found.add(v);queue.push(v)}}return found}
+function route(p,start,dest){if(!NODE[start]||!NODE[dest])return null;const done=new Set([start]),q=[[start]];while(q.length){const path=q.shift(),u=path.at(-1);if(u===dest)return path;for(const e of incident(u)){const v=other(e,u);if(S.roads[e.id]!==p.id||state(v).owner!==p.id||done.has(v))continue;done.add(v);q.push([...path,v])}}return null}
 function roadOptions(p){
  const network=connected(p),list=[];
-
  for(const e of EDGES){
-  if(S.roads[e.id]===p.id)continue;
-
+  if(S.roads[e.id]!==undefined)continue;
   const a=state(e.a),b=state(e.b);
-
-  if((network.has(e.a)&&
-      b.owner!==null&&b.owner!==p.id)||
-     (network.has(e.b)&&
-      a.owner!==null&&a.owner!==p.id))continue;
-
-  if(network.has(e.a)||network.has(e.b))
-   list.push(e);
+  if((network.has(e.a)&&b.owner!==null&&b.owner!==p.id)||(network.has(e.b)&&a.owner!==null&&a.owner!==p.id))continue;
+  if(network.has(e.a)||network.has(e.b))list.push(e);
  }
  return list;
 }
-
-function canBuildRoad(p,e){
- return !!e&&
-  S.phase==='build'&&
-  S.buildLeft>0&&
-  !S.finished&&
-  S.roads[e.id]!==p.id&&
-  roadOptions(p).some(x=>x.id===e.id)&&
-  costOK(p,BUILD_COST.road);
-}
-
+function canBuildRoad(p,e){return !!e&&S.buildLeft>0&&!S.finished&&S.roads[e.id]===undefined&&roadOptions(p).some(x=>x.id===e.id)&&costOK(p,BUILD_COST.road)}
 function buildRoad(eid){
  const p=active(),e=EDGE[eid];
-
- if(!canBuildRoad(p,e)){
-  return tell('Connect from your existing network and bring 1 Timber + 1 Stone.');
- }
-
- charge(p,BUILD_COST.road);
- S.roads[e.id]=p.id;
-
- for(const id of [e.a,e.b]){
-  if(state(id).owner===null&&
-     byId(id).type!=='city'){
-   state(id).owner=p.id;
-  }
- }
-
+ if(!canBuildRoad(p,e)){tell('This road cannot be built yet. You need a connected route, 1 Timber, 1 Stone and a building action.');return false;}
+ charge(p,BUILD_COST.road);S.roads[e.id]=p.id;
+ for(const id of [e.a,e.b])if(state(id).owner===null&&byId(id).type!=='city')state(id).owner=p.id;
  S.buildLeft--;
-
- log(
-  FACTIONS[p.faction].name+
-  ' builds a road to '+byId(e.a).name+
-  ' / '+byId(e.b).name+'.'
- );
-
- roadMode=false;selection=e.b;
- snd(540);persist();render();
+ log(FACTIONS[p.faction].name+' builds a road between '+byId(e.a).name+' and '+byId(e.b).name+'.');
+ selection='edge:'+eid;moveSource=null;snd(540);persist();render();return true;
 }
-
-function purchase(kind){
- const p=active();
-
- if(S.finished||S.phase!=='collect'||
-    !S.collected||p.controller!=='human')return;
-
- if(S.marketBought>=4)
-  return tell('The visiting merchants are sold out this turn.');
-
- if(p.gold<PRICES[kind])
-  return tell('Not enough Gold.');
-
- p.gold-=PRICES[kind];
- p[kind]++;
- S.marketBought++;
-
- log(FACTIONS[p.faction].name+' buys '+fmt(kind)+' at market.');
- snd(560);persist();render();
-}
-
-function claimIncome(p){
- const homeVillage={
-  red:'hr',blue:'hb',gold:'hg',green:'hv'
- }[p.home];
-
- return 4+
-  (state(homeVillage).town?2:0)+
-  NODES.filter(n=>
-   n.type==='village'&&
-   state(n.id).owner===p.id
-  ).length;
-}
-
+function purchase(kind){const p=active();if(S.finished||!S.collected||p.controller!=='human'||!PRICES[kind])return;if(S.marketBought>=4)return tell('The visiting merchants are sold out this turn.');if(p.gold<PRICES[kind])return tell('Not enough Gold.');p.gold-=PRICES[kind];p[kind]++;S.marketBought++;log(FACTIONS[p.faction].name+' buys '+fmt(kind)+' at market.');snd(560);persist();render()}
+function claimIncome(p){const homeVillage={red:'hr',blue:'hb',gold:'hg',green:'hv'}[p.home];return 4+(state(homeVillage).town?2:0)+NODES.filter(n=>n.type==='village'&&state(n.id).owner===p.id).length}
 function tickCaravan(p,c){
  if(!NODE[c.at])c.at=p.home;
- if(!c.target)return;
-
+ if(!c.target){if(c.cargo&&c.cargoType&&route(p,c.at,p.home)){c.dir='back';}else return;}
  let steps=2;
-
  while(steps-->0){
-  if(!NODE[c.target]||
-     state(c.target).owner!==p.id||
-     !route(p,p.home,c.target)){
-   c.target=null;
-   return;
+  const hasTarget=c.target&&NODE[c.target]&&state(c.target).owner===p.id&&route(p,p.home,c.target);
+  if(!hasTarget){
+   if(c.cargo>0&&route(p,c.at,p.home))c.dir='back';
+   else{c.target=null;return;}
   }
-
-  let dest=c.dir==='out'?c.target:p.home;
+  const dest=c.dir==='out'?c.target:p.home;
   const path=route(p,c.at,dest);
-
-  if(!path){
-   c.target=null;
-   return;
-  }
-
+  if(!path){c.target=null;return;}
   if(path.length>1)c.at=path[1];
-
   if(c.at===c.target&&c.dir==='out'){
-   const site=byId(c.target),x=state(site.id);
-   const res=INFO[site.type]?.resource;
-
+   const site=byId(c.target),x=state(site.id),res=INFO[site.type]?.resource;
    if(!res||x.stock<=0)break;
-
-   c.cargoType=res;
-   c.cargo=Math.min(4,x.stock);
-   x.stock-=c.cargo;
-   c.dir='back';
-
-   log(
-    FACTIONS[p.faction].name+
-    ' loads '+c.cargo+' '+fmt(res)+
-    ' at '+site.name+'.'
-   );
+   c.cargoType=res;c.cargo=Math.min(4,x.stock);x.stock-=c.cargo;c.dir='back';
+   log(FACTIONS[p.faction].name+' loads '+c.cargo+' '+fmt(res)+' at '+site.name+'.');
   }
-
   if(c.dir==='back'&&c.at===p.home){
-   if(c.cargoType){
-    p[c.cargoType]=Math.min(
-     100,p[c.cargoType]+c.cargo
-    );
-
-    log(
-     FACTIONS[p.faction].name+
-     ' receives '+c.cargo+' '+fmt(c.cargoType)+
-     ' from a caravan.'
-    );
-   }
-
-   c.cargo=0;
-   c.cargoType=null;
-   c.dir='out';
-   break;
+   if(c.cargoType){p[c.cargoType]=Math.min(100,p[c.cargoType]+c.cargo);log(FACTIONS[p.faction].name+' receives '+c.cargo+' '+fmt(c.cargoType)+' from a caravan.');}
+   c.cargo=0;c.cargoType=null;c.dir='out';break;
   }
  }
 }
-
-function collect(){
- if(S.finished||
-    S.phase!=='collect'||
-    S.collected)return false;
-
- const p=active();
-
- p.gold=Math.min(100,p.gold+claimIncome(p));
-
+function startTurnIncome(){
+ if(S.finished||S.collected)return false;
+ const p=active(),income=claimIncome(p);
+ p.gold=Math.min(100,p.gold+income);
+ const net=connected(p);
  for(const n of NODES){
   if(!INFO[n.type]?.resource)continue;
-
   const t=state(n.id);
-
-  if(t.owner===p.id&&connected(p).has(n.id)){
-   t.stock=Math.min(12,t.stock+INFO[n.type].yield);
-  }
+  if(t.owner===p.id&&net.has(n.id))t.stock=Math.min(12,t.stock+INFO[n.type].yield);
  }
-
  for(const c of p.caravans)tickCaravan(p,c);
-
  S.collected=true;
-
- log(
-  FACTIONS[p.faction].name+
-  ' collects '+claimIncome(p)+
-  ' Gold in taxes and advances caravans.'
- );
-
- snd(660);persist();render();
+ log(FACTIONS[p.faction].name+' receives '+income+' Gold in taxes and advances caravans.');
  return true;
 }
-
-function dispatch(target,caravanIndex){
- const p=active(),n=NODE[target];
-
- if(!n||
-    !INFO[n.type]?.resource||
-    state(target).owner!==p.id||
-    !route(p,p.home,target)){
-  return tell('Connect and control the resource site first.');
- }
-
- const c=p.caravans[caravanIndex];
- if(!c)return;
-
- c.target=target;
- if(c.cargo===0)c.dir='out';
-
- log(
-  FACTIONS[p.faction].name+
-  ' orders a caravan toward '+n.name+'.'
- );
-
- persist();render();
-}
-
-function buildStructure(kind,id){
- const p=active(),t=state(id);
-
- if(S.phase!=='build'||
-    S.buildLeft<1||
-    p.controller==='ai'&&screen!=='game'||
-    t.owner!==p.id||
-    !connected(p).has(id))return false;
-
- if(kind==='town'){
-  const homeVillage={
-   red:'hr',blue:'hb',gold:'hg',green:'hv'
-  }[p.home];
-
-  if(id!==homeVillage||
-     t.town||
-     !costOK(p,BUILD_COST.town))return false;
-
-  t.town=true;
- }else if(kind==='caravan'){
-  if(p.caravans.length>=3||
-     !costOK(p,BUILD_COST.caravan))return false;
-
-  p.caravans.push({
-   id:Date.now()+Math.floor(Math.random()*1000),
-   at:p.home,target:null,dir:'out',
-   cargo:0,cargoType:null
-  });
- }else{
-  if(!['tower','barracks'].includes(kind)||
-     t.building||
-     !costOK(p,BUILD_COST[kind])||
-     id===p.home||
-     NODE[id].type==='city')return false;
-
-  t.building=kind;
- }
-
- charge(p,BUILD_COST[kind]);
- S.buildLeft--;
-
- log(
-  FACTIONS[p.faction].name+
-  ' constructs '+kind+' at '+NODE[id].name+'.'
- );
-
- snd(510);persist();render();
- return true;
-}
-
-function recruit(kind,id){
- const p=active(),t=state(id),u=UNITS[kind];
-
- if(!u||
-    S.phase!=='build'||
-    S.buildLeft<1||
-    t.owner!==p.id||
-    !(id===p.home||t.building==='barracks')||
-    troops(t.units)>=4||
-    armies(p.id)>=14||
-    !costOK(p,u.cost))return false;
-
- charge(p,u.cost);
- t.units[kind]++;
- S.buildLeft--;
-
- log(
-  FACTIONS[p.faction].name+
-  ' recruits '+u.name+' at '+NODE[id].name+'.'
- );
-
- snd(590);persist();render();
- return true;
-}
-
-function canAttack(from,to,units){
- if(S.phase!=='attack'||
-    S.attackLeft<1||
-    !EDGE[ec(from,to)]||
-    from===to)return false;
-
- const f=state(from),t=state(to);
-
- if(f.owner!==S.active||
-    troops(units)===0||
-    UI.some(k=>
-     units[k]<0||units[k]>f.units[k]
-    ))return false;
-
- if(t.owner===S.active&&
-    troops(t.units)+troops(units)>4)return false;
-
- if(t.owner!==null&&
-    NODE[to].type==='castle'&&
-    t.owner!==S.active)return false;
-
- return true;
-}
-
-function defense(t,id){
- const bonus=
-  (t.building==='tower'?2:0)+
-  (byId(id).type==='city'?1:0);
-
- return power(t.units,'d')+bonus;
-}
-
-function combat(from,to,units){
- const t=state(to);
-
- const enemy=
-  t.owner!==null&&
-  t.owner!==S.active&&
-  troops(t.units)>0;
-
- const atk=
-  power(units,'a')+
-  (S.roads[ec(from,to)]===S.active?1:0);
-
- const def=defense(t,to);
-
- return{enemy,atk,def,win:atk>def};
-}
-
-function takeCasualty(u){
- const k=UI.find(k=>u[k]>0);
- if(k)u[k]--;
-}
-
-function raidCaravans(id,newOwner){
- for(const op of S.players){
-  if(op.id===newOwner)continue;
-
-  for(const c of op.caravans){
-   if(c.at===id){
-    if(c.cargoType&&c.cargo>0){
-     S.players[newOwner][c.cargoType]+=c.cargo;
-    }
-
-    c.at=op.home;
-    c.target=null;
-    c.dir='out';
-    c.cargo=0;
-    c.cargoType=null;
-
-    log('A caravan is intercepted at '+NODE[id].name+'!');
-   }
-  }
- }
-}
-
-function moveAttack(from,to,units,approved=false){
- if(!canAttack(from,to,units))return false;
-
- const p=active(),src=state(from),dst=state(to);
- const b=combat(from,to,units);
-
- if(b.enemy&&!approved){
-  openModal(`
-   <h2>⚔ Battle for ${escapeHTML(NODE[to].name)}</h2>
-   <p>
-    Attack strength: <b>${b.atk}</b><br>
-    Defense strength: <b>${b.def}</b>
-   </p>
-   <p>
-    ${b.win
-     ?'Your army is predicted to win.'
-     :'Your attack is predicted to fail.'}
-    Battles have no dice.
-    A victorious army can suffer one Levy-first casualty
-    if both forces began with at least two units.
-   </p>
-   <div class="btnrow">
-    <button class="btn primary" data-action="confirmBattle">
-     Confirm Attack
-    </button>
-    <button class="btn" data-action="cancelBattle">Cancel</button>
-   </div>
-  `,'battle');
-
-  S.pending={from,to,units};
-  persist();
-  return true;
- }
-
- for(const k of UI)src.units[k]-=units[k];
-
- if(b.enemy){
-  const defenders=troops(dst.units);
-  const attackers=troops(units);
-
-  if(b.win){
-   dst.units=clone(units);
-
-   if(defenders>=2&&attackers>=2){
-    takeCasualty(dst.units);
-   }
-
-   dst.owner=p.id;
-   raidCaravans(to,p.id);
-
-   log(
-    FACTIONS[p.faction].name+
-    ' conquers '+NODE[to].name+
-    ' ('+b.atk+'–'+b.def+').'
-   );
-  }else{
-   if(defenders>=2&&attackers>=2){
-    takeCasualty(dst.units);
-   }
-
-   log(
-    FACTIONS[p.faction].name+
-    ' fails to conquer '+NODE[to].name+
-    ' ('+b.atk+'–'+b.def+').'
-   );
-  }
- }else{
-  for(const k of UI)dst.units[k]+=units[k];
-
-  if(dst.owner!==p.id){
-   dst.owner=p.id;
-   raidCaravans(to,p.id);
-  }
-
-  log(
-   FACTIONS[p.faction].name+
-   ' marches to '+NODE[to].name+'.'
-  );
- }
-
- S.attackLeft--;
- selection=to;
- moveSource=null;
- moveUnits=freeUnits();
- S.pending=null;
- closeModal();
-
- snd(b.enemy?210:460);
- persist();render();
- return true;
-}
-
-function pointsFor(p){
- const villages=NODES.filter(n=>
-  n.type==='village'&&
-  state(n.id).owner===p.id
- ).length;
-
- const sites=NODES.filter(n=>
-  INFO[n.type]?.resource&&
-  state(n.id).owner===p.id
- ).length;
-
- return villages+
-  (state('city').owner===p.id?3:0)+
-  Math.floor(sites/3);
-}
-
-function concludeRound(){
- for(const p of S.players){
-  const score=pointsFor(p);
-  p.score+=score;
-
-  if(score){
-   log(
-    FACTIONS[p.faction].name+
-    ' earns '+score+' Crown Influence.'
-   );
-  }
- }
-
- const max=Math.max(...S.players.map(p=>p.score));
-
- if(max>=15||S.round>=10){
-  let win=S.players.filter(p=>p.score===max);
-
-  if(win.length>1){
-   let maxSites=Math.max(...win.map(p=>
-    NODES.filter(n=>
-     INFO[n.type]?.resource&&
-     state(n.id).owner===p.id
-    ).length
-   ));
-
-   win=win.filter(p=>
-    NODES.filter(n=>
-     INFO[n.type]?.resource&&
-     state(n.id).owner===p.id
-    ).length===maxSites
-   );
-  }
-
-  if(win.length>1){
-   const gold=Math.max(...win.map(p=>p.gold));
-   win=win.filter(p=>p.gold===gold);
-  }
-
-  S.finished=true;
-  S.winners=win.map(p=>p.id);
-  log('The struggle for the Crown is over.');
- }
-}
-
+function dispatch(target,caravanIndex){const p=active(),n=NODE[target];if(!n||!INFO[n.type]?.resource||state(target).owner!==p.id||!route(p,p.home,target))return tell('Connect and control the resource site first.');const c=p.caravans[caravanIndex];if(!c)return;c.target=target;if(c.cargo===0)c.dir='out';log(FACTIONS[p.faction].name+' orders a caravan toward '+n.name+'.');persist();render()}
+function buildStructure(kind,id){const p=active(),t=state(id);if(S.buildLeft<1||S.finished||S.pending||!t||t.owner!==p.id||!connected(p).has(id))return false;if(kind==='town'){if(id!==({red:'hr',blue:'hb',gold:'hg',green:'hv'}[p.home])||t.town||!costOK(p,BUILD_COST.town))return false;t.town=true;}else if(kind==='caravan'){if(id!==p.home||p.caravans.length>=3||!costOK(p,BUILD_COST.caravan))return false;p.caravans.push({id:Date.now()+Math.floor(Math.random()*1000),at:p.home,target:null,dir:'out',cargo:0,cargoType:null});}else{if(!['tower','barracks'].includes(kind)||t.building||!costOK(p,BUILD_COST[kind])||id===p.home||NODE[id].type==='city')return false;t.building=kind;}charge(p,BUILD_COST[kind]);S.buildLeft--;log(FACTIONS[p.faction].name+' constructs '+kind+' at '+NODE[id].name+'.');snd(510);persist();render();return true}
+function recruit(kind,id){const p=active(),t=state(id),u=UNITS[kind];if(!u||S.finished||S.pending||S.buildLeft<1||t.owner!==p.id||!(id===p.home||t.building==='barracks')||troops(t.units)>=4||armies(p.id)>=14||!costOK(p,u.cost))return false;charge(p,u.cost);t.units[kind]++;S.buildLeft--;log(FACTIONS[p.faction].name+' recruits '+u.name+' at '+NODE[id].name+'.');snd(590);persist();render();return true}
+function canAttack(from,to,units){if(S.finished||S.pending||S.attackLeft<1||!EDGE[ec(from,to)]||from===to)return false;const f=state(from),t=state(to);if(!f||!t||f.owner!==S.active||troops(units)===0||UI.some(k=>!Number.isInteger(units[k])||units[k]<0||units[k]>f.units[k]))return false;if(t.owner===S.active&&troops(t.units)+troops(units)>4)return false;if(t.owner!==null&&NODE[to].type==='castle'&&t.owner!==S.active)return false;return true}
+function defense(t,id){let bonus=(t.building==='tower'?2:0)+(byId(id).type==='city'?1:0);return power(t.units,'d')+bonus}
+function combat(from,to,units){const t=state(to),enemy=t.owner!==null&&t.owner!==S.active&&troops(t.units)>0;const atk=power(units,'a')+(S.roads[ec(from,to)]===S.active?1:0),def=defense(t,to);return{enemy,atk,def,win:atk>def}}
+function moveAttack(from,to,units,approved=false){if(!canAttack(from,to,units))return false;const p=active(),src=state(from),dst=state(to),b=combat(from,to,units);if(b.enemy&&!approved){openModal(`<h2>⚔ Battle for ${escapeHTML(NODE[to].name)}</h2><p>Attack strength: <b>${b.atk}</b><br>Defense strength: <b>${b.def}</b></p><p>${b.win?'Your army is predicted to win.':'Your attack is predicted to fail.'} Battles have no dice. A victorious army can suffer one Levy-first casualty if both forces began with at least two units.</p><div class="btnrow"><button class="btn primary" data-action="confirmBattle">Confirm Attack</button><button class="btn" data-action="cancelBattle">Cancel</button></div>`,'battle');S.pending={from,to,units};persist();return true}for(const k of UI)src.units[k]-=units[k];if(b.enemy){const defenders=troops(dst.units),attackers=troops(units);if(b.win){dst.units=clone(units);if(defenders>=2&&attackers>=2)takeCasualty(dst.units);dst.owner=p.id;raidCaravans(to,p.id);log(FACTIONS[p.faction].name+' conquers '+NODE[to].name+' ('+b.atk+'–'+b.def+').');}else{if(defenders>=2&&attackers>=2)takeCasualty(dst.units);log(FACTIONS[p.faction].name+' fails to conquer '+NODE[to].name+' ('+b.atk+'–'+b.def+').');}}else{for(const k of UI)dst.units[k]+=units[k];if(dst.owner!==p.id){dst.owner=p.id;raidCaravans(to,p.id)}log(FACTIONS[p.faction].name+' marches to '+NODE[to].name+'.');}S.attackLeft--;selection=to;moveSource=null;moveUnits=freeUnits();S.pending=null;closeModal();snd(b.enemy?210:460);persist();render();return true}
+function takeCasualty(u){const k=UI.find(k=>u[k]>0);if(k)u[k]--}
+function raidCaravans(id,newOwner){for(const op of S.players){if(op.id===newOwner)continue;for(const c of op.caravans)if(c.at===id){if(c.cargoType&&c.cargo>0)S.players[newOwner][c.cargoType]+=c.cargo;c.at=op.home;c.target=null;c.dir='out';c.cargo=0;c.cargoType=null;log('A caravan is intercepted at '+NODE[id].name+'!')}}}
+function pointsFor(p){const villages=NODES.filter(n=>n.type==='village'&&state(n.id).owner===p.id).length,sites=NODES.filter(n=>INFO[n.type]?.resource&&state(n.id).owner===p.id).length;return villages+(state('city').owner===p.id?3:0)+Math.floor(sites/3)}
+function concludeRound(){for(const p of S.players){const score=pointsFor(p);p.score+=score;if(score)log(FACTIONS[p.faction].name+' earns '+score+' Crown Influence.');}const max=Math.max(...S.players.map(p=>p.score));if(max>=15||S.round>=10){let win=S.players.filter(p=>p.score===max);if(win.length>1){let maxSites=Math.max(...win.map(p=>NODES.filter(n=>INFO[n.type]?.resource&&state(n.id).owner===p.id).length));win=win.filter(p=>NODES.filter(n=>INFO[n.type]?.resource&&state(n.id).owner===p.id).length===maxSites);}if(win.length>1){const gold=Math.max(...win.map(p=>p.gold));win=win.filter(p=>p.gold===gold)}S.finished=true;S.winners=win.map(p=>p.id);log('The struggle for the Crown is over.');}}
 function advance(){
  if(!S||S.finished||S.pending)return;
-
- const p=active();
-
- if(S.phase==='collect'){
-  if(!S.collected){
-   return tell('Collect your taxes before proceeding.');
-  }
-  S.phase='build';
-
- }else if(S.phase==='build'){
-  S.phase='attack';
-  roadMode=false;
-  moveSource=null;
-
- }else{
-  const old=S.active;
-
-  if(old===S.players.length-1){
-   concludeRound();
-   if(!S.finished)S.round++;
-  }
-
-  if(!S.finished){
-   S.active=(S.active+1)%S.players.length;
-  }
-
-  S.phase='collect';
-  S.collected=false;
-  S.marketBought=0;
-  S.buildLeft=2;
-  S.attackLeft=2;
+ const old=S.active;
+ if(old===S.players.length-1){concludeRound();if(!S.finished)S.round++;}
+ if(!S.finished){
+  S.active=(S.active+1)%S.players.length;
+  S.marketBought=0;S.buildLeft=2;S.attackLeft=2;S.collected=false;
+  startTurnIncome();
  }
-
- selection=null;
- roadMode=false;
- moveSource=null;
-
- persist();
- render();
- runIfAI();
+ selection=null;moveSource=null;moveUnits=freeUnits();
+ persist();render();runIfAI();
 }
-
-/* The map is hand-drawn with SVG.
-   Every path and destination is a working game object. */
-
-function rand(n){
- let x=Math.sin(n*127.1+78.233)*43758.5453;
- return x-Math.floor(x);
-}
-
-function scene(){
- let o=`
- <defs>
-  <radialGradient id="grass">
-   <stop stop-color="#b9bb81"/>
-   <stop offset=".62" stop-color="#879c6c"/>
-   <stop offset="1" stop-color="#52694e"/>
-  </radialGradient>
-
-  <radialGradient id="land">
-   <stop stop-color="#e3ca87"/>
-   <stop offset="1" stop-color="#ab9c6a"/>
-  </radialGradient>
-
-  <filter id="shadow">
-   <feGaussianBlur stdDeviation="3"/>
-  </filter>
-
-  <pattern id="soil" width="13" height="13"
-   patternUnits="userSpaceOnUse">
-   <path d="M0 13L13 0" stroke="#5f6741"
-    stroke-opacity=".13" stroke-width="2"/>
-  </pattern>
- </defs>
-
- <rect width="1200" height="790" fill="url(#grass)"/>
- <rect width="1200" height="790" fill="url(#soil)"/>
-
- <path d="M0 95 Q160 40 310 165 T690 155 T1200 135
-  L1200 0H0Z" fill="#68785b" opacity=".39"/>
-
- <path d="M0 690Q215 570 395 705T870 680T1200 620
-  V790H0Z" fill="#68785b" opacity=".48"/>
-
- <path d="M0 345Q130 260 260 353T520 330T820 375
-  T1200 295L1200 520Q1000 600 850 500T510 545
-  T0 540Z" fill="#b1b37a" opacity=".39"/>
-
- <path d="M-20 365C210 285 325 515 520 392S760
-  505 920 373S1085 398 1230 460"
-  fill="none" stroke="#426574" stroke-width="35" opacity=".55"/>
-
- <path d="M-20 365C210 285 325 515 520 392S760
-  505 920 373S1085 398 1230 460"
-  fill="none" stroke="#79b3c1" stroke-width="22"/>
-
- <path d="M-20 365C210 285 325 515 520 392S760
-  505 920 373S1085 398 1230 460"
-  fill="none" stroke="#b8dee2" stroke-width="5" opacity=".7"/>
-
- <path d="M470 -20Q555 87 520 170M795 -10Q700
-  80 740 190M565 760Q625 650 725 720"
-  fill="none" stroke="#625848" stroke-width="30" opacity=".22"/>
- `;
-
- let treeZones=[
-  [154,319,50],[786,125,72],[1070,520,52],
-  [419,723,45],[490,180,42],[920,198,45],
-  [285,370,28],[936,590,30]
- ];
-
- for(let zi=0;zi<treeZones.length;zi++){
-  const [cx,cy,r]=treeZones[zi];
-
-  for(let k=0;k<23;k++){
-   const ang=rand(zi*200+k)*6.283;
-   const rad=r*Math.sqrt(rand(700+k+zi*100));
-   const x=cx+Math.cos(ang)*rad;
-   const y=cy+Math.sin(ang)*rad;
-
-   if(x<15||x>1185||y<15||y>775)continue;
-
-   const h=10+rand(k+zi*330)*19;
-   const shade=[
-    '#355b40','#466f48','#567849','#2e4c35'
-   ][k%4];
-
-   o+=`
-    <path d="M${x.toFixed(1)} ${(y+5).toFixed(1)}
-     l${(-h*.45).toFixed(1)} 0
-     l${(h*.45).toFixed(1)} ${(-h).toFixed(1)}
-     l${(h*.45).toFixed(1)} ${h.toFixed(1)}Z"
-     fill="${shade}" stroke="#253c2b"
-     stroke-opacity=".33"/>
-   `;
-  }
- }
-
- for(const [cx,cy,w] of [
-  [560,44,270],[720,32,160],[640,761,230],
-  [54,680,100],[1128,680,95]
- ]){
-  for(let i=0;i<9;i++){
-   const x=cx-w/2+i*w/8;
-   const y=cy+rand(i+cx)*23;
-   const h=20+rand(cx*2+i)*47;
-
-   o+=`
-    <path d="M${x-24} ${y+14}
-     L${x} ${y-h}L${x+30} ${y+14}Z"
-     fill="${i%2?'#9b9982':'#777b71'}"
-     stroke="#65685c" stroke-width="1.5"/>
-
-    <path d="M${x-11} ${y-h*.46}
-     L${x} ${y-h}L${x+12} ${y-h*.48}
-     L${x+2} ${y-h*.55}Z"
-     fill="#d5d2bc"/>
-   `;
-  }
- }
-
- for(const id of ['fn','fw','fe','fs']){
-  let n=NODE[id];
-
-  for(let i=0;i<5;i++){
-   const x=n.x-50+i*16;
-   const y=n.y+25+(i%2)*4;
-
-   o+=`
-    <path d="M${x} ${y}l11 -5 l13 23 l-12 5Z"
-     fill="${i%2?'#d9bd68':'#bfa75e'}"
-     stroke="#8f8549"/>
-
-    <path d="M${x+6} ${y+4}l10 18"
-     stroke="#fff0aa" opacity=".5"/>
-   `;
-  }
- }
-
- return o;
-}
-
-function geometry(e){
- const a=NODE[e.a],b=NODE[e.b];
- const dx=b.x-a.x,dy=b.y-a.y;
- const mag=Math.hypot(dx,dy);
-
- const offset=
-  (rand((a.x+b.y+dx)*.03)-.5)*
-  Math.min(22,mag*.15);
-
- const mx=(a.x+b.x)/2-dy/mag*offset;
- const my=(a.y+b.y)/2+dx/mag*offset;
-
- return `M${a.x} ${a.y} Q${
-  (2*mx-(a.x+b.x)/2).toFixed(1)
- } ${
-  (2*my-(a.y+b.y)/2).toFixed(1)
- } ${b.x} ${b.y}`;
-}
-
+ /* The map is hand-drawn with SVG. Every path and destination is a working game object. */
+function rand(n){let x=Math.sin(n*127.1+78.233)*43758.5453;return x-Math.floor(x)}
+function scene(){let o=`<defs><radialGradient id="grass"><stop stop-color="#b9bb81"/><stop offset=".62" stop-color="#879c6c"/><stop offset="1" stop-color="#52694e"/></radialGradient><radialGradient id="land"><stop stop-color="#e3ca87"/><stop offset="1" stop-color="#ab9c6a"/></radialGradient><filter id="shadow"><feGaussianBlur stdDeviation="3"/></filter><pattern id="soil" width="13" height="13" patternUnits="userSpaceOnUse"><path d="M0 13L13 0" stroke="#5f6741" stroke-opacity=".13" stroke-width="2"/></pattern></defs>
+<rect width="1200" height="790" fill="url(#grass)"/><rect width="1200" height="790" fill="url(#soil)"/>
+<path d="M0 95 Q160 40 310 165 T690 155 T1200 135 L1200 0H0Z" fill="#68785b" opacity=".39"/>
+<path d="M0 690Q215 570 395 705T870 680T1200 620V790H0Z" fill="#68785b" opacity=".48"/>
+<path d="M0 345Q130 260 260 353T520 330T820 375T1200 295L1200 520Q1000 600 850 500T510 545T0 540Z" fill="#b1b37a" opacity=".39"/>
+<path d="M-20 365C210 285 325 515 520 392S760 505 920 373S1085 398 1230 460" fill="none" stroke="#426574" stroke-width="35" opacity=".55"/><path d="M-20 365C210 285 325 515 520 392S760 505 920 373S1085 398 1230 460" fill="none" stroke="#79b3c1" stroke-width="22"/><path d="M-20 365C210 285 325 515 520 392S760 505 920 373S1085 398 1230 460" fill="none" stroke="#b8dee2" stroke-width="5" opacity=".7"/>
+<path d="M470 -20Q555 87 520 170M795 -10Q700 80 740 190M565 760Q625 650 725 720" fill="none" stroke="#625848" stroke-width="30" opacity=".22"/>`;
+let treeZones=[[154,319,50],[786,125,72],[1070,520,52],[419,723,45],[490,180,42],[920,198,45],[285,370,28],[936,590,30]];for(let zi=0;zi<treeZones.length;zi++){const [cx,cy,r]=treeZones[zi];for(let k=0;k<23;k++){const ang=rand(zi*200+k)*6.283,rad=r*Math.sqrt(rand(700+k+zi*100)),x=cx+Math.cos(ang)*rad,y=cy+Math.sin(ang)*rad;if(x<15||x>1185||y<15||y>775)continue;const h=10+rand(k+zi*330)*19;const shade=['#355b40','#466f48','#567849','#2e4c35'][k%4];o+=`<path d="M${x.toFixed(1)} ${(y+5).toFixed(1)} l${(-h*.45).toFixed(1)} 0 l${(h*.45).toFixed(1)} ${(-h).toFixed(1)} l${(h*.45).toFixed(1)} ${h.toFixed(1)}Z" fill="${shade}" stroke="#253c2b" stroke-opacity=".33"/>`;}}
+for(const [cx,cy,w] of [[560,44,270],[720,32,160],[640,761,230],[54,680,100],[1128,680,95]]){for(let i=0;i<9;i++){const x=cx-w/2+i*w/8,y=cy+rand(i+cx)*23,h=20+rand(cx*2+i)*47;o+=`<path d="M${x-24} ${y+14}L${x} ${y-h}L${x+30} ${y+14}Z" fill="${i%2?'#9b9982':'#777b71'}" stroke="#65685c" stroke-width="1.5"/><path d="M${x-11} ${y-h*.46}L${x} ${y-h}L${x+12} ${y-h*.48}L${x+2} ${y-h*.55}Z" fill="#d5d2bc"/>`;}}
+for(const id of ['fn','fw','fe','fs']){let n=NODE[id];for(let i=0;i<5;i++){const x=n.x-50+i*16,y=n.y+25+(i%2)*4;o+=`<path d="M${x} ${y}l11 -5 l13 23 l-12 5Z" fill="${i%2?'#d9bd68':'#bfa75e'}" stroke="#8f8549"/><path d="M${x+6} ${y+4}l10 18" stroke="#fff0aa" opacity=".5"/>`;}}
+return o;}
+function geometry(e){const a=NODE[e.a],b=NODE[e.b],dx=b.x-a.x,dy=b.y-a.y,mag=Math.hypot(dx,dy),offset=(rand((a.x+b.y+dx)*.03)-.5)*Math.min(22,mag*.15),mx=(a.x+b.x)/2-dy/mag*offset,my=(a.y+b.y)/2+dx/mag*offset;return`M${a.x} ${a.y} Q${(2*mx-(a.x+b.x)/2).toFixed(1)} ${(2*my-(a.y+b.y)/2).toFixed(1)} ${b.x} ${b.y}`;}
 function nodeArt(n){
  const t=state(n.id),owner=t.owner;
-
- const base=owner===null
-  ?'#a98a5f'
-  :FACTIONS[S.players[owner].faction].color;
-
- const kind=n.type;
- let art='';
-
- if(kind==='castle'){
-  art=`
-   <path d="M-23 15V-14h8v-8h8v8h13v-8h8v8h8v29Z"
-    fill="#b5b0a0" stroke="#413a2d" stroke-width="2"/>
-
-   <path d="M-17 -15L-12 -33L-7 -15
-    M6 -15L11 -33L16 -15"
-    fill="#6a4938"/>
-
-   <rect x="-5" y="0" width="10" height="15"
-    fill="#4b3a2e"/>
-
-   <path d="M0 -11V-40"
-    stroke="#47382d" stroke-width="2"/>
-
-   <path d="M0 -39 L21 -34L0 -28Z"
-    fill="${base}"/>
-  `;
-
- }else if(kind==='home'||kind==='village'){
-  art=`
-   <rect x="-22" y="-1" width="19" height="18"
-    fill="#e3c79a" stroke="#63472b"/>
-
-   <path d="M-26 0L-13 -18L2 0Z"
-    fill="#8d5135" stroke="#563421"/>
-
-   <rect x="3" y="4" width="23" height="14"
-    fill="#e7d2a5" stroke="#63472b"/>
-
-   <path d="M0 5L15 -14L29 5Z"
-    fill="#975a35" stroke="#563421"/>
-
-   <rect x="11" y="9" width="5" height="9"
-    fill="#62412a"/>
-  `;
-
- }else if(kind==='forest'){
-  art=`
-   <path d="M-26 16L-13 -28L0 16Z
-    M-8 17L7 -37L22 17Z
-    M11 18L24 -22L35 18Z"
-    fill="#31583e" stroke="#233b2e" stroke-width="2"/>
-
-   <path d="M-13 -28L-22 6M7 -37L-1 0"
-    stroke="#86ae83" opacity=".7"/>
-  `;
-
- }else if(kind==='farm'){
-  art=`
-   <path d="M-31 11l15-23 22 15-14 21Z"
-    fill="#c7a858" stroke="#f1ce77"/>
-
-   <path d="M-12 15l17-22 26 13-13 24Z"
-    fill="#e0bb69" stroke="#b68d3f"/>
-
-   <path d="M-22 3l23 10M-13 -8l22 12M0 9l22 9"
-    stroke="#f5de96" stroke-width="3"/>
-  `;
-
- }else if(kind==='quarry'){
-  art=`
-   <path d="M-29 18L-10 -17L7 0L24 -25L34 18Z"
-    fill="#9c9b90" stroke="#555c55" stroke-width="2"/>
-
-   <path d="M-18 12L-10 -17L-3 -2
-    M17 -11L24 -25L30 7"
-    fill="none" stroke="#e0d9c2" stroke-width="4"/>
-  `;
-
- }else if(kind==='mine'){
-  art=`
-   <path d="M-30 20L-21 -18L12 -30L32 20Z"
-    fill="#62645d" stroke="#444a43" stroke-width="2"/>
-
-   <path d="M-13 20V-3Q0 -25 14 -3V20Z"
-    fill="#241f1c" stroke="#a08156" stroke-width="4"/>
-
-   <path d="M-21 -14L21 7M-12 -22L29 4"
-    stroke="#a18b5c" stroke-width="3"/>
-  `;
-
- }else if(kind==='cross'){
-  art=`
-   <rect x="-6" y="-18" width="12" height="36"
-    fill="#c4b69c" stroke="#6b604a"/>
-
-   <path d="M-17 -10H17M-17 7H17"
-    stroke="#8c7b5d" stroke-width="4"/>
-
-   <circle cy="-20" r="9"
-    fill="#d1c3a4" stroke="#66543c"/>
-  `;
-
- }else if(kind==='city'){
-  art=`
-   <path d="M-41 27V-19l13-12 8 12 11-20
-    13 20 14-17 13 18 9 12V27Z"
-    fill="#bfb5a2" stroke="#5f5040" stroke-width="3"/>
-
-   <path d="M-34 -18L-28 -38L-18 -18
-    M-7 -24L-2 -48L11 -24
-    M20 -17L26 -41L34 -17"
-    fill="#555e77"/>
-
-   <rect x="-8" y="3" width="16" height="24"
-    fill="#51463c"/>
-
-   <path d="M0 -25v-36"
-    stroke="#5d4b39" stroke-width="2"/>
-
-   <path d="M0 -59L22 -52L0 -45"
-    fill="#c9a352"/>
-  `;
- }
-
- const caravans=S.players.flatMap(p=>
-  p.caravans
-   .filter(c=>c.at===n.id)
-   .map(c=>`
-    <g transform="translate(24 25)">
-     <rect x="-12" y="-9" width="20" height="11" rx="2"
-      fill="${FACTIONS[p.faction].color}"
-      stroke="#4d3929" stroke-width="2"/>
-
-     <circle cx="-7" cy="4" r="4"
-      fill="#33281e" stroke="#d7b478" stroke-width="1.5"/>
-
-     <circle cx="6" cy="4" r="4"
-      fill="#33281e" stroke="#d7b478" stroke-width="1.5"/>
-    </g>
-   `)
- ).join('');
-
- let crew=troops(t.units);
-
- let labelW=Math.min(
-  148,Math.max(80,n.name.length*7+18)
- );
-
- let ownerLine=owner===null
-  ?'#b99c6b'
-  :FACTIONS[S.players[owner].faction].color;
-
- return `
-  <g class="svg-node ${selection===n.id?'selected':''}"
-   data-node="${n.id}" role="button" tabindex="0"
-   aria-label="${escapeHTML(n.name)}">
-
-   <title>
-    ${escapeHTML(n.name)} —
-    ${owner===null?'Neutral':FACTIONS[S.players[owner].faction].name}
-   </title>
-
-   <circle class="node-ring" r="38"
-    fill="#eee0b6aa"
-    stroke="${ownerLine}" stroke-width="3"/>
-
-   <circle r="32" fill="#c0ba8d66"
-    stroke="#655b4277" stroke-width="1"/>
-
-   ${art}
-
-   ${t.building?`
-    <text x="-28" y="-23" font-size="24"
-     fill="#593522" stroke="#efe0bb" stroke-width=".5">
-     ${t.building==='tower'?'♜':'⚒'}
-    </text>`:''}
-
-   ${caravans}
-
-   ${crew?`
-    <g transform="translate(30,-29)">
-     <circle r="17" fill="${ownerLine}"
-      stroke="#fff2ca" stroke-width="2"/>
-
-     <text text-anchor="middle" y="6" font-size="19"
-      fill="white" font-weight="bold">${crew}</text>
-    </g>`:''}
-
-   <g transform="translate(0,49)">
-    <rect x="${-labelW/2}" y="-13" rx="5"
-     width="${labelW}" height="26"
-     fill="#f0dfb3" stroke="#97784b" stroke-width="2"/>
-
-    <text class="node-label" text-anchor="middle" y="5">
-     ${escapeHTML(n.name)}
-    </text>
-   </g>
-  </g>
- `;
+ const ownerColor=owner===null?'#ac8d5f':FACTIONS[S.players[owner].faction].color;
+ const icon=INFO[n.type].icon;
+ const qty=troops(t.units);
+ const caravanCount=S.players.reduce((sum,p)=>sum+p.caravans.filter(c=>c.at===n.id).length,0);
+ const labelW=Math.min(166,Math.max(89,n.name.length*7+22));
+ return `<g class="svg-node ${selection===n.id?'selected':''}" data-node="${n.id}" role="button" tabindex="0" aria-label="${escapeHTML(n.name)}">
+  <title>${escapeHTML(n.name)}</title>
+  <circle class="node-ring" r="38" fill="#f4e7be" stroke="${ownerColor}" stroke-width="4"/>
+  <circle r="32" fill="#e6dcbd" fill-opacity=".56"/>
+  <text x="0" y="12" text-anchor="middle" font-size="43" font-family="Segoe UI Emoji,Apple Color Emoji,Noto Color Emoji,sans-serif">${icon}</text>
+  ${t.building?`<text x="-26" y="-25" font-size="20" text-anchor="middle" font-family="Segoe UI Emoji,Apple Color Emoji,Noto Color Emoji">${t.building==='tower'?'🗼':'🛡️'}</text>`:''}
+  ${caravanCount?`<text x="31" y="34" font-size="23" text-anchor="middle" font-family="Segoe UI Emoji,Apple Color Emoji,Noto Color Emoji">🛒</text>${caravanCount>1?`<text x="45" y="34" font-size="14" font-weight="bold">${caravanCount}</text>`:''}`:''}
+  ${qty?`<g transform="translate(27,-31)"><circle r="17" fill="${ownerColor}" stroke="#f7e6b6" stroke-width="2"/><text text-anchor="middle" y="6" font-size="18" font-weight="bold" fill="white">${qty}</text></g>`:''}
+  <g transform="translate(0,48)"><rect x="${-labelW/2}" y="-13" width="${labelW}" height="26" rx="5" fill="#f7e6ba" stroke="#97794b" stroke-width="2"/><text class="node-label" text-anchor="middle" y="5">${escapeHTML(n.name)}</text></g>
+ </g>`;
 }
-
 function mapSVG(){
- const p=active();
- const roads=roadOptions(p);
- const options=new Set(roads.map(e=>e.id));
-
- let o=`
-  <svg viewBox="0 0 1200 790"
-   xmlns="http://www.w3.org/2000/svg"
-   role="img"
-   aria-label="Interactive map of four medieval kingdoms and dirt road connections">
-   <g>${scene()}</g>
- `;
-
+ const p=active();const options=new Set(roadOptions(p).map(e=>e.id));
+ let o=`<svg viewBox="0 0 1200 790" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map with medieval locations and clickable roads"><g>${scene()}</g>`;
  for(const e of EDGES){
-  const path=geometry(e);
-  const owned=S.roads[e.id];
-  const colored=owned!==undefined;
-  const can=roadMode&&options.has(e.id);
-
-  const stroke=colored
-   ?FACTIONS[S.players[owned].faction].color
-   :'#ddc28f';
-
-  o+=`
-   <g data-edge="${e.id}">
-    <path d="${path}" fill="none"
-     stroke="#544d37" stroke-opacity=".55"
-     stroke-width="15" stroke-linecap="round"/>
-
-    <path d="${path}" fill="none"
-     stroke="${stroke}"
-     stroke-width="${colored?9:6}"
-     stroke-linecap="round"
-     ${colored?'':'stroke-dasharray="4 10" opacity=".83"'}/>
-
-    ${colored?`
-     <path d="${path}" fill="none"
-      stroke="#f1e2bb" stroke-opacity=".65"
-      stroke-width="2" stroke-dasharray="7 12"/>`:''}
-
-    ${can?`
-     <path d="${path}" fill="none"
-      stroke="#f8dc5a" stroke-width="14"
-      stroke-dasharray="6 9" opacity=".7"/>`:''}
-
-    <path class="routehit" d="${path}"
-     data-edge="${e.id}"/>
-   </g>
-  `;
- }
-
- o+='<g>';
-
- for(const n of NODES){
-  o+=`<g transform="translate(${n.x} ${n.y})">
-   ${nodeArt(n)}
+  const path=geometry(e),owned=S.roads[e.id],built=owned!==undefined;
+  const can=active().controller==='human'&&canBuildRoad(p,e);
+  const stroke=built?FACTIONS[S.players[owned].faction].color:'#dec99c';
+  o+=`<g data-edge="${e.id}" class="${can?'buildable-road':''}">
+   <path d="${path}" fill="none" stroke="#4f4835" stroke-width="14" opacity=".62" stroke-linecap="round"/>
+   <path d="${path}" fill="none" stroke="${stroke}" stroke-width="${built?9:6}" stroke-linecap="round" ${built?'':'stroke-dasharray="4 10" opacity=".88"'}/>
+   ${built?`<path d="${path}" fill="none" stroke="#f8e8ba" stroke-width="2" stroke-dasharray="8 11" opacity=".55"/>`:''}
+   ${can?`<path d="${path}" fill="none" stroke="#f9e46f" stroke-width="13" stroke-dasharray="5 10" opacity=".78"/>`:''}
+   <path class="routehit ${can?'ready':''}" d="${path}" data-edge="${e.id}"/>
+   <title>${escapeHTML(NODE[e.a].name+' ↔ '+NODE[e.b].name)}: ${can?'Click to build for 1 Timber + 1 Stone':built?'Constructed road':'Unbuilt dirt trail'}</title>
   </g>`;
  }
-
- o+='</g></svg>';
- return o;
+ o+='<g>';
+ for(const n of NODES)o+=`<g transform="translate(${n.x} ${n.y})">${nodeArt(n)}</g>`;
+ return o+'</g></svg>';
 }
-
-function factionLabel(p){
- let f=FACTIONS[p.faction];
-
- return `<span class="token"
-  style="background:${f.color}"></span>${f.name}`;
-}
-
-function menu(){
- app.innerHTML=`
-  <main class="hero">
-   <div class="hero-inner">
-    <div class="hero-crest">♜ ⚜ ♛</div>
-
-    <div class="tag">
-     THE FOUR KINGDOMS · FOUNDERS EDITION
-    </div>
-
-    <h1>Shifting Kingdoms</h1>
-
-    <div class="tag"
-     style="margin:17px 0 20px;font-size:1.1rem">
-     COLLECT · BUILD · ATTACK
-    </div>
-
-    <p>
-     Build roads across a living medieval world.
-     Bring supplies home by caravan.
-     Raise armies, conquer vital crossroads,
-     and claim the Royal City.
-    </p>
-
-    <div class="btnrow"
-     style="justify-content:center;margin:22px 0">
-
-     <button class="btn primary" data-action="setup">
-      ⚔ New Game
-     </button>
-
-     <button class="btn" data-action="resume"
-      ${exists()?'':'disabled'}>
-      ↻ Continue Game
-     </button>
-
-     <button class="btn" data-action="rules">
-      📜 Rules
-     </button>
-    </div>
-
-    <div class="tag">
-     A playable browser board game · No downloads required
-    </div>
-   </div>
-  </main>
- `;
-}
-
-function setupPage(){
- app.innerHTML=`
-  <header class="top">
-   <div class="logo">♛ Shifting Kingdoms</div>
-   <button class="btn" data-action="menu">← Menu</button>
-  </header>
-
-  <div class="screen-pad">
-   <section class="panel setupbox">
-    <h2>Prepare the Four Kingdoms</h2>
-
-    <p>
-     Choose who controls each kingdom.
-     Every faction has the same rules and starting materials.
-    </p>
-
-    <div class="row">
-     <label for="count">Kingdoms in this match</label>
-
-     <select id="count">
-      <option value="2" ${setup.count===2?'selected':''}>2</option>
-      <option value="3" ${setup.count===3?'selected':''}>3</option>
-      <option value="4" ${setup.count===4?'selected':''}>4</option>
-     </select>
-    </div>
-
-    <div class="seats" style="margin:13px 0">
-     ${Array.from({length:setup.count},(_,i)=>`
-      <div class="seat">
-       <b>Kingdom ${i+1}</b>
-
-       <label class="small">Faction</label>
-
-       <select data-seat="${i}" data-setting="faction">
-        ${FACTIONS.map((f,j)=>`
-         <option value="${j}"
-          ${setup.factions[i]===j?'selected':''}
-          ${setup.factions.some((n,k)=>
-           k!==i&&k<setup.count&&n===j
-          )?'disabled':''}>
-          ${f.name}
-         </option>
-        `).join('')}
-       </select>
-
-       <label class="small">Controller</label>
-
-       <select data-seat="${i}" data-setting="controller">
-        <option value="human"
-         ${setup.controllers[i]==='human'?'selected':''}>
-         Human — local
-        </option>
-
-        <option value="ai"
-         ${setup.controllers[i]==='ai'?'selected':''}>
-         Computer
-        </option>
-       </select>
-      </div>
-     `).join('')}
-    </div>
-
-    <div class="notice">
-     For your first match, try one human and one computer.
-     Kingdoms take turns:
-     <b>Collect → Build → Attack</b>.
-    </div>
-
-    <div class="btnrow">
-     <button class="btn primary" data-action="start">
-      Begin Conquest ⚔
-     </button>
-
-     <button class="btn" data-action="rules">
-      How to Play
-     </button>
-    </div>
-   </section>
-  </div>
- `;
-}
-
-function roster(){
- return S.players.map(p=>`
-  <div class="roster">
-   <span class="crest"
-    style="width:25px;height:33px;font-size:1.1rem;
-    background:${FACTIONS[p.faction].color}">
-    ${FACTIONS[p.faction].mark}
-   </span>
-
-   <span>
-    <b>${FACTIONS[p.faction].name}</b><br>
-    <span class="small">
-     ${p.controller==='ai'?'Computer':'Human'}
-    </span>
-   </span>
-
-   <b class="score">${p.score}</b>
-  </div>
- `).join('');
-}
-
+function factionLabel(p){let f=FACTIONS[p.faction];return `<span class="token" style="background:${f.color}"></span>${f.name}`}
+function menu(){app.innerHTML=`<main class="hero"><div class="hero-inner"><div class="hero-crest">♜ ⚜ ♛</div><div class="tag">THE FOUR KINGDOMS · FOUNDERS EDITION</div><h1>Shifting Kingdoms</h1><div class="tag" style="margin:17px 0 20px;font-size:1.1rem">BUILD YOUR REALM · RULE THE ROADS</div><p>Build roads across a living medieval world. Bring supplies home by caravan. Raise armies, conquer vital crossroads, and claim the Royal City.</p><div class="btnrow" style="justify-content:center;margin:22px 0"><button class="btn primary" data-action="setup">⚔ New Game</button><button class="btn" data-action="resume" ${exists()?'':'disabled'}>↻ Continue Game</button><button class="btn" data-action="rules">📜 Rules</button></div><div class="tag">A playable browser board game · No downloads required</div></div></main>`}
+function setupPage(){app.innerHTML=`<header class="top"><div class="logo">♛ Shifting Kingdoms</div><button class="btn" data-action="menu">← Menu</button></header><div class="screen-pad"><section class="panel setupbox"><h2>Prepare the Four Kingdoms</h2><p>Choose who controls each kingdom. Every faction has the same rules and starting materials.</p><div class="row"><label for="count">Kingdoms in this match</label><select id="count"><option value="2" ${setup.count===2?'selected':''}>2</option><option value="3" ${setup.count===3?'selected':''}>3</option><option value="4" ${setup.count===4?'selected':''}>4</option></select></div><div class="seats" style="margin:13px 0">${Array.from({length:setup.count},(_,i)=>`<div class="seat"><b>Kingdom ${i+1}</b><label class="small">Faction</label><select data-seat="${i}" data-setting="faction">${FACTIONS.map((f,j)=>`<option value="${j}" ${setup.factions[i]===j?'selected':''} ${setup.factions.some((n,k)=>k!==i&&k<setup.count&&n===j)?'disabled':''}>${f.name}</option>`).join('')}</select><label class="small">Controller</label><select data-seat="${i}" data-setting="controller"><option value="human" ${setup.controllers[i]==='human'?'selected':''}>Human — local</option><option value="ai" ${setup.controllers[i]==='ai'?'selected':''}>Computer</option></select></div>`).join('')}</div><div class="notice">For your first match, try one human and one computer. Kingdoms take turns: <b>Collect → Build → Attack</b>.</div><div class="btnrow"><button class="btn primary" data-action="start">Begin Conquest ⚔</button><button class="btn" data-action="rules">How to Play</button></div></section></div>`}
+function roster(){return S.players.map(p=>`<div class="roster"><span class="crest" style="width:25px;height:33px;font-size:1.1rem;background:${FACTIONS[p.faction].color}">${FACTIONS[p.faction].mark}</span><span><b>${FACTIONS[p.faction].name}</b><br><span class="small">${p.controller==='ai'?'Computer':'Human'}</span></span><b class="score">${p.score}</b></div>`).join('')}
 function leftPanel(){
- const p=active(),f=FACTIONS[p.faction];
-
- return `
-  <aside class="left">
-   <section class="panel">
-    <h2>Your Turn</h2>
-
-    <div class="factiontag">
-     <span class="crest" style="background:${f.color}">
-      ${f.mark}
-     </span>
-
-     <div>
-      <b>${f.name}</b><br>
-      <span class="small">
-       Round ${S.round} of 10 ·
-       ${p.controller==='ai'?'Computer':'Human'}
-      </span>
-     </div>
-    </div>
-   </section>
-
-   <section class="panel">
-    <h2>Turn Phases</h2>
-
-    ${PHASES.map((k,i)=>`
-     <div class="phase ${
-      S.phase===k?'active':
-      PHASES.indexOf(S.phase)>i?'done':''
-     }">
-      <span class="num">${i+1}</span>
-      ${fmt(k)}
-     </div>
-    `).join('')}
-
-    <div class="small">
-     ${S.phase==='collect'
-      ?'Tax your village, trade and move caravans.'
-      :S.phase==='build'
-       ?'Build roads, raise troops and improve settlements.'
-       :'March your armies and capture important locations.'}
-    </div>
-
-    <div class="hint">
-     ${S.phase==='collect'
-      ?S.collected
-       ?`Collected. Merchant buys: ${S.marketBought}/4`
-       :'Ready to collect your taxes.'
-      :S.phase==='build'
-       ?`Building actions remaining: <b>${S.buildLeft}</b>`
-       :`Army orders remaining: <b>${S.attackLeft}</b>`}
-    </div>
-   </section>
-
-   <section class="panel">
-    <h2>Royal Treasury</h2>
-
-    ${[
-     ['gold','🟡'],
-     ['timber','🪵'],
-     ['stone','🪨'],
-     ['food','🌾'],
-     ['iron','⚒']
-    ].map(([r,ico])=>`
-     <div class="resource">
-      <span>${ico} ${fmt(r)}</span>
-      <b>${p[r]}</b>
-     </div>
-    `).join('')}
-
-    <div class="rule"></div>
-
-    <b>Crown Influence:</b>
-    <span class="score">${p.score}</span>
-   </section>
-
-   <section class="panel">
-    <h2>Royal Orders</h2>
-
-    <div class="actions">
-     <button class="btn ${S.phase==='collect'?'primary':''}"
-      data-action="collect"
-      ${S.phase==='collect'&&!S.collected&&
-        p.controller==='human'?'':'disabled'}>
-      Collect Taxes
-     </button>
-
-     <button class="btn" data-action="market"
-      ${S.phase==='collect'&&S.collected&&
-        p.controller==='human'?'':'disabled'}>
-      Merchant
-     </button>
-
-     <button class="btn ${roadMode?'active':''}"
-      data-action="roadMode"
-      ${S.phase==='build'&&S.buildLeft&&
-        p.controller==='human'?'':'disabled'}>
-      Build Road
-     </button>
-
-     <button class="btn" data-action="caravans"
-      ${p.controller==='human'?'':'disabled'}>
-      Caravans
-     </button>
-
-     <button class="btn" data-action="newCaravan"
-      ${S.phase==='build'&&S.buildLeft&&
-        p.caravans.length<3&&
-        p.controller==='human'?'':'disabled'}>
-      + Wagon
-     </button>
-
-     <button class="btn primary full" data-action="next"
-      ${p.controller==='ai'||
-        S.phase==='collect'&&!S.collected?'disabled':''}>
-      ${S.phase==='attack'?'End Turn ↠':'Next Phase →'}
-     </button>
-    </div>
-   </section>
-  </aside>
- `;
+ const p=active(),f=FACTIONS[p.faction],human=p.controller==='human';
+ return `<aside class="left">
+  <section class="panel"><h2>Your Kingdom</h2><div class="factiontag"><span class="crest" style="background:${f.color}">${f.mark}</span><div><b>${f.name}</b><br><span class="small">Round ${S.round} of 10 · ${human?'Human':'Computer'}</span></div></div></section>
+  <section class="panel"><h2>Royal Treasury</h2>
+   ${[['gold','🟡'],['timber','🪵'],['stone','🪨'],['food','🌾'],['iron','⛏️']].map(([r,ico])=>`<div class="resource"><span>${ico} ${fmt(r)}</span><b>${p[r]}</b></div>`).join('')}
+   <div class="hint">Taxes and caravan deliveries arrive automatically at the start of your turn.</div>
+  </section>
+  <section class="panel"><h2>Your Actions</h2>
+   <div class="line"><span>🛤️ Builds left</span><b>${S.buildLeft}/2</b></div>
+   <div class="line"><span>⚔️ Army orders left</span><b>${S.attackLeft}/2</b></div>
+   <div class="hint">Click a <b>glowing dotted road</b> to construct it immediately for 1 Timber + 1 Stone.</div>
+   <div class="actions">
+    <button class="btn" data-action="market" ${human?'':'disabled'}>🏪 Merchant</button>
+    <button class="btn" data-action="caravans" ${human?'':'disabled'}>🛒 Caravans</button>
+    <button class="btn" data-action="newCaravan" ${human&&S.buildLeft&&p.caravans.length<3?'':'disabled'}>+ Caravan</button>
+    <button class="btn primary full" data-action="next" ${human?'':'disabled'}>End Turn ↠</button>
+   </div>
+  </section>
+ </aside>`;
 }
-
 function nodePanel(){
- const p=active();
-
- if(!selection){
-  return `
-   <h2>Location Details</h2>
-
-   <p>
-    Choose a location on the map to inspect its ownership,
-    supply production, and available actions.
-   </p>
-
-   <div class="notice">
-    <b>Dirt roads:</b>
-    Dotted routes are unbuilt.
-    Use <b>Build Road</b> during the Build phase,
-    then choose a glowing route to lay a road.
-   </div>
-
-   <div class="notice">
-    <b>Caravans:</b>
-    Once you control a resource location and connect
-    it to your Castle, assign a caravan to deliver
-    its supplies.
-   </div>
-  `;
- }
-
+ const p=active(),human=p.controller==='human';
+ if(!selection)return `<h2>Location Details</h2><p>Select a place to inspect it. Dotted roads are future connections; <b>gold highlighted</b> routes can be built by clicking directly.</p><div class="notice">Your taxes and caravans collect automatically. Use Merchant to purchase extra materials, then build roads or recruit soldiers whenever you like during your turn.</div>`;
  if(selection.startsWith('edge:')){
-  const e=EDGE[selection.slice(5)];
-  if(!e)return'';
-
-  return `
-   <h2>Road Connection</h2>
-
-   <p>
-    ${NODE[e.a].name}<br>↕<br>${NODE[e.b].name}
-   </p>
-
-   <p>Status:
-    <b>${S.roads[e.id]===undefined
-     ?'Unbuilt dirt trail'
-     :FACTIONS[S.players[S.roads[e.id]].faction].name+' road'}
-    </b>
-   </p>
-
-   ${S.phase==='build'&&
-      active().controller==='human'&&
-      canBuildRoad(p,e)
-     ?`<button class="btn primary wide"
-       data-action="road" data-id="${e.id}">
-       Build: 1 Timber + 1 Stone
-      </button>`
-     :''}
-  `;
+  const e=EDGE[selection.slice(5)];if(!e)return'';
+  const built=S.roads[e.id]!==undefined;
+  return `<h2>Road Connection</h2><p>${escapeHTML(NODE[e.a].name)} ↔ ${escapeHTML(NODE[e.b].name)}</p><p><b>${built?FACTIONS[S.players[S.roads[e.id]].faction].name+' road':'Unbuilt dirt trail'}</b></p><div class="hint">${built?'This road is already constructed.':canBuildRoad(p,e)?'Click this path to build it.':'To build, connect from your own road network and have 1 Timber, 1 Stone, and a building action available.'}</div>`;
  }
-
- const n=NODE[selection],t=state(selection);
- const mine=t.owner===p.id;
- const connectedNow=connected(p).has(n.id);
-
- let html=`
-  <h2>${escapeHTML(n.name)}</h2>
-
-  <div class="location">
-   <div class="row">
-    <b>${INFO[n.type].icon} ${fmt(n.type)}</b>
-    <span class="pill">
-     ${t.owner===null
-      ?'Neutral'
-      :FACTIONS[S.players[t.owner].faction].name}
-    </span>
-   </div>
-
-   <div class="rule"></div>
-
-   <div class="small">
-    ${INFO[n.type].resource
-     ?`Produces <b>${INFO[n.type].yield}
-       ${fmt(INFO[n.type].resource)}</b> per Collect
-       when owned and connected.
-       Current stockpile: <b>${t.stock}</b>.`
-     :'An important location in the medieval trade network.'}
-   </div>
-
-   ${t.building
-    ?`<div class="small">
-       Structure: ${fmt(t.building)}
-      </div>`
-    :''}
-
-   ${t.town
-    ?'<div class="small">Upgraded town: +2 tax Gold</div>'
-    :''}
-
-   <div class="small">
-    Garrison:
-    ${UI.map(k=>UNITS[k].icon+t.units[k]).join(' · ')}
-   </div>
-  </div>
- `;
-
- if(INFO[n.type].resource&&mine&&connectedNow){
-  html+=`
-   <button class="btn wide"
-    data-action="dispatchSelect" data-id="${n.id}">
-    🚚 Assign Caravan Here
-   </button>
-  `;
+ const n=NODE[selection],t=state(selection);if(!n||!t)return'';
+ const mine=t.owner===p.id,connectedNow=connected(p).has(n.id);
+ let html=`<h2>${INFO[n.type].icon} ${escapeHTML(n.name)}</h2><div class="location"><div class="row"><b>${fmt(n.type)}</b><span class="pill">${t.owner===null?'Neutral':FACTIONS[S.players[t.owner].faction].name}</span></div><div class="rule"></div><p class="small">${INFO[n.type].resource?`Produces ${INFO[n.type].yield} ${fmt(INFO[n.type].resource)} each turn once owned and connected. Stockpile: <b>${t.stock}</b>.`:'An important location on the royal road network.'}</p>${t.building?`<p class="small">Structure: ${fmt(t.building)}</p>`:''}${t.town?'<p class="small">Upgraded town: +2 tax Gold</p>':''}<p class="small">Soldiers: ${UI.map(k=>UNITS[k].icon+t.units[k]).join(' · ')}</p></div>`;
+ if(mine&&connectedNow&&INFO[n.type].resource&&human)html+=`<button class="btn wide" data-action="dispatchSelect" data-id="${n.id}">🛒 Assign Caravan Here</button>`;
+ if(mine&&human&&S.buildLeft>0&&connectedNow){
+  if(!t.building&&n.type!=='city'&&n.id!==p.home)html+=`<div class="btnrow" style="margin-top:8px"><button class="btn" data-action="structure" data-kind="tower" data-id="${n.id}">Tower · 2 Timber, 2 Stone</button><button class="btn" data-action="structure" data-kind="barracks" data-id="${n.id}">Barracks · 2 Timber, 2 Stone, 1 Food</button></div>`;
+  if(n.id===({red:'hr',blue:'hb',gold:'hg',green:'hv'}[p.home])&&!t.town)html+=`<button class="btn wide" data-action="structure" data-kind="town" data-id="${n.id}">Upgrade Village (+2 Gold taxes)</button>`;
+  if(n.id===p.home||t.building==='barracks')html+=`<h3>Recruit Soldiers</h3><div class="btnrow">${UI.map(k=>`<button class="btn" data-action="recruit" data-kind="${k}" data-id="${n.id}" ${!costOK(p,UNITS[k].cost)||troops(t.units)>=4||armies(p.id)>=14?'disabled':''}>${UNITS[k].icon} ${fmt(k)}</button>`).join('')}</div>`;
  }
-
- if(mine&&p.controller==='human'&&
-    S.phase==='build'&&S.buildLeft){
-
-  if(connectedNow){
-   if(!t.building&&n.type!=='city'&&n.id!==p.home){
-    html+=`
-     <div class="btnrow" style="margin-top:8px">
-      <button class="btn" data-action="structure"
-       data-id="${n.id}" data-kind="tower">
-       Tower (2 wood, 2 stone)
-      </button>
-
-      <button class="btn" data-action="structure"
-       data-id="${n.id}" data-kind="barracks">
-       Barracks (2 wood, 2 stone, 1 food)
-      </button>
-     </div>
-    `;
-   }
-
-   if(n.id===({
-      red:'hr',blue:'hb',gold:'hg',green:'hv'
-     }[p.home])&&!t.town){
-    html+=`
-     <button class="btn wide" style="margin-top:7px"
-      data-action="structure" data-kind="town"
-      data-id="${n.id}">
-      Upgrade Town (+2 tax; 3 wood, 3 stone, 3 gold)
-     </button>
-    `;
-   }
-
-   if(n.id===p.home||t.building==='barracks'){
-    html+=`
-     <h3>Recruit Soldiers</h3>
-
-     <div class="btnrow">
-      ${UI.map(k=>`
-       <button class="btn" data-action="recruit"
-        data-kind="${k}" data-id="${n.id}"
-        ${!costOK(p,UNITS[k].cost)||
-          troops(t.units)>=4?'disabled':''}>
-        ${UNITS[k].icon} ${fmt(k)}
-       </button>
-      `).join('')}
-     </div>
-    `;
-   }
-  }
- }
-
- if(mine&&p.controller==='human'&&
-    S.phase==='attack'&&S.attackLeft){
-
-  if(troops(t.units)){
-   html+=`
-    <button class="btn wide
-     ${moveSource===n.id?'active':''}"
-     data-action="chooseArmy" data-id="${n.id}">
-     ⚔ ${moveSource===n.id
-      ?'Change selected troops'
-      :'Command this army'}
-    </button>
-   `;
-  }
-
+ if(mine&&human&&S.attackLeft>0){
+  if(troops(t.units))html+=`<button class="btn wide ${moveSource===n.id?'active':''}" data-action="chooseArmy" data-id="${n.id}">⚔️ ${moveSource===n.id?'Adjust marching troops':'Command this army'}</button>`;
   if(moveSource===n.id){
-   html+=`
-    <h3>Marching Army</h3>
-
-    ${UI.filter(k=>t.units[k]).map(k=>`
-     <div class="choice">
-      <span>${UNITS[k].icon} ${fmt(k)}</span>
-
-      <span>
-       <button class="btn" data-action="adjust"
-        data-kind="${k}" data-d="-1">−</button>
-
-       ${moveUnits[k]}
-
-       <button class="btn" data-action="adjust"
-        data-kind="${k}" data-d="1">+</button>
-      </span>
-     </div>
-    `).join('')}
-
-    <div class="hint">
-     Select troops and click an adjacent destination
-     highlighted in green.
-     Dirt paths are walkable by soldiers even
-     before roads are built.
-    </div>
-   `;
+   html+=`<h3>Marching Army</h3>${UI.filter(k=>t.units[k]).map(k=>`<div class="choice"><span>${UNITS[k].icon} ${fmt(k)}</span><span><button class="btn" data-action="adjust" data-kind="${k}" data-d="-1">−</button> ${moveUnits[k]} <button class="btn" data-action="adjust" data-kind="${k}" data-d="1">+</button></span></div>`).join('')}<div class="hint">Select your troops, then click any adjacent location to move or attack. Soldiers can use dirt trails before a road is built.</div>`;
   }
  }
-
  return html;
 }
-
-function rightPanel(){
- const p=active();
-
- return `
-  <aside class="right">
-   <section class="panel">
-    ${nodePanel()}
-   </section>
-
-   <section class="panel">
-    <h2>Kingdom Standings</h2>
-    ${roster()}
-
-    <p class="small" style="margin-top:8px">
-     Win with 15 Influence after a completed round
-     or highest after 10 rounds.
-    </p>
-   </section>
-
-   <section class="panel">
-    <h2>Royal Chronicle</h2>
-
-    <div class="log">
-     ${S.log.slice(0,11).map(s=>`
-      <div>${escapeHTML(s)}</div>
-     `).join('')}
-    </div>
-   </section>
-  </aside>
- `;
-}
-
+function rightPanel(){const p=active();return `<aside class="right"><section class="panel">${nodePanel()}</section><section class="panel"><h2>Kingdom Standings</h2>${roster()}<p class="small" style="margin-top:8px">Win with 15 Influence after a completed round or highest after 10 rounds.</p></section><section class="panel"><h2>Royal Chronicle</h2><div class="log">${S.log.slice(0,11).map(s=>`<div>${escapeHTML(s)}</div>`).join('')}</div></section></aside>`}
 function boardPage(){
- const p=active();
-
- app.innerHTML=`
-  <header class="top">
-   <div>
-    <div class="logo">⚜ Shifting Kingdoms</div>
-    <div class="tag">COLLECT · BUILD · ATTACK</div>
-   </div>
-
-   <div class="banner">
-    <b>Round ${S.round} / 10</b>
-    <span>${fmt(S.phase)} Phase</span>
-
-    <button class="btn" data-action="rules">Rules</button>
-    <button class="btn" data-action="sound">
-     ♫ ${soundOn?'On':'Off'}
-    </button>
-    <button class="btn" data-action="menu">Menu</button>
-   </div>
-  </header>
-
-  <main class="main">
-   ${leftPanel()}
-
-   <section class="mapcol">
-    <div class="map-shell">
-     <div class="map-scroll">
-      ${mapSVG()}
-     </div>
-
-     <div class="map-legend">
-      ● Solid color = built road<br>
-      ┄ Pale dots = future road
-     </div>
-    </div>
-
-    <div class="mapfoot">
-     The Living Kingdom · Click a location to inspect ·
-     In Build Road mode, click a highlighted dirt route
-    </div>
-   </section>
-
-   ${rightPanel()}
-  </main>
- `;
-
+ app.innerHTML=`<header class="top"><div><div class="logo">⚜ Shifting Kingdoms</div><div class="tag">THE FOUR KINGDOMS · THE LIVING WORLD</div></div><div class="banner"><b>Round ${S.round} / 10</b><span>${FACTIONS[active().faction].name}'s Turn</span><button class="btn" data-action="rules">Rules</button><button class="btn" data-action="sound">♫ ${soundOn?'On':'Off'}</button><button class="btn" data-action="menu">Menu</button></div></header><main class="main">${leftPanel()}<section class="mapcol"><div class="map-shell"><div class="map-scroll">${mapSVG()}</div><div class="map-legend">● Solid = built road<br>┄ Dots = future road<br>✦ Gold = build now</div></div><div class="mapfoot">Click a highlighted dirt road to build it · Click a location to inspect or command troops</div></section>${rightPanel()}</main>`;
  if(S.finished)showVictory();
 }
-
-function render(){
- if(screen==='menu')menu();
- else if(screen==='setup')setupPage();
- else if(screen==='game'&&S)boardPage();
-}
-
-function openModal(html,type='custom'){
- modal=type;
- modalRoot.className='modalback';
-
- modalRoot.innerHTML=`
-  <section class="modal" role="dialog" aria-modal="true">
-   ${html}
-  </section>
- `;
-}
-
-function closeModal(){
- modal='';
- modalRoot.className='hidden';
- modalRoot.innerHTML='';
-}
-
-function rules(){
- openModal(`
-  <h2>📜 How to Play</h2>
-
-  <p>
-   <b>Win:</b> Earn 15 Crown Influence at the end of
-   a round, or lead after 10 rounds.
-   Each neutral village gives +1 per round,
-   controlling the Royal City gives +3,
-   and every three resource locations gives +1.
-  </p>
-
-  <h3>1. Collect</h3>
-
-  <p>
-   Collect taxes (+4 Gold from your homeland,
-   plus villages), produce resources at connected
-   resource sites, and move caravans two road links.
-   Use Gold to buy up to four resource units per turn
-   from merchants.
-  </p>
-
-  <h3>2. Build</h3>
-
-  <p>
-   Two actions to build roads (1 Timber and 1 Stone
-   per link), construct Towers/Barracks, upgrade your
-   village, recruit units, or buy another caravan.
-   To use a resource location, you must own it and
-   connect it to your Castle using built roads.
-   Building a road to a neutral resource site claims it.
-   The Royal City must be entered by an army.
-  </p>
-
-  <h3>3. Attack</h3>
-
-  <p>
-   Two orders. Select an army and choose which units
-   march; soldiers move one dirt-road connection per
-   order, whether or not a stone road exists.
-   Capture neutral locations or attack enemy troops.
-   Attacker strength must exceed defender strength
-   to win; ties defend.
-   Enemy home Castles are protected.
-  </p>
-
-  <h3>Caravans</h3>
-
-  <p>
-   Select an owned, connected forest, farm, quarry
-   or mine and assign a caravan.
-   It automatically follows your built roads,
-   picks up to four resource units from the stockpile,
-   and returns them to your Castle.
-   Enemy takeovers may block the route or intercept cargo.
-  </p>
-
-  <h3>Resources</h3>
-
-  <p>
-   Timber comes from forests; Stone from quarries;
-   Food from farms; Iron from mines.
-   Merchant prices: Timber 2 Gold,
-   Stone 2, Food 2, Iron 4.
-   Your castle taxes ensure no one is permanently stranded.
-  </p>
-
-  <div class="btnrow">
-   <button class="btn primary" data-action="close">
-    Return to Game
-   </button>
-  </div>
- `,'rules');
-}
-
-function market(){
- const p=active();
-
- openModal(`
-  <h2>🏪 Visiting Merchant</h2>
-
-  <p>
-   Buy emergency materials with your tax income.
-   The merchant can sell four units per Collect phase.
-  </p>
-
-  <p>
-   <b>${p.gold} Gold</b> ·
-   ${4-S.marketBought} purchases remaining
-  </p>
-
-  ${Object.keys(PRICES).map(k=>`
-   <div class="choice">
-    <label>${fmt(k)} — ${PRICES[k]} Gold each</label>
-
-    <button class="btn"
-     data-action="buy" data-kind="${k}"
-     ${p.gold<PRICES[k]||S.marketBought>=4?'disabled':''}>
-     Buy 1
-    </button>
-   </div>
-  `).join('')}
-
-  <div class="btnrow">
-   <button class="btn primary" data-action="close">
-    Done Trading
-   </button>
-  </div>
- `,'market');
-}
-
-function caravanModal(){
- const p=active();
-
- const sites=NODES.filter(n=>
-  INFO[n.type]?.resource&&
-  state(n.id).owner===p.id&&
-  route(p,p.home,n.id)
- );
-
- openModal(`
-  <h2>🚚 Royal Caravans</h2>
-
-  <p>
-   Caravans automatically move two road connections
-   per Collect. They bring back up to four units
-   of a single resource at a time.
-  </p>
-
-  ${p.caravans.map((c,i)=>`
-   <div class="location">
-    <b>Caravan ${i+1}</b>
-
-    <p class="small">
-     At ${NODE[c.at].name}.
-     ${c.cargo
-      ?`Carrying ${c.cargo} ${c.cargoType}.`
-      :c.target
-       ?'Traveling toward '+NODE[c.target].name+'.'
-       :'Idle.'}
-    </p>
-
-    <label for="wagon-${i}">Route destination</label>
-
-    <select id="wagon-${i}" class="wagon"
-     data-wagon="${i}"
-     style="width:100%;padding:8px">
-
-     <option value="">Stop / remain idle</option>
-
-     ${sites.map(n=>`
-      <option value="${n.id}"
-       ${c.target===n.id?'selected':''}>
-       ${n.name} (${fmt(INFO[n.type].resource)})
-      </option>
-     `).join('')}
-    </select>
-   </div>
-  `).join('')}
-
-  <div class="btnrow">
-   <button class="btn primary" data-action="close">
-    Done
-   </button>
-  </div>
- `,'caravans');
-}
-
-function showVictory(){
- if(modal==='victory')return;
-
- let names=S.winners.map(i=>
-  FACTIONS[S.players[i].faction].name
- ).join(' & ');
-
- openModal(`
-  <div class="center">
-   <div style="font-size:5rem;color:#966d35">♛</div>
-
-   <h2>
-    ${S.winners.length>1
-     ?'A Shared Crown'
-     :'A New Sovereign'}
-   </h2>
-
-   <h2>${escapeHTML(names)}</h2>
-
-   <p>The kingdoms fought for ${S.round} rounds.</p>
-
-   ${S.players.map(p=>`
-    <div class="line">
-     <span>${factionLabel(p)}</span>
-     <b>${p.score} Influence</b>
-    </div>
-   `).join('')}
-
-   <div class="btnrow"
-    style="justify-content:center;margin-top:18px">
-    <button class="btn primary" data-action="setup">
-     New Match
-    </button>
-
-    <button class="btn" data-action="leave">
-     Main Menu
-    </button>
-   </div>
-  </div>
- `,'victory');
-}
-
-/* Computer opponents use the same legal moves as human players. */
-
-function distToGoal(start,p){
- const goals=NODES.filter(n=>
-  n.type==='city'||
-  INFO[n.type]?.resource&&
-   state(n.id).owner!==p.id||
-  n.type==='village'&&
-   state(n.id).owner!==p.id
- ).map(n=>n.id);
-
- if(!goals.length)return 0;
-
- const seen=new Set([start]),q=[[start,0]];
-
- while(q.length){
-  const [id,d]=q.shift();
-
-  if(goals.includes(id))return d;
-
-  for(const e of incident(id)){
-   const v=other(e,id);
-
-   if(!seen.has(v)){
-    seen.add(v);
-    q.push([v,d+1]);
-   }
-  }
- }
- return 9;
-}
-
-function bestAIroad(p){
- const opts=roadOptions(p);
-
- const res=opts.map(e=>{
-  const net=connected(p);
-  const id=net.has(e.a)?e.b:e.a;
-  const n=NODE[id],owner=state(id).owner;
-
-  let value=0;
-
-  if(INFO[n.type]?.resource){
-   value+=36+
-    (n.type==='forest'?8:0)+
-    (n.type==='quarry'?7:0);
-  }else if(n.type==='village'){
-   value+=18;
-  }else if(n.type==='city'){
-   value-=12;
-  }else{
-   value+=17;
-  }
-
-  value+=Math.max(0,6-distToGoal(id,p))*3;
-
-  if(owner===p.id)value-=8;
-  if(S.roads[e.id]!==undefined)value-=6;
-
-  return{e,value};
- });
-
- res.sort((a,b)=>b.value-a.value);
- return res[0]?.e;
-}
-
-function bestAImarch(p){
- let choices=[];
-
- for(const n of NODES){
-  const t=state(n.id);
-
-  if(t.owner!==p.id||!troops(t.units))continue;
-
-  const sets=[clone(t.units)];
-
-  for(const k of UI){
-   if(t.units[k]){
-    let u=freeUnits();
-    u[k]=t.units[k];
-    sets.push(u);
-   }
-  }
-
-  for(const u of sets){
-   for(const e of incident(n.id)){
-    const target=other(e,n.id);
-    const dst=state(target);
-
-    if(!canAttack(n.id,target,u))continue;
-
-    const b=combat(n.id,target,u);
-
-    if(b.enemy&&!b.win)continue;
-
-    let value=0;
-
-    if(dst.owner!==p.id){
-     value+=8;
-
-     if(INFO[NODE[target].type]?.resource)
-      value+=18;
-
-     if(NODE[target].type==='city')
-      value+=30;
-
-     if(NODE[target].type==='village')
-      value+=22;
-
-     if(dst.owner!==null)value+=5;
-
-     value+=Math.max(0,5-distToGoal(target,p))*2;
-    }else{
-     value+=(
-      distToGoal(n.id,p)-distToGoal(target,p)
-     )*4-6;
-    }
-
-    if(n.id===p.home)value+=5;
-
-    if(state(n.id).building==='tower')
-     value-=6;
-
-    if(dst.owner===p.id&&troops(dst.units)>=2)
-     value-=12;
-
-    value-=troops(u)*.2;
-
-    choices.push({
-     from:n.id,to:target,u,b,value
-    });
-   }
-  }
- }
-
- choices.sort((a,b)=>b.value-a.value);
- return choices[0];
-}
-
-function runIfAI(){
- clearTimeout(aiTimer);
-
- if(!S||
-    screen!=='game'||
-    S.finished||
-    modal||
-    active().controller!=='ai')return;
-
- aiTimer=setTimeout(aiStep,270);
-}
-
+function render(){if(screen==='menu')menu();else if(screen==='setup')setupPage();else if(screen==='game'&&S)boardPage()}
+function openModal(html,type='custom'){modal=type;modalRoot.className='modalback';modalRoot.innerHTML=`<section class="modal" role="dialog" aria-modal="true">${html}</section>`}
+function closeModal(){modal='';modalRoot.className='hidden';modalRoot.innerHTML=''}
+function rules(){openModal(`<h2>📜 How to Play</h2>
+ <p><b>Your turn is continuous:</b> taxes and caravan deliveries happen automatically at the beginning. Buy goods, build, and move armies in whatever order you choose. Click <b>End Turn</b> when ready.</p>
+ <p><b>Roads:</b> Dotted trails are unbuilt. Gold-glowing routes can be built by clicking directly (1 Timber + 1 Stone). You have 2 building actions per turn, and can build connected roads, recruit soldiers, or construct buildings.</p>
+ <p><b>Caravans:</b> Connect a resource location to your Castle using your roads, control the site, then assign a caravan. Caravans travel 2 road links per turn, deliver up to 4 resources, and repeat automatically.</p>
+ <p><b>Merchants:</b> Use tax Gold to buy up to 4 resource units each turn. Timber, Stone and Food cost 2 Gold, Iron costs 4.</p>
+ <p><b>Armies:</b> You have 2 army orders per turn. Select your own troops and an adjacent location. Battles have no dice; attackers win only when stronger than defenders. Enemy starting Castles cannot be conquered.</p>
+ <p><b>Victory:</b> Gain 1 Crown Influence per neutral village, 3 for the Royal City, and 1 per 3 owned resource sites each completed round. Win with 15 Influence or the highest after 10 rounds.</p>
+ <div class="btnrow"><button class="btn primary" data-action="close">Return to Game</button></div>`,'rules')}
+function market(){const p=active();openModal(`<h2>🏪 Visiting Merchant</h2><p>Buy emergency materials with your tax income. The merchant can sell four units per turn.</p><p><b>${p.gold} Gold</b> · ${4-S.marketBought} purchases remaining</p>${Object.keys(PRICES).map(k=>`<div class="choice"><label>${fmt(k)} — ${PRICES[k]} Gold each</label><button class="btn" data-action="buy" data-kind="${k}" ${p.gold<PRICES[k]||S.marketBought>=4?'disabled':''}>Buy 1</button></div>`).join('')}<div class="btnrow"><button class="btn primary" data-action="close">Done Trading</button></div>`,'market')}
+function caravanModal(){const p=active(),sites=NODES.filter(n=>INFO[n.type]?.resource&&state(n.id).owner===p.id&&route(p,p.home,n.id));openModal(`<h2>🚚 Royal Caravans</h2><p>Caravans automatically move two road connections per Collect. They bring back up to four units of a single resource at a time.</p>${p.caravans.map((c,i)=>`<div class="location"><b>Caravan ${i+1}</b><p class="small">At ${NODE[c.at].name}. ${c.cargo?`Carrying ${c.cargo} ${c.cargoType}.`:c.target?'Traveling toward '+NODE[c.target].name+'.':'Idle.'}</p><label for="wagon-${i}">Route destination</label><select id="wagon-${i}" class="wagon" data-wagon="${i}" style="width:100%;padding:8px"><option value="">Stop / remain idle</option>${sites.map(n=>`<option value="${n.id}" ${c.target===n.id?'selected':''}>${n.name} (${fmt(INFO[n.type].resource)})</option>`).join('')}</select></div>`).join('')}<div class="btnrow"><button class="btn primary" data-action="close">Done</button></div>`,'caravans')}
+function showVictory(){if(modal==='victory')return;let names=S.winners.map(i=>FACTIONS[S.players[i].faction].name).join(' & ');openModal(`<div class="center"><div style="font-size:5rem;color:#966d35">♛</div><h2>${S.winners.length>1?'A Shared Crown':'A New Sovereign'}</h2><h2>${escapeHTML(names)}</h2><p>The kingdoms fought for ${S.round} rounds.</p>${S.players.map(p=>`<div class="line"><span>${factionLabel(p)}</span><b>${p.score} Influence</b></div>`).join('')}<div class="btnrow" style="justify-content:center;margin-top:18px"><button class="btn primary" data-action="setup">New Match</button><button class="btn" data-action="leave">Main Menu</button></div></div>`,'victory')}
+/* =============================================================
+   Computer opponents. They use the same legal moves as people.
+   ============================================================= */
+function distToGoal(start,p){const goals=NODES.filter(n=>n.type==='city'||INFO[n.type]?.resource&&state(n.id).owner!==p.id||n.type==='village'&&state(n.id).owner!==p.id).map(n=>n.id);if(!goals.length)return 0;const seen=new Set([start]),q=[[start,0]];while(q.length){const [id,d]=q.shift();if(goals.includes(id))return d;for(const e of incident(id)){const v=other(e,id);if(!seen.has(v)){seen.add(v);q.push([v,d+1])}}}return 9}
+function bestAIroad(p){const opts=roadOptions(p),res=opts.map(e=>{const net=connected(p),id=net.has(e.a)?e.b:e.a,n=NODE[id],owner=state(id).owner;let value=0;if(INFO[n.type]?.resource){value+=36+(n.type==='forest'?8:0)+(n.type==='quarry'?7:0)}else if(n.type==='village')value+=18;else if(n.type==='city')value-=12;else value+=17;value+=Math.max(0,6-distToGoal(id,p))*3;if(owner===p.id)value-=8;if(S.roads[e.id]!==undefined)value-=6;return{e,value}});res.sort((a,b)=>b.value-a.value);return res[0]?.e}
+function bestAImarch(p){let choices=[];for(const n of NODES){const t=state(n.id);if(t.owner!==p.id||!troops(t.units))continue;const sets=[clone(t.units)];for(const k of UI)if(t.units[k]){let u=freeUnits();u[k]=t.units[k];sets.push(u)}for(const u of sets){for(const e of incident(n.id)){const target=other(e,n.id),dst=state(target);if(!canAttack(n.id,target,u))continue;const b=combat(n.id,target,u);if(b.enemy&&!b.win)continue;let value=0;if(dst.owner!==p.id){value+=8;if(INFO[NODE[target].type]?.resource)value+=18;if(NODE[target].type==='city')value+=30;if(NODE[target].type==='village')value+=22;if(dst.owner!==null)value+=5;value+=Math.max(0,5-distToGoal(target,p))*2;}else value+=(distToGoal(n.id,p)-distToGoal(target,p))*4-6;if(n.id===p.home)value+=5;if(state(n.id).building==='tower')value-=6;if(dst.owner===p.id&&troops(dst.units)>=2)value-=12;value-=troops(u)*.2;choices.push({from:n.id,to:target,u,b,value})}}}choices.sort((a,b)=>b.value-a.value);return choices[0]}
+function runIfAI(){clearTimeout(aiTimer);if(!S||screen!=='game'||S.finished||modal||active().controller!=='ai')return;aiTimer=setTimeout(aiStep,270)}
 function aiStep(){
- if(!S||
-    screen!=='game'||
-    S.finished||
-    modal||
-    active().controller!=='ai'||
-    busy)return;
-
+ if(!S||screen!=='game'||S.finished||modal||active().controller!=='ai'||busy)return;
  const p=active();
-
- if(S.phase==='collect'){
-  collect();
-
-  for(const c of p.caravans){
-   if(!c.target){
-    const n=NODES.find(n=>
-     INFO[n.type]?.resource&&
-     state(n.id).owner===p.id&&
-     route(p,p.home,n.id)
-    );
-
-    if(n)c.target=n.id;
-   }
-  }
-
-  while(S.marketBought<4&&
-        p.gold>=2&&
-        (p.timber<2||p.stone<2||p.food<1)){
-
-   const k=p.timber<p.stone
-    ?'timber'
-    :p.stone<2
-     ?'stone'
-     :'food';
-
-   p.gold-=PRICES[k];
-   p[k]++;
-   S.marketBought++;
-  }
-
-  persist();
-  advance();
-  return;
+ // Buy missing materials once per AI step, within the same merchant limit as humans.
+ while(S.marketBought<4&&p.gold>=2&&(p.timber<2||p.stone<2||p.food<1)){
+  const k=p.timber<p.stone?'timber':p.stone<2?'stone':'food';
+  p.gold-=PRICES[k];p[k]++;S.marketBought++;
  }
-
- if(S.phase==='build'){
-  if(!S.buildLeft){
-   advance();
-   return;
-  }
-
-  let done=false,road=bestAIroad(p);
-
-  if(road&&costOK(p,BUILD_COST.road)){
-   buildRoad(road.id);
-   done=true;
-
-  }else if(armies(p.id)<9){
+ for(const c of p.caravans){
+  if(!c.target){const n=NODES.find(n=>INFO[n.type]?.resource&&state(n.id).owner===p.id&&route(p,p.home,n.id));if(n)c.target=n.id;}
+ }
+ if(S.buildLeft>0){
+  let done=false;const road=bestAIroad(p);
+  if(road&&canBuildRoad(p,road))done=buildRoad(road.id);
+  if(!done&&armies(p.id)<10){
    const home=state(p.home);
-
-   let k=p.food>=1&&p.gold>=1
-    ?'levy'
-    :null;
-
-   if(p.food>=2&&p.iron>=1&&p.gold>=2)
-    k='knight';
-
-   if(k&&troops(home.units)<4&&
-      costOK(p,UNITS[k].cost)){
-    done=recruit(k,p.home);
-   }
+   let kind=p.food>=2&&p.iron>=1&&p.gold>=2?'knight':p.food>=1&&p.gold>=1?'levy':null;
+   if(kind&&troops(home.units)<4&&costOK(p,UNITS[kind].cost))done=recruit(kind,p.home);
   }
-
   if(!done&&costOK(p,BUILD_COST.town)){
-   const v={
-    red:'hr',blue:'hb',gold:'hg',green:'hv'
-   }[p.home];
-
-   if(!state(v).town)
-    done=buildStructure('town',v);
+   const v={red:'hr',blue:'hb',gold:'hg',green:'hv'}[p.home];
+   if(!state(v).town)done=buildStructure('town',v);
   }
-
-  if(!done){
-   S.buildLeft=0;
-   persist();
-   render();
-  }
-
-  setTimeout(()=>{
-   if(S&&!S.finished&&active().controller==='ai'){
-    if(!S.buildLeft)advance();
-    else runIfAI();
-   }
-  },210);
-
-  return;
+  if(!done)S.buildLeft=0;
+  persist();render();
+  aiTimer=setTimeout(aiStep,110);return;
  }
-
- if(S.phase==='attack'){
-  if(!S.attackLeft){
-   advance();
-   return;
-  }
-
+ if(S.attackLeft>0){
   const choice=bestAImarch(p);
-
-  if(choice&&choice.value>0){
-   moveAttack(choice.from,choice.to,choice.u,true);
-  }else{
-   S.attackLeft=0;
-   persist();
-   render();
-  }
-
-  setTimeout(()=>{
-   if(S&&!S.finished&&active().controller==='ai'){
-    if(!S.attackLeft)advance();
-    else runIfAI();
-   }
-  },210);
+  if(choice&&choice.value>0)moveAttack(choice.from,choice.to,choice.u,true);
+  else S.attackLeft=0;
+  persist();render();
+  aiTimer=setTimeout(aiStep,110);return;
  }
+ advance();
 }
-
-/* All user actions are validated by the game rules. */
-
+/* =============================================================
+   Event control — all game commands are validated in the engine.
+   ============================================================= */
 function selectNode(id){
- if(!S||S.finished||modal||busy||
-    active().controller==='ai')return;
-
- if(roadMode){
-  selection=id;
-  render();
-  return;
- }
-
- if(moveSource&&
-    S.phase==='attack'&&
-    id!==moveSource&&
-    troops(moveUnits)>0&&
-    canAttack(moveSource,id,moveUnits)){
-
-  moveAttack(moveSource,id,clone(moveUnits));
-  return;
- }
-
- selection=id;
- moveSource=null;
- moveUnits=freeUnits();
- render();
+ if(!S||S.finished||modal||busy||active().controller==='ai')return;
+ if(moveSource&&id!==moveSource&&troops(moveUnits)>0&&canAttack(moveSource,id,moveUnits)){moveAttack(moveSource,id,clone(moveUnits));return;}
+ selection=id;moveSource=null;moveUnits=freeUnits();render();
 }
-
 function selectEdge(id){
- if(!S||S.finished||modal||busy||
-    active().controller==='ai')return;
-
- if(roadMode&&
-    S.phase==='build'&&
-    canBuildRoad(active(),EDGE[id])){
-
-  buildRoad(id);
-  return;
- }
-
- selection='edge:'+id;
- moveSource=null;
- render();
+ if(!S||S.finished||modal||busy||active().controller==='ai')return;
+ if(canBuildRoad(active(),EDGE[id])){buildRoad(id);return;}
+ selection='edge:'+id;moveSource=null;render();
 }
-
-function changeMove(kind,d){
- if(!moveSource||!UNITS[kind])return;
-
- const available=state(moveSource).units[kind];
-
- moveUnits[kind]=Math.max(
-  0,
-  Math.min(available,moveUnits[kind]+d)
- );
-
- render();
-}
-
-function handle(action,data={}){
- if(busy)return;
-
- if(modal&&![
-  'close','buy','confirmBattle','cancelBattle',
-  'setup','leave'
- ].includes(action))return;
-
- if(action==='rules'){
-  rules();
-  return;
- }
-
- if(action==='close'){
-  closeModal();
-
-  if(S?.finished)showVictory();
-  else render();
-
-  return;
- }
-
- if(action==='menu'){
-  if(screen==='game'&&!S?.finished){
-   openModal(`
-    <h2>Leave this Match?</h2>
-
-    <p>
-     Your game is saved automatically.
-     You can continue from the main menu.
-    </p>
-
-    <div class="btnrow">
-     <button class="btn primary" data-action="leave">
-      Save and Exit
-     </button>
-
-     <button class="btn" data-action="close">
-      Stay
-     </button>
-    </div>
-   `,'leave');
-
-  }else{
-   screen='menu';
-   closeModal();
-   render();
-  }
-  return;
- }
-
- if(action==='leave'){
-  clearTimeout(aiTimer);
-  closeModal();
-  screen='menu';
-  render();
-  return;
- }
-
- if(action==='setup'){
-  clearTimeout(aiTimer);
-  closeModal();
-  screen='setup';
-  render();
-  return;
- }
-
- if(action==='resume'){
-  closeModal();
-  resume();
-  return;
- }
-
- if(action==='start'){
-  if(new Set(
-    setup.factions.slice(0,setup.count)
-   ).size!==setup.count){
-   return tell('Choose a different faction for each player.');
-  }
-
-  closeModal();
-  newGame();
-  return;
- }
-
- if(action==='sound'){
-  soundOn=!soundOn;
-  render();
-  return;
- }
-
+function changeMove(kind,d){if(!moveSource||!UNITS[kind])return;const available=state(moveSource).units[kind];moveUnits[kind]=Math.max(0,Math.min(available,moveUnits[kind]+d));render();}
+function handle(action,data={}){if(busy)return;if(modal&&!['close','buy','confirmBattle','cancelBattle','setup','leave'].includes(action))return;
+ if(action==='rules'){rules();return;}if(action==='close'){closeModal();if(S?.finished)showVictory();else render();return;}if(action==='menu'){if(screen==='game'&&!S?.finished){openModal(`<h2>Leave this Match?</h2><p>Your game is saved automatically. You can continue from the main menu.</p><div class="btnrow"><button class="btn primary" data-action="leave">Save and Exit</button><button class="btn" data-action="close">Stay</button></div>`,'leave');}else{screen='menu';closeModal();render();}return;}if(action==='leave'){clearTimeout(aiTimer);closeModal();screen='menu';render();return;}if(action==='setup'){clearTimeout(aiTimer);closeModal();screen='setup';render();return;}if(action==='resume'){closeModal();resume();return;}if(action==='start'){if(new Set(setup.factions.slice(0,setup.count)).size!==setup.count)return tell('Choose a different faction for each player.');closeModal();newGame();return;}if(action==='sound'){soundOn=!soundOn;render();return;}
  if(!S||screen!=='game'||S.finished)return;
-
- if(action==='confirmBattle'){
-  const q=S.pending;
-  if(!q)return;
-
-  const from=q.from,to=q.to,u=q.units;
-
-  S.pending=null;
-  closeModal();
-  moveAttack(from,to,u,true);
-  return;
- }
-
- if(action==='cancelBattle'){
-  S.pending=null;
-  closeModal();
-  persist();
-  render();
-  return;
- }
-
- if(action==='buy'){
-  purchase(data.kind);
-  market();
-  return;
- }
-
+ if(action==='confirmBattle'){const q=S.pending;if(!q)return;const from=q.from,to=q.to,u=q.units;S.pending=null;closeModal();moveAttack(from,to,u,true);return;}if(action==='cancelBattle'){S.pending=null;closeModal();persist();render();return;}if(action==='buy'){purchase(data.kind);market();return;}
  if(active().controller==='ai'||S.pending)return;
-
- if(action==='collect'){
-  collect();
-  return;
- }
-
- if(action==='market'){
-  market();
-  return;
- }
-
- if(action==='roadMode'){
-  roadMode=!roadMode;
-  selection=null;
-  moveSource=null;
-  render();
-  return;
- }
-
- if(action==='caravans'){
-  caravanModal();
-  return;
- }
-
- if(action==='next'){
-  advance();
-  return;
- }
-
- if(action==='road'){
-  buildRoad(data.id);
-  return;
- }
-
- if(action==='newCaravan'){
-  if(!buildStructure('caravan',active().home)){
-   tell('A caravan costs 2 Timber, 1 Stone, and 2 Gold.');
-  }
-  return;
- }
-
- if(action==='structure'){
-  if(!buildStructure(data.kind,data.id)){
-   tell('Construction unavailable: check materials, territory, and remaining build actions.');
-  }
-  return;
- }
-
- if(action==='recruit'){
-  if(!recruit(data.kind,data.id)){
-   tell('Recruitment unavailable: check food, Gold, Iron, and garrison capacity.');
-  }
-  return;
- }
-
- if(action==='chooseArmy'){
-  if(S.phase!=='attack')return;
-
-  moveSource=data.id;
-  moveUnits=clone(state(data.id).units);
-  selection=data.id;
-  roadMode=false;
-  render();
-  return;
- }
-
- if(action==='adjust'){
-  changeMove(data.kind,+data.d);
-  return;
- }
-
- if(action==='dispatchSelect'){
-  let p=active();
-  let index=p.caravans.findIndex(c=>!c.target);
-
-  dispatch(data.id,index>=0?index:0);
-  return;
- }
-}
-
-/* Interface event listeners */
-
-app.addEventListener('click',e=>{
- const b=e.target.closest('[data-action]');
-
- if(b&&!b.disabled){
-  handle(b.dataset.action,b.dataset);
-  return;
- }
-
- const n=e.target.closest('[data-node]');
-
- if(n){
-  selectNode(n.dataset.node);
-  return;
- }
-
- const r=e.target.closest('[data-edge]');
-
- if(r){
-  selectEdge(r.dataset.edge);
-  return;
- }
-});
-
-app.addEventListener('keydown',e=>{
- if(e.key!=='Enter'&&e.key!==' ')return;
-
- const n=e.target.closest('[data-node]');
-
- if(n){
-  e.preventDefault();
-  selectNode(n.dataset.node);
- }
-});
-
-app.addEventListener('change',e=>{
- const t=e.target;
-
- if(t.id==='count'){
-  setup.count=+t.value;
-
-  const taken=new Set();
-
-  for(let i=0;i<setup.count;i++){
-   if(taken.has(setup.factions[i])){
-    setup.factions[i]=[0,1,2,3]
-     .find(n=>!taken.has(n));
-   }
-
-   taken.add(setup.factions[i]);
-  }
-
-  render();
-  return;
- }
-
- if(t.dataset.seat!==undefined){
-  const i=+t.dataset.seat;
-
-  if(t.dataset.setting==='controller'){
-   setup.controllers[i]=t.value;
-
-  }else{
-   const chosen=+t.value;
-
-   if(setup.factions.some(
-    (n,j)=>i!==j&&j<setup.count&&n===chosen
-   )){
-    tell('Each faction can only be chosen once.');
-    render();
-    return;
-   }
-
-   setup.factions[i]=chosen;
-  }
-
-  render();
-  return;
- }
-});
-
-modalRoot.addEventListener('click',e=>{
- const b=e.target.closest('[data-action]');
-
- if(b&&!b.disabled){
-  handle(b.dataset.action,b.dataset);
- }
-});
-
-modalRoot.addEventListener('change',e=>{
- const w=e.target.closest('[data-wagon]');
-
- if(!w||!S)return;
-
- const index=+w.dataset.wagon;
- const c=active().caravans[index];
-
- if(!c)return;
-
- if(!w.value){
-  c.target=null;
-
-  if(!c.cargo){
-   c.dir='out';
-  }
-
-  persist();
-  return;
- }
-
- dispatch(w.value,index);
- caravanModal();
-});
-
-window.addEventListener('keydown',e=>{
- if(e.key==='Escape'&&modal==='rules'){
-  closeModal();
- }
-});
-
-/* Launch */
+ if(action==='market'){market();return;}if(action==='caravans'){caravanModal();return;}if(action==='next'){advance();return;}
+ if(action==='road'){buildRoad(data.id);return;}if(action==='newCaravan'){if(!buildStructure('caravan',active().home))tell('A caravan costs 2 Timber, 1 Stone, and 2 Gold.');return;}if(action==='structure'){if(!buildStructure(data.kind,data.id))tell('Construction unavailable: check materials, territory, and remaining build actions.');return;}if(action==='recruit'){if(!recruit(data.kind,data.id))tell('Recruitment unavailable: check food, Gold, Iron, and garrison capacity.');return;}if(action==='chooseArmy'){moveSource=data.id;moveUnits=clone(state(data.id).units);selection=data.id;render();return;}if(action==='adjust'){changeMove(data.kind,+data.d);return;}if(action==='dispatchSelect'){let p=active(),index=p.caravans.findIndex(c=>!c.target);dispatch(data.id,index>=0?index:0);return;}}
+app.addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(b&&!b.disabled){handle(b.dataset.action,b.dataset);return;}const n=e.target.closest('[data-node]');if(n){selectNode(n.dataset.node);return;}const r=e.target.closest('[data-edge]');if(r){selectEdge(r.dataset.edge);return;}});
+app.addEventListener('keydown',e=>{if(e.key!=='Enter'&&e.key!==' ')return;const n=e.target.closest('[data-node]');if(n){e.preventDefault();selectNode(n.dataset.node)}});
+app.addEventListener('change',e=>{const t=e.target;if(t.id==='count'){setup.count=+t.value;const taken=new Set();for(let i=0;i<setup.count;i++){if(taken.has(setup.factions[i]))setup.factions[i]=[0,1,2,3].find(n=>!taken.has(n));taken.add(setup.factions[i]);}render();return;}if(t.dataset.seat!==undefined){const i=+t.dataset.seat;if(t.dataset.setting==='controller')setup.controllers[i]=t.value;else{const chosen=+t.value;if(setup.factions.some((n,j)=>i!==j&&j<setup.count&&n===chosen)){tell('Each faction can only be chosen once.');render();return;}setup.factions[i]=chosen;}render();return;}});
+modalRoot.addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(b&&!b.disabled)handle(b.dataset.action,b.dataset)});
+modalRoot.addEventListener('change',e=>{const w=e.target.closest('[data-wagon]');if(!w||!S)return;const index=+w.dataset.wagon,c=active().caravans[index];if(!c)return;if(!w.value){c.target=null;if(!c.cargo){c.dir='out'}persist();return;}dispatch(w.value,index);caravanModal()});
+window.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal==='rules')closeModal()});
 render();
-
-</script>
-</body>
-</html>
+</script></body></html>
